@@ -5,15 +5,17 @@
 #include "AsteroidsGame.h"
 
 void AsteroidsGame::createSprites() {
-    this->sprites.backgroundSprite = createTexture("data\\background.png");
-    this->sprites.dotSprite = createTexture("data\\dot.png");
+    this->sprites.backgroundSprite = new Sprite("data\\background.png",this->gameWindow);
+    this->sprites.dotSprite = new Sprite("data\\dot.png",this->gameWindow);
 }
 
 void AsteroidsGame::drawBackground() {
     int hSprite, wSprite;
     int rowLim = this->hScreen;
     int colLim = this->wScreen;
-    getTextureSize(this->sprites.backgroundSprite, wSprite, hSprite);
+
+    this->sprites.backgroundSprite->getSize(wSprite,hSprite);
+    //getTextureSize(this->sprites.backgroundSprite, wSprite, hSprite);
 
     if (this->hScreen % hSprite != 0) {
         rowLim += hSprite;
@@ -23,14 +25,16 @@ void AsteroidsGame::drawBackground() {
     }
     for ( int row = 0; row <= rowLim; row += hSprite ) {
         for ( int col = 0; col <= colLim; col += wSprite ) {
-            drawTexture(this->sprites.backgroundSprite, col, row);
+            this->sprites.backgroundSprite->draw(col,row);
+            //drawTexture(this->sprites.backgroundSprite, col, row);
         }
     }
 }
 
 void AsteroidsGame::drawMapBorder() {
     int hSprite, wSprite;
-    getTextureSize(this->sprites.dotSprite, wSprite, hSprite);
+    this->sprites.dotSprite->getSize(wSprite,hSprite);
+    //getTextureSize(this->sprites.dotSprite, wSprite, hSprite);
 
     int minXCoord = 0 - this->map->getMapOffsetCoord().x + this->map->getX();
     int maxXCoord = this->map->getWMap() - this->map->getMapOffsetCoord().x + this->map->getX();
@@ -45,16 +49,20 @@ void AsteroidsGame::drawMapBorder() {
     }
 
     for (int i = minXCoord; i <= maxXCoord; i += wSprite) {
-        drawTexture(this->sprites.dotSprite, i, minYCoord);
+        this->sprites.dotSprite->draw(i,minYCoord);
+        //drawTexture(this->sprites.dotSprite, i, minYCoord);
     }
     for (int i = minYCoord; i <= maxYCoord; i += hSprite) {
-        drawTexture(this->sprites.dotSprite, minXCoord, i);
+        this->sprites.dotSprite->draw(minXCoord,i);
+        //drawTexture(this->sprites.dotSprite, minXCoord, i);
     }
     for (int i = minXCoord; i <= maxXCoord; i += wSprite) {
-        drawTexture(this->sprites.dotSprite, i, maxYCoord);
+        this->sprites.dotSprite->draw(i,maxYCoord);
+        //drawTexture(this->sprites.dotSprite, i, maxYCoord);
     }
     for (int i = minYCoord; i <= maxYCoord; i += hSprite) {
-        drawTexture(this->sprites.dotSprite, maxXCoord, i);
+        this->sprites.dotSprite->draw(maxXCoord,i);
+        //drawTexture(this->sprites.dotSprite, maxXCoord, i);
     }
 }
 
@@ -71,6 +79,8 @@ AsteroidsGame::AsteroidsGame(int wScreen, int hScreen, int wMap, int hMap, int a
     this->hScreen = hScreen;
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
+
+    this->gameWindow = new GameWindow(this->getTitle(),this->wScreen, this->hScreen, false);
 }
 
 void AsteroidsGame::preInit(int &width, int &height, bool &fullscreen) {
@@ -80,7 +90,7 @@ void AsteroidsGame::preInit(int &width, int &height, bool &fullscreen) {
 }
 
 bool AsteroidsGame::init() {
-    showMouseCursor(false);
+    this->gameWindow->showCursor(false);
     this->createSprites();
     this->map = new Map(this->wMap, this->hMap, this->hScreen, this->wScreen);
     this->unitManager = new UnitManager(this->asteroidsLimit, this->ammoLimit, 200, this);
@@ -91,8 +101,8 @@ bool AsteroidsGame::init() {
 void AsteroidsGame::close() {
     delete this->map;
     delete this->unitManager;
-    destroyTexture(this->sprites.backgroundSprite);
-    destroyTexture(this->sprites.dotSprite);
+    delete this->sprites.backgroundSprite;
+    delete this->sprites.dotSprite;
 }
 
 bool AsteroidsGame::tick() {
@@ -153,4 +163,16 @@ void AsteroidsGame::restart() {
 
 Map* AsteroidsGame::getMap() const {
     return this->map;
+}
+
+GameWindow *AsteroidsGame::getWindow() const {
+    return this->gameWindow;
+}
+
+void AsteroidsGame::runGame() {
+    if (this->gameWindow->getIsCreate()) {
+        this->gameWindow->runGame(this);
+    } else {
+        std::cout << "window doesn't exist!" << std::endl;
+    }
 }

@@ -11,7 +11,9 @@ add_executable(Asteroids main.cpp
         UnitManager.cpp
         UnitManager.h
         GameManager.cpp GameManager.h
-        AsteroidsGame.h AsteroidsGame.cpp)
+        AsteroidsGame.h AsteroidsGame.cpp
+        GameWindow.h GameWindow.cpp
+        Sprite.h Sprite.cpp)
 
 include_directories(D:/2.SelfStudy/AsteroidsGame)
 

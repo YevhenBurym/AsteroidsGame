@@ -57,7 +57,8 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
+    AsteroidsGame* game = new AsteroidsGame(wScreen, hScreen, wMap, hMap, asteroidsLimit, ammoLimit, abilityProrability);
+    game->runGame();
 
-    runGame(new AsteroidsGame(wScreen, hScreen, wMap, hMap, asteroidsLimit, ammoLimit, abilityProrability));
 	return 0;
 }

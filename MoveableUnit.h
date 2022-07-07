@@ -2,10 +2,12 @@
 
 #include "GameManager.h"
 #include "Map.h"
+#include "GameWindow.h"
+#include "Sprite.h"
 
 #define RAD 3.14/180
 
-class MoveableUnit1 {
+class MoveableUnit {
 protected:
     double x, y;
     double xOf, yOf;
@@ -13,12 +15,12 @@ protected:
     double Vx, Vy;
     double radius;
     Velocity V;
-    SDL_Texture * sprite;
+    Sprite * sprite;
     Map* map;
     virtual void limitateCoord();
 public:
-    MoveableUnit1(double x, double y, double velocity, double theta, SDL_Texture* sprite, Map* map);
-    virtual ~MoveableUnit1() = default;
+    MoveableUnit(double x, double y, double velocity, double theta, Sprite* sprite, Map* map);
+    virtual ~MoveableUnit() = default;
     virtual void calcCoord(double Vx, double Vy, double step);
     virtual void setX(double x);
     virtual void setY(double y);
@@ -36,28 +38,28 @@ public:
     virtual Velocity getV() const;
     virtual double getMass() const;
     virtual double getRadius() const;
-    virtual SDL_Texture* getSprite() const;
+    virtual Sprite* getSprite() const;
 };
 
-class SmallAsteroid1 : public MoveableUnit1 {
+class SmallAsteroid : public MoveableUnit {
 public:
-    SmallAsteroid1 (double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map);
+    SmallAsteroid (double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
 };
 
-class BigAsteroid1 : public MoveableUnit1 {
+class BigAsteroid : public MoveableUnit {
 public:
-    BigAsteroid1(double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map);
+    BigAsteroid(double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
 };
 
-class Avatar1 : public MoveableUnit1 {
+class Avatar : public MoveableUnit {
 private:
     void limitateCoord() override;
 public:
-    Avatar1(double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map);
+    Avatar(double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
     double getXrel() const override;
     double getYrel() const override;
 };
-class Bullet1 : public MoveableUnit1 {
+class Bullet : public MoveableUnit {
 public:
-    Bullet1(double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map);
+    Bullet(double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
 };

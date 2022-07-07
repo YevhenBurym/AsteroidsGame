@@ -22,18 +22,6 @@ enum class GameMouseButton {
     COUNT
 };
 
-SDL_Texture* createTexture(const char* path);
-void drawTexture(SDL_Texture* texture, int x, int y);
-void drawTexture(SDL_Texture* texture, int x, int y, double angle);
-void destroyTexture(SDL_Texture* texture);
-void getTextureSize(SDL_Texture* texture, int& w, int& h);
-
-void getWindowSize(int& wScreen, int& hScreen);
-
-uint32_t getTickCounting();
-
-void showMouseCursor(bool isShow);
-
 class Game {
 public:
     //Game(int wScreen, int hScreen);
@@ -62,6 +50,3 @@ public:
 
     ~Game() {};
 };
-
-//void runGame(SDLManager* manager);
-void runGame(Game* game);

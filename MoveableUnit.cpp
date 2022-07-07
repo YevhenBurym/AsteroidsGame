@@ -1,7 +1,7 @@
 #include "MoveableUnit.h"
 #include <cmath>
 
-void MoveableUnit1::limitateCoord() {
+void MoveableUnit::limitateCoord() {
     double minXCoord = 0 - map->getMapOffsetCoord().x;
     double maxXCoord = map->getWMap() - map->getMapOffsetCoord().x;
     double minYCoord = 0 - map->getMapOffsetCoord().y;
@@ -20,12 +20,13 @@ void MoveableUnit1::limitateCoord() {
     }
 }
 
-MoveableUnit1::MoveableUnit1(double x, double y, double velocity, double theta, SDL_Texture* sprite, Map* map) {
+MoveableUnit::MoveableUnit(double x, double y, double velocity, double theta, Sprite* sprite, Map* map) {
     CoordXY CoordOffset = map->getMapOffsetCoord();
     int wSprite, hSprite;
     double d = 0;
     //theta *= -1;
-    getTextureSize(sprite, wSprite, hSprite);
+    sprite->getSize(wSprite,hSprite);
+    //getTextureSize(sprite, wSprite, hSprite);
 
     if (wSprite % hSprite == wSprite) {
         d = hSprite - (hSprite % wSprite) / 2;
@@ -46,90 +47,90 @@ MoveableUnit1::MoveableUnit1(double x, double y, double velocity, double theta, 
     this->yOf = 0;
 }
 
-void MoveableUnit1::calcCoord(double Vx, double Vy, double step) {
+void MoveableUnit::calcCoord(double Vx, double Vy, double step) {
     this->x += Vx * step;
     this->y += Vy * step;
     this->limitateCoord();
 
 }
 
-void MoveableUnit1::setX(double x) {
+void MoveableUnit::setX(double x) {
     this->x = x;
 }
-void MoveableUnit1::setY(double y) {
+void MoveableUnit::setY(double y) {
     this->y = y;
 }
 
-void MoveableUnit1::setXof(double x){
+void MoveableUnit::setXof(double x){
     this->xOf = x;
 }
 
-void MoveableUnit1::setYof(double y) {
+void MoveableUnit::setYof(double y) {
     this->yOf = y;
 }
 
-void MoveableUnit1::setVx(double vx) {
+void MoveableUnit::setVx(double vx) {
     this->Vx = vx;
 }
-void MoveableUnit1::setVy(double vy) {
+void MoveableUnit::setVy(double vy) {
     this->Vy = vy;
 }
 
-void MoveableUnit1::setV(double v, double theta) {
+void MoveableUnit::setV(double v, double theta) {
     this->V.v = v;
     this->V.theta = theta;
     this->Vx = v * cos(theta * RAD);
     this->Vy = -v * sin(theta * RAD);
 }
 
-double MoveableUnit1::getX() const {
+double MoveableUnit::getX() const {
     return this->x;
 }
 
-double MoveableUnit1::getY() const {
+double MoveableUnit::getY() const {
     return this->y;
 }
 
-double MoveableUnit1::getXrel() const {
+double MoveableUnit::getXrel() const {
     return this->x + this->xOf;
 }
-double MoveableUnit1::getYrel() const {
+double MoveableUnit::getYrel() const {
     return this->y + this->yOf;
 }
 
-double MoveableUnit1::getVx() const {
+double MoveableUnit::getVx() const {
     return this->Vx;
 }
 
-double MoveableUnit1::getVy() const {
+double MoveableUnit::getVy() const {
     return this->Vy;
 }
 
-Velocity MoveableUnit1::getV() const {
+Velocity MoveableUnit::getV() const {
     return this->V;
 }
 
-double MoveableUnit1::getMass() const {
+double MoveableUnit::getMass() const {
     return this->mass;
 }
 
-double MoveableUnit1::getRadius() const {
+double MoveableUnit::getRadius() const {
     return this->radius;
 }
 
-SDL_Texture* MoveableUnit1::getSprite() const {
+Sprite* MoveableUnit::getSprite() const {
     return this->sprite;
 }
 
-SmallAsteroid1::SmallAsteroid1(double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map) : MoveableUnit1(x, y, velocity, theta, sprite, map) {
+SmallAsteroid::SmallAsteroid(double x, double y, int velocity, int theta, Sprite* sprite, Map* map) : MoveableUnit(x, y, velocity, theta, sprite, map) {
     this->mass = 1;
 }
 
-BigAsteroid1::BigAsteroid1(double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map) : MoveableUnit1(x, y, velocity, theta, sprite, map) {
+BigAsteroid::BigAsteroid(double x, double y, int velocity, int theta, Sprite* sprite, Map* map) : MoveableUnit(x, y, velocity, theta, sprite, map) {
     this->mass = 2;
 }
 
-void Avatar1::limitateCoord() {
+void Avatar::limitateCoord() {
     double minXCoord = 0 - this->map->getMapOffsetCoord().x;
     double maxXCoord = this->map->getWMap() - this->map->getMapOffsetCoord().x;
     double minYCoord = 0 - this->map->getMapOffsetCoord().y;
@@ -152,16 +153,16 @@ void Avatar1::limitateCoord() {
     }
 }
 
-Avatar1::Avatar1(double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map) : MoveableUnit1(x, y, velocity, theta, sprite, map) {
+Avatar::Avatar(double x, double y, int velocity, int theta, Sprite* sprite, Map* map) : MoveableUnit(x, y, velocity, theta, sprite, map) {
 }
 
-double Avatar1::getXrel() const {
+double Avatar::getXrel() const {
     return this->x;
 }
 
-double Avatar1::getYrel() const {
+double Avatar::getYrel() const {
     return this->y;
 }
 
-Bullet1::Bullet1(double x, double y, int velocity, int theta, SDL_Texture* sprite, Map* map) : MoveableUnit1(x, y, velocity, theta, sprite, map) {
+Bullet::Bullet(double x, double y, int velocity, int theta, Sprite* sprite, Map* map) : MoveableUnit(x, y, velocity, theta, sprite, map) {
 }

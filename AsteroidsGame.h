@@ -12,8 +12,8 @@
 #define PI 3.14159
 
 struct MapSprites {
-    SDL_Texture* backgroundSprite;
-    SDL_Texture* dotSprite;
+    Sprite* backgroundSprite;
+    Sprite* dotSprite;
 };
 
 class UnitManager;
@@ -21,6 +21,7 @@ class UnitManager;
 class AsteroidsGame: public Game {
 private:
     Map* map;
+    GameWindow* gameWindow;
     UnitManager* unitManager;
     MapSprites sprites;
     int hScreen, wScreen;
@@ -44,5 +45,7 @@ public:
     const char* getTitle() override;
     void restart();
     Map* getMap() const;
+    GameWindow* getWindow() const;
+    void runGame();
 
 };

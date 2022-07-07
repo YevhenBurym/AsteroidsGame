@@ -6,13 +6,14 @@
 #include <time.h>
 #include "GameManager.h"
 #include "AsteroidsGame.h"
+#include "GameWindow.h"
 
 struct UnitSprites {
-    SDL_Texture* bigAsteroidSprite;
-    SDL_Texture* smallAsteroidSprite;
-    SDL_Texture* spaceshipSprite;
-    SDL_Texture* reticleSprite;
-    SDL_Texture* bulletSprite;
+    Sprite* bigAsteroidSprite;
+    Sprite* smallAsteroidSprite;
+    Sprite* spaceshipSprite;
+    Sprite* reticleSprite;
+    Sprite* bulletSprite;
 };
 
 
@@ -27,27 +28,27 @@ class UnitManager {
     CoordXY reticle;
     CoordXY reticleOffset;
     UnitSprites sprites;
-    std::vector<MoveableUnit1*> asteroids;
+    std::vector<MoveableUnit*> asteroids;
     AsteroidsGame* game;
     double angleShip;
 
     void createSprites();
     void destroySprites();
-    void fixCoordAfterCollision(MoveableUnit1* unit1, MoveableUnit1* unit2, CoordXY vectorBetween);
-    void calcVelocityAfterCollision(MoveableUnit1* unit1, MoveableUnit1* unit2, CoordXY vectorBetween);
+    void fixCoordAfterCollision(MoveableUnit* unit1, MoveableUnit* unit2, CoordXY vectorBetween);
+    void calcVelocityAfterCollision(MoveableUnit* unit1, MoveableUnit* unit2, CoordXY vectorBetween);
 public:
     UnitManager(int asteroidsLimit, int bulletsLimit, int maxVelocity, AsteroidsGame* game);
     ~UnitManager();
     void createAsteroids();
     void createAvatar();
-    std::vector<MoveableUnit1*>& getAsteroidsVector();
+    std::vector<MoveableUnit*>& getAsteroidsVector();
     CoordXY randomizeAppearCoord(int wMap, int hMap);
     Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
     void drawAsteroids();
     void drawReticle();
     void shipHeadAngle();
     void makeShoot();
-    void divideBigAsteroid(BigAsteroid1* asteroid);
+    void divideBigAsteroid(BigAsteroid* asteroid);
     void deAcceleration();
     void checkCollisions();
     void calcOffset();
