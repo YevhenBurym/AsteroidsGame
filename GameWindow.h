@@ -22,7 +22,6 @@ public:
     uint32_t getTickCounting();
     void showCursor(bool isShow);
     bool getIsCursorShown() const;
-    void runGame(Game* game);
 };
 
 

@@ -15,7 +15,6 @@ void AsteroidsGame::drawBackground() {
     int colLim = this->wScreen;
 
     this->sprites.backgroundSprite->getSize(wSprite,hSprite);
-    //getTextureSize(this->sprites.backgroundSprite, wSprite, hSprite);
 
     if (this->hScreen % hSprite != 0) {
         rowLim += hSprite;
@@ -26,7 +25,6 @@ void AsteroidsGame::drawBackground() {
     for ( int row = 0; row <= rowLim; row += hSprite ) {
         for ( int col = 0; col <= colLim; col += wSprite ) {
             this->sprites.backgroundSprite->draw(col,row);
-            //drawTexture(this->sprites.backgroundSprite, col, row);
         }
     }
 }
@@ -34,7 +32,6 @@ void AsteroidsGame::drawBackground() {
 void AsteroidsGame::drawMapBorder() {
     int hSprite, wSprite;
     this->sprites.dotSprite->getSize(wSprite,hSprite);
-    //getTextureSize(this->sprites.dotSprite, wSprite, hSprite);
 
     int minXCoord = 0 - this->map->getMapOffsetCoord().x + this->map->getX();
     int maxXCoord = this->map->getWMap() - this->map->getMapOffsetCoord().x + this->map->getX();
@@ -50,19 +47,15 @@ void AsteroidsGame::drawMapBorder() {
 
     for (int i = minXCoord; i <= maxXCoord; i += wSprite) {
         this->sprites.dotSprite->draw(i,minYCoord);
-        //drawTexture(this->sprites.dotSprite, i, minYCoord);
     }
     for (int i = minYCoord; i <= maxYCoord; i += hSprite) {
         this->sprites.dotSprite->draw(minXCoord,i);
-        //drawTexture(this->sprites.dotSprite, minXCoord, i);
     }
     for (int i = minXCoord; i <= maxXCoord; i += wSprite) {
         this->sprites.dotSprite->draw(i,maxYCoord);
-        //drawTexture(this->sprites.dotSprite, i, maxYCoord);
     }
     for (int i = minYCoord; i <= maxYCoord; i += hSprite) {
         this->sprites.dotSprite->draw(maxXCoord,i);
-        //drawTexture(this->sprites.dotSprite, maxXCoord, i);
     }
 }
 
@@ -80,13 +73,7 @@ AsteroidsGame::AsteroidsGame(int wScreen, int hScreen, int wMap, int hMap, int a
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
 
-    this->gameWindow = new GameWindow(this->getTitle(),this->wScreen, this->hScreen, false);
-}
-
-void AsteroidsGame::preInit(int &width, int &height, bool &fullscreen) {
-    width = this->wScreen;
-    height = this->hScreen;
-    fullscreen = false;
+    this->gameWindow = new GameWindow("Asteroids",this->wScreen, this->hScreen, false);
 }
 
 bool AsteroidsGame::init() {
@@ -118,44 +105,6 @@ bool AsteroidsGame::tick() {
     return false;
 }
 
-void AsteroidsGame::onMouseMove(int x, int y, int xrelative, int yrelative) {
-    this->unitManager->setXReticle(x);
-    this->unitManager->setYReticle(y);
-}
-
-void AsteroidsGame::onMouseButtonClick(GameMouseButton button, bool isReleased) {
-    if (button == GameMouseButton::LEFT && isReleased) {
-        this->unitManager->makeShoot();
-    }
-}
-
-void AsteroidsGame::onKeyPressed(GameKey k) {
-    int V = 300;
-
-    if (k == GameKey::UP) {
-        this->map->setV(V, 270);
-    }
-    if (k == GameKey::DOWN) {
-        this->map->setV(V, 90);
-    }
-    if (k == GameKey::LEFT) {
-        this->map->setV(V, 0);
-    }
-    if (k == GameKey::RIGHT) {
-        this->map->setV(V, 180);
-    }
-}
-
-void AsteroidsGame::onKeyReleased(GameKey k) {
-    if (k == GameKey::RIGHT || k == GameKey::LEFT || k == GameKey::UP || k == GameKey::DOWN) {
-        this->unitManager->setIsNeededDeacc(true);
-    }
-}
-
-const char *AsteroidsGame::getTitle() {
-    return "asteroids";
-}
-
 void AsteroidsGame::restart() {
     this->close();
     this->init();
@@ -170,9 +119,50 @@ GameWindow *AsteroidsGame::getWindow() const {
 }
 
 void AsteroidsGame::runGame() {
-    if (this->gameWindow->getIsCreate()) {
-        this->gameWindow->runGame(this);
-    } else {
-        std::cout << "window doesn't exist!" << std::endl;
+
+    bool quit = false;
+    //Event handler
+    SDL_Event event;
+    this->inputHandler = new InputHandler(this);
+    //Current time start time
+    Uint32 startTime = 0;
+//------------------------init--------------------------------------//
+    this->init();
+//------------------------------------------------------------------//
+    //While application is running
+    while( !quit ) {
+        //Handle events on queue
+        while( SDL_PollEvent( &event ) != 0 ) {
+            //User requests quit
+            if( event.type == SDL_QUIT ) {
+                quit = true;
+            }
+            this->inputHandler->handleInput(event);
+        }
+
+        //Clear screen
+        SDL_RenderClear( this->gameWindow->getRenderer() );
+//----------------ShownCursor----------------------------------------//
+        if ( this->gameWindow->getIsCursorShown() ) {
+            SDL_ShowCursor(SDL_ENABLE);
+        } else {
+            SDL_ShowCursor(SDL_DISABLE);
+        }
+//-------------------Tick-------------------------------------------//
+        this->tick();
+//------------------------------------------------------------------//
+        SDL_RenderPresent( this->gameWindow->getRenderer() );
+        SDL_Delay(1);
     }
+
+//-----------------Close--------------------------------------------//
+    this->close();
+//------------------------------------------------------------------//
+    //Destroy window
+    delete this->inputHandler;
+    delete this->gameWindow;
+}
+
+UnitManager* AsteroidsGame::getUnitManager() const {
+    return this->unitManager;
 }

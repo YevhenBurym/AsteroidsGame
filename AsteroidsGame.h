@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "Map.h"
 #include "UnitManager.h"
+#include "InputHandler.h"
 
 #define RANDRANGE_0_1 (double)rand() / RAND_MAX
 #define PI 3.14159
@@ -17,9 +18,11 @@ struct MapSprites {
 };
 
 class UnitManager;
+class InputHandler;
 
 class AsteroidsGame: public Game {
 private:
+    InputHandler* inputHandler;
     Map* map;
     GameWindow* gameWindow;
     UnitManager* unitManager;
@@ -34,18 +37,13 @@ private:
     void drawMapBorder();
 public:
     AsteroidsGame(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
-    void preInit(int& width, int& height, bool& fullscreen) override;
     bool init() override;
     void close() override;
     bool tick() override;
-    void onMouseMove(int x, int y, int xrelative, int yrelative) override;
-    void onMouseButtonClick(GameMouseButton button, bool isReleased) override;
-    void onKeyPressed(GameKey k) override;
-    void onKeyReleased(GameKey k) override;
-    const char* getTitle() override;
+
     void restart();
     Map* getMap() const;
+    UnitManager* getUnitManager() const;
     GameWindow* getWindow() const;
     void runGame();
-
 };
