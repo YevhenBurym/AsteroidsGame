@@ -6,14 +6,14 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(Asteroids main.cpp
         Map.cpp
         Map.h
-        MoveableUnit.cpp
-        MoveableUnit.h
+        GameObject.cpp
+        GameObject.h
         UnitManager.cpp
         UnitManager.h
         Game.h Game.cpp
         Window.h Window.cpp
         Sprite.h Sprite.cpp
-        InputHandler.h InputHandler.cpp
+        InputComponent.h InputComponent.cpp
         SpaceShip.h SpaceShip.cpp)
 
 include_directories(D:/2.SelfStudy/AsteroidsGame)

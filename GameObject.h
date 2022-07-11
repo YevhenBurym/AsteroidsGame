@@ -6,20 +6,20 @@
 
 #define RAD 3.14/180
 
-class MoveableUnit {
+class GameObject {
 protected:
-    double x, y;
+    CoordXY coord;
+    Velocity V;
+    double Vx, Vy;
     double xOf, yOf;
     double mass;
-    double Vx, Vy;
     double radius;
-    Velocity V;
-    Sprite * sprite;
+    Sprite* sprite;
     Map* map;
     virtual void limitateCoord();
 public:
-    MoveableUnit(double x, double y, double velocity, double theta, Sprite* sprite, Map* map);
-    virtual ~MoveableUnit() = default;
+    GameObject(CoordXY coord, double velocity, double theta, Sprite* sprite, Map* map);
+    virtual ~GameObject() = default;
     virtual void calcCoord(double Vx, double Vy, double step);
     virtual void setX(double x);
     virtual void setY(double y);
@@ -41,26 +41,33 @@ public:
     virtual void draw() const;
 };
 
-class SmallAsteroid : public MoveableUnit {
+class SmallAsteroid : public GameObject {
 public:
-    SmallAsteroid (double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
+    SmallAsteroid (CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
 };
 
-class BigAsteroid : public MoveableUnit {
+class BigAsteroid : public GameObject {
 public:
-    BigAsteroid(double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
+    BigAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
     //SmallAsteroid* divide();
 };
 
-class Avatar : public MoveableUnit {
+class Avatar : public GameObject {
 private:
     void limitateCoord() override;
 public:
-    Avatar(double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
+    Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
     double getXrel() const override;
     double getYrel() const override;
 };
-class Bullet : public MoveableUnit {
+
+class Bullet : public GameObject {
 public:
-    Bullet(double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
+    Bullet(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
+};
+
+class Reticle : public GameObject {
+public:
+    Reticle(Sprite* sprite, Map* map);
+    void draw() const override;
 };

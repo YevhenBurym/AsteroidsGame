@@ -6,34 +6,23 @@
 
 #include "Map.h"
 #include "UnitManager.h"
-#include "InputHandler.h"
+#include "InputComponent.h"
 
 #define RANDRANGE_0_1 (double)rand() / RAND_MAX
 #define PI 3.14159
 
-struct MapSprites {
-    Sprite* backgroundSprite;
-    Sprite* dotSprite;
-};
-
 class UnitManager;
-class InputHandler;
+class InputComponent;
 
 class Game {
 private:
-    InputHandler* inputHandler;
+    InputComponent* inputHandler;
     Map* map;
     Window* gameWindow;
     UnitManager* unitManager;
-    MapSprites sprites;
-    int hScreen, wScreen;
     int hMap, wMap;
     int asteroidsLimit;
     int ammoLimit;
-
-    void createSprites();
-    void drawBackground();
-    void drawMapBorder();
 public:
     Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
     bool init();

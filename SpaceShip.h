@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "InputComponent.h"
 
 class SpaceShip {
 public:
@@ -10,6 +11,7 @@ public:
 private:
     int v;
     int x,y;
+    PlayerInputComponent* input;
 };
 
 

@@ -2,13 +2,13 @@
 // Created by Евгений on 07.07.2022.
 //
 
-#include "InputHandler.h"
+#include "InputComponent.h"
 
-InputHandler::InputHandler(Game* game) {
+InputComponent::InputComponent(Game* game) {
     this->game = game;
 }
 
-void InputHandler::handleInput(SDL_Event& event) {
+void InputComponent::handleInput(SDL_Event& event) {
     //If a key was pressed
     if( event.type == SDL_KEYDOWN && event.key.repeat == 0 ) {
         this->onKeyPressed(event.key.keysym.sym);
@@ -31,7 +31,7 @@ void InputHandler::handleInput(SDL_Event& event) {
 
 }
 
-void InputHandler::onKeyPressed(SDL_Keycode key) {
+void InputComponent::onKeyPressed(SDL_Keycode key) {
     int V = 300;
 
     switch( key ) {
@@ -56,7 +56,7 @@ void InputHandler::onKeyPressed(SDL_Keycode key) {
     }
 }
 
-void InputHandler::onKeyReleased(SDL_Keycode key) {
+void InputComponent::onKeyReleased(SDL_Keycode key) {
     switch( key ) {
         case SDLK_UP:
             this->game->getUnitManager()->setIsNeededDeacc(true);
@@ -75,7 +75,7 @@ void InputHandler::onKeyReleased(SDL_Keycode key) {
     }
 }
 
-void InputHandler::onMouseButtonPressed(int MouseButton) {
+void InputComponent::onMouseButtonPressed(int MouseButton) {
     switch (MouseButton) {
         case SDL_BUTTON_LEFT:
 
@@ -91,7 +91,7 @@ void InputHandler::onMouseButtonPressed(int MouseButton) {
     }
 }
 
-void InputHandler::onMouseButtonReleased(int MouseButton) {
+void InputComponent::onMouseButtonReleased(int MouseButton) {
     switch (MouseButton) {
         case SDL_BUTTON_LEFT:
             this->game->getUnitManager()->makeShoot();
@@ -107,9 +107,9 @@ void InputHandler::onMouseButtonReleased(int MouseButton) {
     }
 }
 
-void InputHandler::onMouseMove(int x, int y, int xrelative, int yrelative) {
-    this->game->getUnitManager()->setXReticle(x);
-    this->game->getUnitManager()->setYReticle(y);
+void InputComponent::onMouseMove(int x, int y, int xrelative, int yrelative) {
+    this->game->getUnitManager()->getReticle()->setX(x);
+    this->game->getUnitManager()->getReticle()->setY(y);
 }
 
 

@@ -1,22 +1,6 @@
 #include "UnitManager.h"
 
-void UnitManager::createSprites() {
-    this->sprites.spaceshipSprite = new Sprite("data\\ship.png",this->game->getWindow());
-    this->sprites.smallAsteroidSprite = new Sprite("data\\small.png",this->game->getWindow());
-    this->sprites.bigAsteroidSprite = new Sprite("data\\big.png",this->game->getWindow());
-    this->sprites.reticleSprite = new Sprite("data\\circle.tga",this->game->getWindow());
-    this->sprites.bulletSprite = new Sprite("data\\bullet.png",this->game->getWindow());
-}
-
-void UnitManager::destroySprites() {
-    delete this->sprites.bigAsteroidSprite;
-    delete this->sprites.smallAsteroidSprite;
-    delete this->sprites.spaceshipSprite;
-    delete this->sprites.reticleSprite;
-    delete this->sprites.bulletSprite;
-}
-
-void UnitManager::fixCoordAfterCollision(MoveableUnit* unit1, MoveableUnit* unit2, CoordXY vectorBetween) {
+void UnitManager::fixCoordAfterCollision(GameObject* unit1, GameObject* unit2, CoordXY vectorBetween) {
     double alpha = 0;
     CoordXY xyOffset = { 0, 0 };
     double currX1 = unit1->getX();
@@ -94,7 +78,7 @@ void UnitManager::fixCoordAfterCollision(MoveableUnit* unit1, MoveableUnit* unit
     unit2->setY(newY2);
 }
 
-void UnitManager::calcVelocityAfterCollision(MoveableUnit* unit1, MoveableUnit* unit2, CoordXY vectorBetween) {
+void UnitManager::calcVelocityAfterCollision(GameObject* unit1, GameObject* unit2, CoordXY vectorBetween) {
     double alpha = 0;
     double phi1 = 0;
     double phi2 = 0;
@@ -160,20 +144,20 @@ void UnitManager::calcVelocityAfterCollision(MoveableUnit* unit1, MoveableUnit* 
 UnitManager::UnitManager(int asteroidsLimit, int bulletsLimit, int maxVelocity, Game* game) {
     srand(time(NULL));
     this->game = game;
-    this->createSprites();
     this->asteroidsLimit = asteroidsLimit;
     this->numAsteroids = 0;
     this->bulletsLimit = bulletsLimit;
     this->numBullets = 0;
 
     int wSprite, hSprite;
-    this->sprites.reticleSprite->getSize(wSprite, hSprite);
+    this->game->getMap()->getUnitSprites().reticleSprite->getSize(wSprite, hSprite);
     //getTextureSize(this->sprites.reticleSprite, wSprite, hSprite);
-    this->reticleOffset.x = wSprite / 2;
-    this->reticleOffset.y = hSprite / 2;
+    //this->reticleOffset.x = wSprite / 2;
+    //this->reticleOffset.y = hSprite / 2;
 
-    this->reticle.x = 0;
-    this->reticle.y = 0;
+    //this->reticle.x = 0;
+    //this->reticle.y = 0;
+    this->reticle = new Reticle(this->game->getMap()->getUnitSprites().reticleSprite,this->game->getMap());
 
     this->isNeedDeAcc = false;
     this->angleShip = 0;
@@ -185,7 +169,7 @@ UnitManager::~UnitManager() {
     }
     this->asteroids.clear();
     this->asteroids.shrink_to_fit();
-    this->destroySprites();
+    this->reticle;
 }
 
 void UnitManager::createAsteroids() {
@@ -202,16 +186,11 @@ void UnitManager::createAsteroids() {
         uint8_t randomAsteroid = RANDRANGE_0_1 * 100;
 
         if (randomAsteroid > 80) {
-            this->asteroids.push_back(new BigAsteroid(asteroidCoord.x, asteroidCoord.y, asteroidVelocity.v, asteroidVelocity.theta, this->sprites.bigAsteroidSprite, this->game->getMap()));
+            this->asteroids.push_back(new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta, this->game->getMap()->getUnitSprites().bigAsteroidSprite, this->game->getMap()));
         } else {
-            this->asteroids.push_back(new SmallAsteroid(asteroidCoord.x, asteroidCoord.y, asteroidVelocity.v, asteroidVelocity.theta, this->sprites.smallAsteroidSprite, this->game->getMap()));
+            this->asteroids.push_back(new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta, this->game->getMap()->getUnitSprites().smallAsteroidSprite, this->game->getMap()));
         }
     }
-    drawAsteroids();
-}
-
-std::vector<MoveableUnit*>& UnitManager::getAsteroidsVector() {
-    return this->asteroids;
 }
 
 CoordXY UnitManager::randomizeAppearCoord(int wMap, int hMap) {
@@ -254,11 +233,11 @@ void UnitManager::drawAsteroids() {
         (*it)->calcCoord((*it)->getVx(), (*it)->getVy(), 0.001);
         int x = (*it)->getXrel() - (*it)->getRadius();
         int y = (*it)->getYrel() - (*it)->getRadius();
-        Sprite* currTexture = (*it)->getSprite();
-        if (currTexture == this->sprites.spaceshipSprite) {
-            currTexture->draw(x,y,90 - this->angleShip);
+        Sprite* currSprite = (*it)->getSprite();
+        if (currSprite == this->game->getMap()->getUnitSprites().spaceshipSprite) {
+            currSprite->draw(x,y,90 - this->angleShip);
         } else {
-            currTexture->draw(x,y);
+            currSprite->draw(x,y);
         }
     }
 }
@@ -271,9 +250,14 @@ void UnitManager::divideBigAsteroid(BigAsteroid* asteroid) {
     y = asteroid->getYrel();
     v = asteroid->getV();
     r = asteroid->getRadius();
-
-    this->asteroids.push_back(new SmallAsteroid(x + r, y + r, v.v, v.theta + 45, this->sprites.smallAsteroidSprite, this->game->getMap()));
-    this->asteroids.push_back(new SmallAsteroid(x - r, y - r, v.v, v.theta - 45, this->sprites.smallAsteroidSprite, this->game->getMap()));
+    CoordXY xy1;
+    CoordXY xy2;
+    xy1.x= x + r;
+    xy1.y= y + r;
+    xy2.x= x - r;
+    xy2.y= y - r;
+    this->asteroids.push_back(new SmallAsteroid(xy1, v.v, v.theta + 45, this->game->getMap()->getUnitSprites().smallAsteroidSprite, this->game->getMap()));
+    this->asteroids.push_back(new SmallAsteroid(xy2, v.v, v.theta - 45, this->game->getMap()->getUnitSprites().smallAsteroidSprite, this->game->getMap()));
     this->numAsteroids += 1;
     this->numBullets  -= 1;
 }
@@ -298,8 +282,8 @@ void UnitManager::checkCollisions() {
                 }
                 else if (dynamic_cast<Bullet*>(*it1) && dynamic_cast<SmallAsteroid*>(*it2) ||
                          dynamic_cast<Bullet*>(*it2) && dynamic_cast<SmallAsteroid*>(*it1)) {
-                    MoveableUnit* temp1 = (*it1);
-                    MoveableUnit* temp2 = (*it2);
+                    GameObject* temp1 = (*it1);
+                    GameObject* temp2 = (*it2);
                     it2 = this->asteroids.erase(it2);
                     it2--;
                     it1 = this->asteroids.erase(it1);
@@ -321,8 +305,8 @@ void UnitManager::checkCollisions() {
                     else if (dynamic_cast<BigAsteroid*>(*it1)) {
                         bigAster = dynamic_cast<BigAsteroid*>(*it1);
                     }
-                    MoveableUnit* temp1 = (*it1);
-                    MoveableUnit* temp2 = (*it2);
+                    GameObject* temp1 = (*it1);
+                    GameObject* temp2 = (*it2);
                     it2 = this->asteroids.erase(it2);
                     it2--;
                     it1 = this->asteroids.erase(it1);
@@ -353,53 +337,19 @@ void UnitManager::calcOffset() {
     }
 }
 
-int UnitManager::getNumAsteroids() const {
-    return this->numAsteroids;
-}
-
-int UnitManager::getNumBullets() const {
-    return  this->numBullets;
-}
-
-void UnitManager::setNumAsteroids(int num) {
-    this->numAsteroids = num;
-}
-
-void UnitManager::setNumBullets(int num) {
-    this->numBullets = num;
-}
-//------------------------------------------------------------------//
-
-void UnitManager::drawReticle() {
-
-    int x = this->reticle.x - this->reticleOffset.x;
-    int y = this->reticle.y - this->reticleOffset.y;
-    this->sprites.reticleSprite->draw(x,y);
-}
-
-void UnitManager::setXReticle(int x) {
-    this->reticle.x = x;
-}
-
-void UnitManager::setYReticle(int y) {
-    this->reticle.y = y;
-}
-
 //------------------------------------------------------------------//
 void UnitManager::createAvatar() {
-    int hScreen, wScreen;
-    this->game->getWindow()->getSize(wScreen, hScreen);
-    //getSize(wScreen, hScreen);
-    int xAvatar = this->game->getMap()->getWMap()/2 - this->game->getMap()->getMapOffsetCoord().x;
-    int yAvatar = this->game->getMap()->getHMap()/2 - this->game->getMap()->getMapOffsetCoord().y;
-    this->asteroids.push_back(new Avatar(xAvatar, yAvatar, 0, 0, this->sprites.spaceshipSprite, this->game->getMap()));
+    CoordXY avatarCoord;
+    avatarCoord.x = this->game->getMap()->getWMap()/2 - this->game->getMap()->getMapOffsetCoord().x;
+    avatarCoord.y = this->game->getMap()->getHMap()/2 - this->game->getMap()->getMapOffsetCoord().y;
+    this->asteroids.push_back(new Avatar(avatarCoord, 0, 0, this->game->getMap()->getUnitSprites().spaceshipSprite, this->game->getMap()));
 }
 
 void UnitManager::shipHeadAngle() {
     int xAvatar = this->asteroids[0]->getXrel();
     int yAvatar = this->asteroids[0]->getYrel();
-    double xRet = this->reticle.x;
-    double yRet = this->reticle.y;
+    double xRet = this->reticle->getX();
+    double yRet = this->reticle->getY();
     if (this->game->getMap()->getV().v > 0) {
         xAvatar -= this->game->getMap()->getX();
         yAvatar -= this->game->getMap()->getY();
@@ -422,22 +372,23 @@ void UnitManager::shipHeadAngle() {
 }
 
 void UnitManager::makeShoot() {
-    int xAvatar = this->asteroids[0]->getXrel();
-    int yAvatar = this->asteroids[0]->getYrel();
+    CoordXY avatarCoord;
+    avatarCoord.x = this->asteroids[0]->getXrel();
+    avatarCoord.y = this->asteroids[0]->getYrel();
     this->shipHeadAngle();
     if (this->game->getMap()->getV().v > 0) {
-        xAvatar -= this->game->getMap()->getX();
-        yAvatar -= this->game->getMap()->getY();
+        avatarCoord.x -= this->game->getMap()->getX();
+        avatarCoord.y -= this->game->getMap()->getY();
     }
     if (this->numBullets < this->bulletsLimit) {
         this->numBullets += 1;
-        this->asteroids.push_back(new Bullet(xAvatar, yAvatar, 800, this->angleShip, this->sprites.bulletSprite, this->game->getMap()));
+        this->asteroids.push_back(new Bullet(avatarCoord, 800, this->angleShip, this->game->getMap()->getUnitSprites().bulletSprite, this->game->getMap()));
     } else {
         for (auto it = this->asteroids.begin(); it != this->asteroids.end(); ++it) {
             if (dynamic_cast<Bullet*>(*it)) {
                 delete (*it);
                 this->asteroids.erase(it);
-                this->asteroids.push_back(new Bullet(xAvatar, yAvatar, 800, this->angleShip, this->sprites.bulletSprite, this->game->getMap()));
+                this->asteroids.push_back(new Bullet(avatarCoord, 800, this->angleShip, this->game->getMap()->getUnitSprites().bulletSprite, this->game->getMap()));
                 return;
             }
         }
@@ -462,4 +413,8 @@ void UnitManager::deAcceleration() {
 
 void UnitManager::setIsNeededDeacc(bool state) {
     this->isNeedDeAcc = true;
+}
+
+Reticle *UnitManager::getReticle() const {
+    return this->reticle;
 }
