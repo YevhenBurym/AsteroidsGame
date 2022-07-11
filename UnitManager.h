@@ -4,9 +4,8 @@
 #include <vector>
 #include <cstdint>
 #include <time.h>
-#include "GameManager.h"
-#include "AsteroidsGame.h"
-#include "GameWindow.h"
+#include "Game.h"
+#include "Window.h"
 
 struct UnitSprites {
     Sprite* bigAsteroidSprite;
@@ -17,7 +16,7 @@ struct UnitSprites {
 };
 
 
-class AsteroidsGame;
+class Game;
 
 class UnitManager {
     int asteroidsLimit;
@@ -29,7 +28,7 @@ class UnitManager {
     CoordXY reticleOffset;
     UnitSprites sprites;
     std::vector<MoveableUnit*> asteroids;
-    AsteroidsGame* game;
+    Game* game;
     double angleShip;
 
     void createSprites();
@@ -37,26 +36,33 @@ class UnitManager {
     void fixCoordAfterCollision(MoveableUnit* unit1, MoveableUnit* unit2, CoordXY vectorBetween);
     void calcVelocityAfterCollision(MoveableUnit* unit1, MoveableUnit* unit2, CoordXY vectorBetween);
 public:
-    UnitManager(int asteroidsLimit, int bulletsLimit, int maxVelocity, AsteroidsGame* game);
+    UnitManager(int asteroidsLimit, int bulletsLimit, int maxVelocity, Game* game);
     ~UnitManager();
     void createAsteroids();
-    void createAvatar();
+
     std::vector<MoveableUnit*>& getAsteroidsVector();
     CoordXY randomizeAppearCoord(int wMap, int hMap);
     Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
     void drawAsteroids();
-    void drawReticle();
-    void shipHeadAngle();
-    void makeShoot();
+
     void divideBigAsteroid(BigAsteroid* asteroid);
-    void deAcceleration();
+
     void checkCollisions();
     void calcOffset();
     int getNumAsteroids() const;
     int getNumBullets() const;
     void setNumAsteroids(int num);
     void setNumBullets(int num);
+
+
+    void drawReticle();
     void setXReticle(int x);
     void setYReticle(int y);
+
+
+    void createAvatar();
+    void shipHeadAngle();
+    void makeShoot();
+    void deAcceleration();
     void setIsNeededDeacc(bool state);
 };

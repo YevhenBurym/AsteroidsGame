@@ -4,7 +4,7 @@
 
 #include "Sprite.h"
 
-Sprite::Sprite(const char* pathToTexture, GameWindow* window) {
+Sprite::Sprite(const char* pathToTexture, Window* window) {
     this->renderer = window->getRenderer();
     this->texture = nullptr;
 

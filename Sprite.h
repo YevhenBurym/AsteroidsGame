@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "GameWindow.h"
+#include "Window.h"
 
 class Sprite {
 private:
@@ -12,7 +12,7 @@ private:
     SDL_Texture* texture;
     int wSprite, hSprite;
 public:
-    Sprite(const char* pathToTexture, GameWindow* window);
+    Sprite(const char* pathToTexture, Window* window);
     ~Sprite();
     void draw(int x, int y);
     void draw(int x, int y, double angle);

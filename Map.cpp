@@ -71,3 +71,11 @@ void Map::setV(double v, double theta) {
 	this->Vx = v * cos(this->V.theta * 3.14/180);
 	this->Vy = -v * sin(this->V.theta * 3.14/180);
 }
+
+void Map::setVx(double vx) {
+    this->Vx = vx;
+}
+
+void Map::setVy(double vy) {
+    this->Vy = vy;
+}

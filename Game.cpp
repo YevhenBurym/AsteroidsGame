@@ -2,14 +2,14 @@
 // Created by Евгений on 04.07.2022.
 //
 
-#include "AsteroidsGame.h"
+#include "Game.h"
 
-void AsteroidsGame::createSprites() {
+void Game::createSprites() {
     this->sprites.backgroundSprite = new Sprite("data\\background.png",this->gameWindow);
     this->sprites.dotSprite = new Sprite("data\\dot.png",this->gameWindow);
 }
 
-void AsteroidsGame::drawBackground() {
+void Game::drawBackground() {
     int hSprite, wSprite;
     int rowLim = this->hScreen;
     int colLim = this->wScreen;
@@ -29,7 +29,7 @@ void AsteroidsGame::drawBackground() {
     }
 }
 
-void AsteroidsGame::drawMapBorder() {
+void Game::drawMapBorder() {
     int hSprite, wSprite;
     this->sprites.dotSprite->getSize(wSprite,hSprite);
 
@@ -59,7 +59,7 @@ void AsteroidsGame::drawMapBorder() {
     }
 }
 
-AsteroidsGame::AsteroidsGame(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability) {
+Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability) {
     if (wMap < wScreen) {
         wMap = wScreen;
     }
@@ -73,11 +73,10 @@ AsteroidsGame::AsteroidsGame(int wScreen, int hScreen, int wMap, int hMap, int a
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
 
-    this->gameWindow = new GameWindow("Asteroids",this->wScreen, this->hScreen, false);
+    this->gameWindow = new Window("Asteroids", this->wScreen, this->hScreen, false, false);
 }
 
-bool AsteroidsGame::init() {
-    this->gameWindow->showCursor(false);
+bool Game::init() {
     this->createSprites();
     this->map = new Map(this->wMap, this->hMap, this->hScreen, this->wScreen);
     this->unitManager = new UnitManager(this->asteroidsLimit, this->ammoLimit, 200, this);
@@ -85,14 +84,14 @@ bool AsteroidsGame::init() {
     return true;
 }
 
-void AsteroidsGame::close() {
+void Game::close() {
     delete this->map;
     delete this->unitManager;
     delete this->sprites.backgroundSprite;
     delete this->sprites.dotSprite;
 }
 
-bool AsteroidsGame::tick() {
+bool Game::tick() {
     this->drawBackground();
     this->drawMapBorder();
     this->unitManager->createAsteroids();
@@ -101,36 +100,43 @@ bool AsteroidsGame::tick() {
     this->unitManager->deAcceleration();
     this->unitManager->calcOffset();
     this->unitManager->shipHeadAngle();
-
+    
     return false;
 }
 
-void AsteroidsGame::restart() {
+void Game::restart() {
     this->close();
     this->init();
 }
 
-Map* AsteroidsGame::getMap() const {
+Map* Game::getMap() const {
     return this->map;
 }
 
-GameWindow *AsteroidsGame::getWindow() const {
+Window *Game::getWindow() const {
     return this->gameWindow;
 }
 
-void AsteroidsGame::runGame() {
+void Game::runGame() {
 
     bool quit = false;
+
+//    double previous = this->getWindow()->getTickCounting();
+//    double lag = 0.0;
+//    double stepMS = 16;
     //Event handler
     SDL_Event event;
     this->inputHandler = new InputHandler(this);
-    //Current time start time
-    Uint32 startTime = 0;
 //------------------------init--------------------------------------//
     this->init();
 //------------------------------------------------------------------//
     //While application is running
     while( !quit ) {
+//        double current = this->getWindow()->getTickCounting();
+//        double elapsed = current - previous;
+//        previous = current;
+//        lag += elapsed;
+
         //Handle events on queue
         while( SDL_PollEvent( &event ) != 0 ) {
             //User requests quit
@@ -141,17 +147,17 @@ void AsteroidsGame::runGame() {
         }
 
         //Clear screen
-        SDL_RenderClear( this->gameWindow->getRenderer() );
+        //SDL_RenderClear( this->gameWindow->getRenderer() );
 //----------------ShownCursor----------------------------------------//
-        if ( this->gameWindow->getIsCursorShown() ) {
-            SDL_ShowCursor(SDL_ENABLE);
-        } else {
-            SDL_ShowCursor(SDL_DISABLE);
-        }
+
+//        while ( lag >= stepMS ) {
+//            this->tick();
+//            lag -= stepMS;
+//        }
 //-------------------Tick-------------------------------------------//
         this->tick();
 //------------------------------------------------------------------//
-        SDL_RenderPresent( this->gameWindow->getRenderer() );
+        this->gameWindow->updateWindow();
         SDL_Delay(1);
     }
 
@@ -163,6 +169,6 @@ void AsteroidsGame::runGame() {
     delete this->gameWindow;
 }
 
-UnitManager* AsteroidsGame::getUnitManager() const {
+UnitManager* Game::getUnitManager() const {
     return this->unitManager;
 }

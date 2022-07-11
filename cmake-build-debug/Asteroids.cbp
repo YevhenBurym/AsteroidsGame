@@ -88,16 +88,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/AsteroidsGame.cpp">
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/Game.cpp">
 			<Option target="Asteroids"/>
 		</Unit>
-		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/AsteroidsGame.h">
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/Game.h">
 			<Option target="Asteroids"/>
 		</Unit>
-		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/GameManager.cpp">
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/InputHandler.cpp">
 			<Option target="Asteroids"/>
 		</Unit>
-		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/GameManager.h">
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/InputHandler.h">
 			<Option target="Asteroids"/>
 		</Unit>
 		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/Map.cpp">
@@ -112,10 +112,28 @@
 		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/MoveableUnit.h">
 			<Option target="Asteroids"/>
 		</Unit>
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/SpaceShip.cpp">
+			<Option target="Asteroids"/>
+		</Unit>
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/SpaceShip.h">
+			<Option target="Asteroids"/>
+		</Unit>
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/Sprite.cpp">
+			<Option target="Asteroids"/>
+		</Unit>
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/Sprite.h">
+			<Option target="Asteroids"/>
+		</Unit>
 		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/UnitManager.cpp">
 			<Option target="Asteroids"/>
 		</Unit>
 		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/UnitManager.h">
+			<Option target="Asteroids"/>
+		</Unit>
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/Window.cpp">
+			<Option target="Asteroids"/>
+		</Unit>
+		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/Window.h">
 			<Option target="Asteroids"/>
 		</Unit>
 		<Unit filename="D:/2.SelfStudy/myProjects/AsteroidsGame/main.cpp">

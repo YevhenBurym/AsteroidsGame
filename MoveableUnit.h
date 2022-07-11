@@ -1,8 +1,7 @@
 #pragma once
 
-#include "GameManager.h"
 #include "Map.h"
-#include "GameWindow.h"
+#include "Window.h"
 #include "Sprite.h"
 
 #define RAD 3.14/180
@@ -39,6 +38,7 @@ public:
     virtual double getMass() const;
     virtual double getRadius() const;
     virtual Sprite* getSprite() const;
+    virtual void draw() const;
 };
 
 class SmallAsteroid : public MoveableUnit {
@@ -49,6 +49,7 @@ public:
 class BigAsteroid : public MoveableUnit {
 public:
     BigAsteroid(double x, double y, int velocity, int theta, Sprite* sprite, Map* map);
+    //SmallAsteroid* divide();
 };
 
 class Avatar : public MoveableUnit {

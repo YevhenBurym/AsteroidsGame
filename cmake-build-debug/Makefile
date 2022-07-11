@@ -122,59 +122,59 @@ Asteroids/fast:
 	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/build
 .PHONY : Asteroids/fast
 
-AsteroidsGame.obj: AsteroidsGame.cpp.obj
+Game.obj: Game.cpp.obj
 
-.PHONY : AsteroidsGame.obj
-
-# target to build an object file
-AsteroidsGame.cpp.obj:
-	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/AsteroidsGame.cpp.obj
-.PHONY : AsteroidsGame.cpp.obj
-
-AsteroidsGame.i: AsteroidsGame.cpp.i
-
-.PHONY : AsteroidsGame.i
-
-# target to preprocess a source file
-AsteroidsGame.cpp.i:
-	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/AsteroidsGame.cpp.i
-.PHONY : AsteroidsGame.cpp.i
-
-AsteroidsGame.s: AsteroidsGame.cpp.s
-
-.PHONY : AsteroidsGame.s
-
-# target to generate assembly for a file
-AsteroidsGame.cpp.s:
-	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/AsteroidsGame.cpp.s
-.PHONY : AsteroidsGame.cpp.s
-
-GameManager.obj: GameManager.cpp.obj
-
-.PHONY : GameManager.obj
+.PHONY : Game.obj
 
 # target to build an object file
-GameManager.cpp.obj:
-	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/GameManager.cpp.obj
-.PHONY : GameManager.cpp.obj
+Game.cpp.obj:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Game.cpp.obj
+.PHONY : Game.cpp.obj
 
-GameManager.i: GameManager.cpp.i
+Game.i: Game.cpp.i
 
-.PHONY : GameManager.i
+.PHONY : Game.i
 
 # target to preprocess a source file
-GameManager.cpp.i:
-	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/GameManager.cpp.i
-.PHONY : GameManager.cpp.i
+Game.cpp.i:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Game.cpp.i
+.PHONY : Game.cpp.i
 
-GameManager.s: GameManager.cpp.s
+Game.s: Game.cpp.s
 
-.PHONY : GameManager.s
+.PHONY : Game.s
 
 # target to generate assembly for a file
-GameManager.cpp.s:
-	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/GameManager.cpp.s
-.PHONY : GameManager.cpp.s
+Game.cpp.s:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Game.cpp.s
+.PHONY : Game.cpp.s
+
+InputHandler.obj: InputHandler.cpp.obj
+
+.PHONY : InputHandler.obj
+
+# target to build an object file
+InputHandler.cpp.obj:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/InputHandler.cpp.obj
+.PHONY : InputHandler.cpp.obj
+
+InputHandler.i: InputHandler.cpp.i
+
+.PHONY : InputHandler.i
+
+# target to preprocess a source file
+InputHandler.cpp.i:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/InputHandler.cpp.i
+.PHONY : InputHandler.cpp.i
+
+InputHandler.s: InputHandler.cpp.s
+
+.PHONY : InputHandler.s
+
+# target to generate assembly for a file
+InputHandler.cpp.s:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/InputHandler.cpp.s
+.PHONY : InputHandler.cpp.s
 
 Map.obj: Map.cpp.obj
 
@@ -230,6 +230,60 @@ MoveableUnit.cpp.s:
 	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/MoveableUnit.cpp.s
 .PHONY : MoveableUnit.cpp.s
 
+SpaceShip.obj: SpaceShip.cpp.obj
+
+.PHONY : SpaceShip.obj
+
+# target to build an object file
+SpaceShip.cpp.obj:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/SpaceShip.cpp.obj
+.PHONY : SpaceShip.cpp.obj
+
+SpaceShip.i: SpaceShip.cpp.i
+
+.PHONY : SpaceShip.i
+
+# target to preprocess a source file
+SpaceShip.cpp.i:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/SpaceShip.cpp.i
+.PHONY : SpaceShip.cpp.i
+
+SpaceShip.s: SpaceShip.cpp.s
+
+.PHONY : SpaceShip.s
+
+# target to generate assembly for a file
+SpaceShip.cpp.s:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/SpaceShip.cpp.s
+.PHONY : SpaceShip.cpp.s
+
+Sprite.obj: Sprite.cpp.obj
+
+.PHONY : Sprite.obj
+
+# target to build an object file
+Sprite.cpp.obj:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Sprite.cpp.obj
+.PHONY : Sprite.cpp.obj
+
+Sprite.i: Sprite.cpp.i
+
+.PHONY : Sprite.i
+
+# target to preprocess a source file
+Sprite.cpp.i:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Sprite.cpp.i
+.PHONY : Sprite.cpp.i
+
+Sprite.s: Sprite.cpp.s
+
+.PHONY : Sprite.s
+
+# target to generate assembly for a file
+Sprite.cpp.s:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Sprite.cpp.s
+.PHONY : Sprite.cpp.s
+
 UnitManager.obj: UnitManager.cpp.obj
 
 .PHONY : UnitManager.obj
@@ -256,6 +310,33 @@ UnitManager.s: UnitManager.cpp.s
 UnitManager.cpp.s:
 	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/UnitManager.cpp.s
 .PHONY : UnitManager.cpp.s
+
+Window.obj: Window.cpp.obj
+
+.PHONY : Window.obj
+
+# target to build an object file
+Window.cpp.obj:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Window.cpp.obj
+.PHONY : Window.cpp.obj
+
+Window.i: Window.cpp.i
+
+.PHONY : Window.i
+
+# target to preprocess a source file
+Window.cpp.i:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Window.cpp.i
+.PHONY : Window.cpp.i
+
+Window.s: Window.cpp.s
+
+.PHONY : Window.s
+
+# target to generate assembly for a file
+Window.cpp.s:
+	$(MAKE) -f CMakeFiles\Asteroids.dir\build.make CMakeFiles/Asteroids.dir/Window.cpp.s
+.PHONY : Window.cpp.s
 
 main.obj: main.cpp.obj
 
@@ -293,21 +374,30 @@ help:
 	@echo ... Asteroids
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... AsteroidsGame.obj
-	@echo ... AsteroidsGame.i
-	@echo ... AsteroidsGame.s
-	@echo ... GameManager.obj
-	@echo ... GameManager.i
-	@echo ... GameManager.s
+	@echo ... Game.obj
+	@echo ... Game.i
+	@echo ... Game.s
+	@echo ... InputHandler.obj
+	@echo ... InputHandler.i
+	@echo ... InputHandler.s
 	@echo ... Map.obj
 	@echo ... Map.i
 	@echo ... Map.s
 	@echo ... MoveableUnit.obj
 	@echo ... MoveableUnit.i
 	@echo ... MoveableUnit.s
+	@echo ... SpaceShip.obj
+	@echo ... SpaceShip.i
+	@echo ... SpaceShip.s
+	@echo ... Sprite.obj
+	@echo ... Sprite.i
+	@echo ... Sprite.s
 	@echo ... UnitManager.obj
 	@echo ... UnitManager.i
 	@echo ... UnitManager.s
+	@echo ... Window.obj
+	@echo ... Window.i
+	@echo ... Window.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

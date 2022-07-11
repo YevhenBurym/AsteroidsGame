@@ -30,6 +30,8 @@ public:
 	void setX(double x);
 	void setY(double y);
 	void setV(double v, double theta);
+    void setVx(double vx);
+    void setVy(double vy);
 	double getX() const;
 	double getY() const;
 	double getVx() const;

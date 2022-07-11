@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "GameManager.h"
 #include "Map.h"
 #include "UnitManager.h"
 #include "InputHandler.h"
@@ -20,11 +19,11 @@ struct MapSprites {
 class UnitManager;
 class InputHandler;
 
-class AsteroidsGame: public Game {
+class Game {
 private:
     InputHandler* inputHandler;
     Map* map;
-    GameWindow* gameWindow;
+    Window* gameWindow;
     UnitManager* unitManager;
     MapSprites sprites;
     int hScreen, wScreen;
@@ -36,14 +35,14 @@ private:
     void drawBackground();
     void drawMapBorder();
 public:
-    AsteroidsGame(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
-    bool init() override;
-    void close() override;
-    bool tick() override;
+    Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
+    bool init();
+    void close();
+    bool tick();
 
     void restart();
     Map* getMap() const;
     UnitManager* getUnitManager() const;
-    GameWindow* getWindow() const;
+    Window* getWindow() const;
     void runGame();
 };

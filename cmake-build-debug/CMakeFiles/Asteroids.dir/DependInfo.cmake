@@ -4,11 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "D:/2.SelfStudy/myProjects/AsteroidsGame/AsteroidsGame.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/AsteroidsGame.cpp.obj"
-  "D:/2.SelfStudy/myProjects/AsteroidsGame/GameManager.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/GameManager.cpp.obj"
+  "D:/2.SelfStudy/myProjects/AsteroidsGame/Game.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/Game.cpp.obj"
+  "D:/2.SelfStudy/myProjects/AsteroidsGame/InputHandler.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/InputHandler.cpp.obj"
   "D:/2.SelfStudy/myProjects/AsteroidsGame/Map.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/Map.cpp.obj"
   "D:/2.SelfStudy/myProjects/AsteroidsGame/MoveableUnit.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/MoveableUnit.cpp.obj"
+  "D:/2.SelfStudy/myProjects/AsteroidsGame/SpaceShip.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/SpaceShip.cpp.obj"
+  "D:/2.SelfStudy/myProjects/AsteroidsGame/Sprite.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/Sprite.cpp.obj"
   "D:/2.SelfStudy/myProjects/AsteroidsGame/UnitManager.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/UnitManager.cpp.obj"
+  "D:/2.SelfStudy/myProjects/AsteroidsGame/Window.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/Window.cpp.obj"
   "D:/2.SelfStudy/myProjects/AsteroidsGame/main.cpp" "D:/2.SelfStudy/myProjects/AsteroidsGame/cmake-build-debug/CMakeFiles/Asteroids.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

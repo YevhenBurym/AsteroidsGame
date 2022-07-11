@@ -3,15 +3,15 @@
 //
 
 #include <iostream>
-#include "GameWindow.h"
+#include "Window.h"
 
-GameWindow::GameWindow(const char* name, int width, int height, bool isFullscreen) {
+Window::Window(const char* name, int width, int height, bool isFullscreen, bool isCursorShown) {
     this->window = nullptr;
     this->renderer = nullptr;
     this->isCreate = false;
     this->hWindow = 0;
     this->wWindow = 0;
-    this->isCursorShown = true;
+    this->isCursorShown = isCursorShown;
 
     //Initialize SDL
     if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -54,7 +54,7 @@ GameWindow::GameWindow(const char* name, int width, int height, bool isFullscree
 
 }
 
-GameWindow::~GameWindow() {
+Window::~Window() {
     SDL_DestroyRenderer( this->renderer );
     SDL_DestroyWindow( this->window );
     this->renderer = nullptr;
@@ -64,29 +64,65 @@ GameWindow::~GameWindow() {
     SDL_Quit();
 }
 
-SDL_Renderer *GameWindow::getRenderer() const {
+SDL_Renderer *Window::getRenderer() const {
     return this->renderer;
 }
 
-bool GameWindow::getIsCreate() const {
+bool Window::getIsCreate() const {
     return this->isCreate;
 }
 
-void GameWindow::getSize(int& wScreen, int& hScreen) {
+void Window::getSize(int& wScreen, int& hScreen) {
     wScreen = this->wWindow;
     hScreen = this->hWindow;
 }
 
-uint32_t GameWindow::getTickCounting() {
+uint32_t Window::getTickCounting() {
     return SDL_GetTicks();
 }
 
-void GameWindow::showCursor(bool isShow) {
-    this->isCursorShown = isShow;
+void Window::updateWindow() {
+    if ( this->isCursorShown ) {
+        SDL_ShowCursor(SDL_ENABLE);
+    } else {
+        SDL_ShowCursor(SDL_DISABLE);
+    }
+    SDL_RenderPresent( this->renderer );
 }
 
-bool GameWindow::getIsCursorShown() const {
-    return this->isCursorShown;
+SDL_Texture* Window::createTexture(const char* path) {
+    SDL_Texture* newTexture = nullptr;
+
+    newTexture = IMG_LoadTexture(this->renderer, path);
+
+    if( newTexture == nullptr ) {
+        std::cout << "Failed to load texture image!" << std::endl;
+    }
+    return newTexture;
+}
+
+void Window::drawTexture(SDL_Texture* texture, int x, int y) {
+    SDL_Rect drawParams{x, y,0,0};
+    this->getTextureSize(texture,drawParams.w,drawParams.h);
+
+    SDL_RenderCopy( this->renderer, texture, nullptr, &drawParams );
+}
+
+void Window::drawTexture(SDL_Texture* texture, int x, int y, double angle) {
+    SDL_Rect drawParams{x, y,0,0};
+    this->getTextureSize(texture,drawParams.w,drawParams.h);
+
+    SDL_RenderCopyEx( this->renderer, texture, nullptr, &drawParams, angle, nullptr, SDL_FLIP_NONE );
+}
+
+void Window::destroyTexture(SDL_Texture* texture) {
+    //Free loaded image
+    SDL_DestroyTexture( texture );
+    texture = nullptr;
+}
+
+void Window::getTextureSize(SDL_Texture* texture, int& w, int& h) {
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
 }
 
 

@@ -122,6 +122,10 @@ Sprite* MoveableUnit::getSprite() const {
     return this->sprite;
 }
 
+void MoveableUnit::draw() const {
+    this->sprite->draw(this->x, this->y);
+}
+
 SmallAsteroid::SmallAsteroid(double x, double y, int velocity, int theta, Sprite* sprite, Map* map) : MoveableUnit(x, y, velocity, theta, sprite, map) {
     this->mass = 1;
 }
@@ -129,6 +133,11 @@ SmallAsteroid::SmallAsteroid(double x, double y, int velocity, int theta, Sprite
 BigAsteroid::BigAsteroid(double x, double y, int velocity, int theta, Sprite* sprite, Map* map) : MoveableUnit(x, y, velocity, theta, sprite, map) {
     this->mass = 2;
 }
+
+//SmallAsteroid* BigAsteroid::divide() {
+//    MoveableUnit* temp = this;
+//    this = new SmallAsteroid();
+//}
 
 void Avatar::limitateCoord() {
     double minXCoord = 0 - this->map->getMapOffsetCoord().x;

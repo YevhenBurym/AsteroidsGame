@@ -4,16 +4,15 @@
 
 #pragma once
 
+#include "Game.h"
 
-#include "GameManager.h"
-#include "AsteroidsGame.h"
+class Game;
 
-class AsteroidsGame;
 
 class InputHandler {
-    AsteroidsGame* game;
+    Game* game;
 public:
-    InputHandler(AsteroidsGame* game);
+    InputHandler(Game* game);
     void handleInput(SDL_Event& event);
     void onMouseMove(int x, int y, int xrelative, int yrelative);
     void onKeyPressed(SDL_Keycode key);
@@ -21,4 +20,17 @@ public:
     void onMouseButtonPressed(int MouseButton);
     void onMouseButtonReleased(int MouseButton);
 };
+
+class PlayerInputHandler: public InputHandler {
+    Game* game;
+public:
+    PlayerInputHandler(Game* game);
+    void handleInput(SDL_Event& event);
+    void onMouseMove(int x, int y, int xrelative, int yrelative);
+    void onKeyPressed(SDL_Keycode key);
+    void onKeyReleased(SDL_Keycode key);
+    void onMouseButtonPressed(int MouseButton);
+    void onMouseButtonReleased(int MouseButton);
+};
+
 
