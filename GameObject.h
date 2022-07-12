@@ -49,7 +49,7 @@ public:
 class BigAsteroid : public GameObject {
 public:
     BigAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
-    //SmallAsteroid* divide();
+    void divide(GameObject* smallAsteroid1, GameObject* smallAsteroid2);
 };
 
 class Bullet : public GameObject {

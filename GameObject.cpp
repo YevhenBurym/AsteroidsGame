@@ -132,6 +132,24 @@ BigAsteroid::BigAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite,
     this->mass = 2;
 }
 
+void BigAsteroid::divide(GameObject* smallAsteroid1, GameObject* smallAsteroid2) {
+    int x = 0, y = 0, r = 0;
+    Velocity v = { 0,0 };
+
+    x = this->getXrel();
+    y = this->getYrel();
+    v = this->getV();
+    r = this->getRadius();
+    CoordXY xy1;
+    CoordXY xy2;
+    xy1.x= x + r;
+    xy1.y= y + r;
+    xy2.x= x - r;
+    xy2.y= y - r;
+    smallAsteroid1 = new SmallAsteroid(xy1, this->V.v, this->V.theta + 45, this->map->getUnitSprites().smallAsteroidSprite, this->map);
+    smallAsteroid2 = new SmallAsteroid(xy2, this->V.v, this->V.theta - 45, this->map->getUnitSprites().smallAsteroidSprite, this->map);
+}
+
 //SmallAsteroid* BigAsteroid::divide() {
 //    MoveableUnit* temp = this;
 //    this = new SmallAsteroid();
