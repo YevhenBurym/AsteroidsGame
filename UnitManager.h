@@ -14,12 +14,9 @@ class UnitManager {
     int numAsteroids;
     int numBullets;
     bool isNeedDeAcc;
-    //CoordXY reticle;
-    //CoordXY reticleOffset;
-    Reticle* reticle;
+    Avatar* avatar;
     std::vector<GameObject*> asteroids;
     Game* game;
-    double angleShip;
 
     void fixCoordAfterCollision(GameObject* unit1, GameObject* unit2, CoordXY vectorBetween);
     void calcVelocityAfterCollision(GameObject* unit1, GameObject* unit2, CoordXY vectorBetween);
@@ -32,14 +29,13 @@ public:
     Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
     void drawAsteroids();
     void divideBigAsteroid(BigAsteroid* asteroid);
-
+    std::vector<GameObject*>& getAsteroidsVector();
 
     void checkCollisions();
     void calcOffset();
 
-    Reticle* getReticle() const;
+    Avatar* getAvatar() const;
     void createAvatar();
-    void shipHeadAngle();
     void makeShoot();
     void deAcceleration();
     void setIsNeededDeacc(bool state);

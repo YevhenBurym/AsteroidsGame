@@ -108,8 +108,8 @@ void InputComponent::onMouseButtonReleased(int MouseButton) {
 }
 
 void InputComponent::onMouseMove(int x, int y, int xrelative, int yrelative) {
-    this->game->getUnitManager()->getReticle()->setX(x);
-    this->game->getUnitManager()->getReticle()->setY(y);
+    this->game->getUnitManager()->getAvatar()->getReticle()->setX(x);
+    this->game->getUnitManager()->getAvatar()->getReticle()->setY(y);
 }
 
 

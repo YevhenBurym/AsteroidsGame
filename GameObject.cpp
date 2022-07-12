@@ -161,6 +161,11 @@ void Avatar::limitateCoord() {
 }
 
 Avatar::Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
+    this->reticle = new Reticle( map->getUnitSprites().reticleSprite, map );
+    this->angleShip = 0;
+}
+Avatar::~Avatar() {
+    delete this->reticle;
 }
 
 double Avatar::getXrel() const {
@@ -170,6 +175,57 @@ double Avatar::getXrel() const {
 double Avatar::getYrel() const {
     return this->coord.y;
 }
+
+
+void Avatar::shipHeadAngle() {
+    int xAvatar = this->coord.x;
+    int yAvatar = this->coord.y;
+    double xRet = this->reticle->getX();
+    double yRet = this->reticle->getY();
+    if (this->map->getV().v > 0) {
+        xAvatar -= this->map->getX();
+        yAvatar -= this->map->getY();
+        xRet -= this->map->getX();
+        yRet -= this->map->getY();
+    }
+    double alpha = 0;
+    CoordXY xyDirVector = { xAvatar - xRet, yAvatar - yRet };
+    double dist = hypot(xyDirVector.x, xyDirVector.y) ;
+
+    if ((xyDirVector.x == 0) && (xyDirVector.y < 0)) {
+        alpha = -M_PI / 2;
+    } else if ((xyDirVector.x == 0) && (xyDirVector.y > 0)) {
+        alpha = M_PI / 2;
+    } else {
+        alpha = M_PI - atan2(xyDirVector.y, xyDirVector.x);
+    }
+    alpha = alpha * 180 / M_PI;
+    this->angleShip = alpha; // для розрахунку направлення корабля
+}
+
+Bullet* Avatar::makeShoot() {
+    CoordXY avatarCoord{this->coord.x,this->coord.y};
+    this->shipHeadAngle();
+    if (this->map->getV().v > 0) {
+        avatarCoord.x -= this->map->getX();
+        avatarCoord.y -= this->map->getY();
+    }
+    return new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map);
+}
+
+
+Reticle *Avatar::getReticle() const {
+    return this->reticle;
+}
+
+void Avatar::draw() const {
+    this->sprite->draw(this->coord.x, this->coord.y,90 - this->angleShip);
+}
+
+double Avatar::getAngle() const {
+    return this->angleShip;
+}
+
 
 Bullet::Bullet(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
 }

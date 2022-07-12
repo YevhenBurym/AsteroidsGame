@@ -38,9 +38,9 @@ bool Game::tick() {
     this->unitManager->checkCollisions();
     this->unitManager->deAcceleration();
     this->unitManager->calcOffset();
-    this->unitManager->shipHeadAngle();
+    this->unitManager->getAvatar()->shipHeadAngle();
     this->unitManager->drawAsteroids();
-    this->unitManager->getReticle()->draw();
+    this->unitManager->getAvatar()->getReticle()->draw();
 
     return false;
 }

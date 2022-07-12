@@ -52,15 +52,6 @@ public:
     //SmallAsteroid* divide();
 };
 
-class Avatar : public GameObject {
-private:
-    void limitateCoord() override;
-public:
-    Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
-    double getXrel() const override;
-    double getYrel() const override;
-};
-
 class Bullet : public GameObject {
 public:
     Bullet(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
@@ -71,3 +62,21 @@ public:
     Reticle(Sprite* sprite, Map* map);
     void draw() const override;
 };
+
+class Avatar : public GameObject {
+private:
+    Reticle* reticle;
+    double angleShip;
+    void limitateCoord() override;
+public:
+    Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
+    ~Avatar() override;
+    void draw() const override;
+    double getXrel() const override;
+    double getYrel() const override;
+    Reticle* getReticle() const;
+    double getAngle() const;
+    void shipHeadAngle();
+    Bullet* makeShoot();
+};
+
