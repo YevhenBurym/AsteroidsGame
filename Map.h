@@ -48,6 +48,7 @@ public:
 	int getHMap() const;
 	int getWMap() const;
 	CoordXY getMapOffsetCoord() const;
+    void mapInit();
 	void setX(double x);
 	void setY(double y);
 	void setV(double v, double theta);

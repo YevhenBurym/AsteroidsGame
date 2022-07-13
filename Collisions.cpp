@@ -174,9 +174,9 @@ void Collisions::check() {
                     delete temp1;
                     delete temp2;
                     int newAsteroidsAmount = this->game->getNumAsteroids() - 1;
-                    int newBulletsAmount = this->game->getNumBullets() - 1;
+                    int newBulletsAmount = this->game->getAvatar()->getNumBullets() - 1;
                     this->game->setNumAsteroids(newAsteroidsAmount);
-                    this->game->setNumBullets(newBulletsAmount);
+                    this->game->getAvatar()->setNumBullets(newBulletsAmount);
 
                     break;
                 }
@@ -192,15 +192,15 @@ void Collisions::check() {
                     }
                     GameObject* temp1 = (*it1);
                     GameObject* temp2 = (*it2);
+                    auto iter1 = it1-1;
+                    auto iter2 = it2-1;
                     it2 = this->game->getObjects().erase(it2);
-                    it2--;
                     it1 = this->game->getObjects().erase(it1);
-                    it1--;
-                    GameObject* small1;
-                    GameObject* small2;
-                    bigAster->divide(small1,small2);
-                    this->game->getObjects().push_back(small1);
-                    this->game->getObjects().push_back(small2);
+                    it1 = iter1;
+                    it2 = iter2;
+
+                    bigAster->divide(this->game->getObjects());
+
                     delete temp1;
                     delete temp2;
 

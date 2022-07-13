@@ -1,21 +1,12 @@
 #include "Map.h"
 
 Map::Map(int wMap, int hMap, Window* window) {
-	this->hMap = hMap;
-	this->wMap = wMap;
-    int wScreen, hScreen;
-    window->getSize(wScreen,hScreen);
-	this->offset.x = wMap / 2 - wScreen / 2;
-	this->offset.y = hMap / 2 - hScreen / 2;
-	this->xyRelative.x = 0;
-	this->xyRelative.y = 0;
-	this->V.v = 0;
-	this->V.theta = 0;
-	this->Vx = 0;
-	this->Vy = 0;
 	this->window = window;
+    this->hMap = hMap;
+    this->wMap = wMap;
     this->createMapSprites();
     this->createSprites();
+    this->mapInit();
 }
 
 Map::~Map() {
@@ -164,4 +155,17 @@ void Map::destroySprites() {
 
 UnitSprites &Map::getUnitSprites() {
     return this->unitSprites;
+}
+
+void Map::mapInit() {
+    int wScreen, hScreen;
+    this->window->getSize(wScreen,hScreen);
+    this->offset.x = wMap / 2 - wScreen / 2;
+    this->offset.y = hMap / 2 - hScreen / 2;
+    this->xyRelative.x = 0;
+    this->xyRelative.y = 0;
+    this->V.v = 0;
+    this->V.theta = 0;
+    this->Vx = 0;
+    this->Vy = 0;
 }

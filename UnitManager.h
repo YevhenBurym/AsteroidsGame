@@ -10,22 +10,17 @@ class Game;
 
 class UnitManager {
     bool isNeedDeAcc;
-    Avatar* avatar;
     Game* game;
 public:
     UnitManager(Game* game);
-    ~UnitManager();
 
     void createAsteroids();
     CoordXY randomizeAppearCoord(int wMap, int hMap);
     Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
     void drawAsteroids();
 
-    void calcOffset();
+    void calcObjectOffset();
 
-    Avatar* getAvatar() const;
-    void createAvatar();
-    void makeShoot();
     void deAcceleration();
     void setIsNeededDeacc(bool state);
 };

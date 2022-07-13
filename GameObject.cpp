@@ -121,7 +121,11 @@ Sprite* GameObject::getSprite() const {
 }
 
 void GameObject::draw() const {
-    this->sprite->draw(this->coord.x, this->coord.y);
+
+    int x = this->coord.x + this->xOf - this->radius;
+    int y = this->coord.y + this->yOf - this->radius;
+
+    this->sprite->draw(x, y);
 }
 
 SmallAsteroid::SmallAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
@@ -132,22 +136,21 @@ BigAsteroid::BigAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite,
     this->mass = 2;
 }
 
-void BigAsteroid::divide(GameObject* smallAsteroid1, GameObject* smallAsteroid2) {
+void BigAsteroid::divide(std::vector<GameObject*>& objects) {
     int x = 0, y = 0, r = 0;
     Velocity v = { 0,0 };
 
     x = this->getXrel();
     y = this->getYrel();
-    v = this->getV();
-    r = this->getRadius();
     CoordXY xy1;
     CoordXY xy2;
-    xy1.x= x + r;
-    xy1.y= y + r;
-    xy2.x= x - r;
-    xy2.y= y - r;
-    smallAsteroid1 = new SmallAsteroid(xy1, this->V.v, this->V.theta + 45, this->map->getUnitSprites().smallAsteroidSprite, this->map);
-    smallAsteroid2 = new SmallAsteroid(xy2, this->V.v, this->V.theta - 45, this->map->getUnitSprites().smallAsteroidSprite, this->map);
+    xy1.x= x + this->radius;
+    xy1.y= y + this->radius;
+    xy2.x= x - this->radius;
+    xy2.y= y - this->radius;
+
+    objects.push_back(new SmallAsteroid(xy1, this->V.v, this->V.theta - 45, this->map->getUnitSprites().smallAsteroidSprite, this->map));
+    objects.push_back(new SmallAsteroid(xy2, this->V.v, this->V.theta + 45, this->map->getUnitSprites().smallAsteroidSprite, this->map));
 }
 
 //SmallAsteroid* BigAsteroid::divide() {
@@ -178,9 +181,11 @@ void Avatar::limitateCoord() {
     }
 }
 
-Avatar::Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
+Avatar::Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
     this->reticle = new Reticle( map->getUnitSprites().reticleSprite, map );
     this->angleShip = 0;
+    this->ammoLimit = ammoLimit;
+    this->numBullets = 0;
 }
 Avatar::~Avatar() {
     delete this->reticle;
@@ -221,14 +226,26 @@ void Avatar::shipHeadAngle() {
     this->angleShip = alpha; // для розрахунку направлення корабля
 }
 
-Bullet* Avatar::makeShoot() {
+void Avatar::makeShoot(std::vector<GameObject*>& objects) {
     CoordXY avatarCoord{this->coord.x,this->coord.y};
     this->shipHeadAngle();
     if (this->map->getV().v > 0) {
         avatarCoord.x -= this->map->getX();
         avatarCoord.y -= this->map->getY();
     }
-    return new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map);
+    if (this->numBullets < this->ammoLimit) {
+         this->numBullets += 1;
+         objects.push_back(new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map));
+    } else {
+        for (auto it = objects.begin(); it != objects.end(); ++it) {
+            if (dynamic_cast<Bullet*>(*it)) {
+                delete (*it);
+                objects.erase(it);
+                objects.push_back(new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map));
+                return;
+            }
+        }
+    }
 }
 
 
@@ -237,11 +254,26 @@ Reticle *Avatar::getReticle() const {
 }
 
 void Avatar::draw() const {
-    this->sprite->draw(this->coord.x, this->coord.y,90 - this->angleShip);
+    int x = this->coord.x - this->radius;
+    int y = this->coord.y - this->radius;
+
+    this->sprite->draw(x, y,90 - this->angleShip);
 }
 
 double Avatar::getAngle() const {
     return this->angleShip;
+}
+
+int Avatar::getAmmoLimit() const {
+    return this->ammoLimit;
+}
+
+int Avatar::getNumBullets() const {
+    return this->numBullets;
+}
+
+void Avatar::setNumBullets(int amount) {
+    this->numBullets = amount;
 }
 
 

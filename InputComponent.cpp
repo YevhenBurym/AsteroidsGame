@@ -94,7 +94,7 @@ void InputComponent::onMouseButtonPressed(int MouseButton) {
 void InputComponent::onMouseButtonReleased(int MouseButton) {
     switch (MouseButton) {
         case SDL_BUTTON_LEFT:
-            this->game->getUnitManager()->makeShoot();
+            this->game->getAvatar()->makeShoot(this->game->getObjects());
             break;
         case SDL_BUTTON_MIDDLE:
 
@@ -108,8 +108,8 @@ void InputComponent::onMouseButtonReleased(int MouseButton) {
 }
 
 void InputComponent::onMouseMove(int x, int y, int xrelative, int yrelative) {
-    this->game->getUnitManager()->getAvatar()->getReticle()->setX(x);
-    this->game->getUnitManager()->getAvatar()->getReticle()->setY(y);
+    this->game->getAvatar()->getReticle()->setX(x);
+    this->game->getAvatar()->getReticle()->setY(y);
 }
 
 

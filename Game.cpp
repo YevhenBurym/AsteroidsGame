@@ -5,37 +5,48 @@
 #include "Game.h"
 
 Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability) {
-    if (wMap < wScreen) {
-        wMap = wScreen;
-    }
-    if (hMap < hScreen) {
-        hMap = wScreen;
-    }
+//    if (wMap < wScreen) {
+//        wMap = wScreen;
+//    }
+//    if (hMap < hScreen) {
+//        hMap = wScreen;
+//    }
     this->hMap = hMap;
     this->wMap = wMap;
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
-    this->numBullets = 0;
     this->numAsteroids = 0;
 
     this->gameWindow = new Window("Asteroids", wScreen, hScreen, false, false);
+    this->map = new Map(this->wMap, this->hMap, this->gameWindow);
+}
 
+void Game::createAvatar() {
+    CoordXY avatarCoord;
+    avatarCoord.x = this->map->getWMap()/2 - this->map->getMapOffsetCoord().x;
+    avatarCoord.y = this->map->getHMap()/2 - this->map->getMapOffsetCoord().y;
+    this->avatar = new Avatar(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(), this->map);
+    this->gameObjects.push_back(this->avatar);
 }
 
 bool Game::init() {
     this->collisions = new Collisions(this);
-    this->map = new Map(this->wMap, this->hMap, this->gameWindow);
+    this->createAvatar();
     this->unitManager = new UnitManager(this);
-    this->unitManager->createAvatar();
     return true;
 }
 
 void Game::close() {
-    this->numBullets = 0;
     this->numAsteroids = 0;
-    delete this->map;
+    this->map->mapInit();
     delete this->collisions;
     delete this->unitManager;
+
+    for (auto it = this->gameObjects.begin(); it != this->gameObjects.end(); ) {
+        delete (*it++);
+    }
+    this->gameObjects.clear();
+    this->gameObjects.shrink_to_fit();
 }
 
 bool Game::tick() {
@@ -43,10 +54,10 @@ bool Game::tick() {
     this->unitManager->createAsteroids();
     this->collisions->check();
     this->unitManager->deAcceleration();
-    this->unitManager->calcOffset();
-    this->unitManager->getAvatar()->shipHeadAngle();
+    this->unitManager->calcObjectOffset();
+    this->avatar->shipHeadAngle();
     this->unitManager->drawAsteroids();
-    this->unitManager->getAvatar()->getReticle()->draw();
+    this->avatar->getReticle()->draw();
 
     return false;
 }
@@ -92,28 +103,15 @@ void Game::runGame() {
             }
             this->inputHandler->handleInput(event);
         }
-
-        //Clear screen
-        //SDL_RenderClear( this->gameWindow->getRenderer() );
-//----------------ShownCursor----------------------------------------//
-
 //        while ( lag >= stepMS ) {
 //            this->tick();
 //            lag -= stepMS;
 //        }
-//-------------------Tick-------------------------------------------//
         this->tick();
-//------------------------------------------------------------------//
         this->gameWindow->updateWindow();
         SDL_Delay(1);
     }
-
-//-----------------Close--------------------------------------------//
     this->close();
-//------------------------------------------------------------------//
-    //Destroy window
-    delete this->inputHandler;
-    delete this->gameWindow;
 }
 
 UnitManager* Game::getUnitManager() const {
@@ -132,18 +130,20 @@ std::vector<GameObject *> &Game::getObjects() {
     return this->gameObjects;
 }
 
-int Game::getNumBullets() const {
-    return this->numBullets;
-}
-
 int Game::getNumAsteroids() const {
     return this->numAsteroids;
 }
 
-void Game::setNumBullets(int amount) {
-    this->numBullets = amount;
-}
-
 void Game::setNumAsteroids(int amount) {
     this->numAsteroids = amount;
+}
+
+Avatar* Game::getAvatar() const {
+    return this->avatar;
+}
+
+Game::~Game() {
+    delete this->inputHandler;
+    delete this->gameWindow;
+    delete this->map;
 }

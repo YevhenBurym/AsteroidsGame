@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Window.h"
 #include "Sprite.h"
+#include <vector>
 
 #define RAD 3.14/180
 
@@ -49,7 +50,7 @@ public:
 class BigAsteroid : public GameObject {
 public:
     BigAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
-    void divide(GameObject* smallAsteroid1, GameObject* smallAsteroid2);
+    void divide(std::vector<GameObject*>& objects);
 };
 
 class Bullet : public GameObject {
@@ -67,9 +68,11 @@ class Avatar : public GameObject {
 private:
     Reticle* reticle;
     double angleShip;
+    int ammoLimit;
+    int numBullets;
     void limitateCoord() override;
 public:
-    Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map);
+    Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map);
     ~Avatar() override;
     void draw() const override;
     double getXrel() const override;
@@ -77,6 +80,9 @@ public:
     Reticle* getReticle() const;
     double getAngle() const;
     void shipHeadAngle();
-    Bullet* makeShoot();
+    void makeShoot(std::vector<GameObject*>& objects);
+    int getAmmoLimit() const;
+    int getNumBullets() const;
+    void setNumBullets(int amount);
 };
 

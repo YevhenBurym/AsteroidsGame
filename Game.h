@@ -18,6 +18,7 @@ class Collisions;
 
 class Game {
 private:
+    Avatar* avatar;
     InputComponent* inputHandler;
     Collisions* collisions;
     Map* map;
@@ -27,10 +28,11 @@ private:
     int asteroidsLimit;
     int ammoLimit;
     int numAsteroids;
-    int numBullets;
     std::vector<GameObject*> gameObjects;
+    void createAvatar();
 public:
     Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
+    ~Game();
     bool init();
     void close();
     bool tick();
@@ -41,10 +43,9 @@ public:
     Window* getWindow() const;
     int getAmmoLimit() const;
     int getAsteroidslimit() const;
-    int getNumBullets() const;
     int getNumAsteroids() const;
-    void setNumBullets(int amount);
     void setNumAsteroids(int amount);
     std::vector<GameObject*>& getObjects();
+    Avatar* getAvatar() const;
     void runGame();
 };
