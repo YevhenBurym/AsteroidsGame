@@ -5,11 +5,11 @@
 #pragma once
 
 #include "Map.h"
-#include "UnitManager.h"
+#include "AsteroidsManager.h"
 #include "InputComponent.h"
 #include "Collisions.h"
 
-class UnitManager;
+class AsteroidsManager;
 class InputComponent;
 class Collisions;
 
@@ -20,7 +20,7 @@ private:
     Collisions* collisions;
     Map* map;
     Window* gameWindow;
-    UnitManager* unitManager;
+    AsteroidsManager* unitManager;
     int hMap, wMap;
     int asteroidsLimit;
     int ammoLimit;
@@ -38,7 +38,6 @@ public:
 
     void restart();
     Map* getMap() const;
-    UnitManager* getUnitManager() const;
     Window* getWindow() const;
     int getAmmoLimit() const;
     int getAsteroidslimit() const;

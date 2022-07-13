@@ -8,8 +8,8 @@ add_executable(Asteroids main.cpp
         Map.h
         GameObject.cpp
         GameObject.h
-        UnitManager.cpp
-        UnitManager.h
+        AsteroidsManager.cpp
+        AsteroidsManager.h
         Game.h Game.cpp
         Window.h Window.cpp
         Sprite.h Sprite.cpp

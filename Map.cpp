@@ -158,6 +158,7 @@ UnitSprites &Map::getUnitSprites() {
 }
 
 void Map::mapInit() {
+    this->isNeedDeAcc = false;
     int wScreen, hScreen;
     this->window->getSize(wScreen,hScreen);
     this->offset.x = wMap / 2 - wScreen / 2;
@@ -168,4 +169,24 @@ void Map::mapInit() {
     this->V.theta = 0;
     this->Vx = 0;
     this->Vy = 0;
+}
+
+void Map::deAcceleration() {
+    double step = 0.001;
+    double acc = 500;
+    double vMap = this->V.v;
+    double thetaMap = this->V.theta;
+    if (isNeedDeAcc) {
+        if (vMap > 0) {
+            vMap -= acc * step;
+        }
+        else {
+            isNeedDeAcc = false;
+        }
+        this->setV(vMap, thetaMap);
+    }
+}
+
+void Map::setIsNeededDeacc(bool state) {
+    this->isNeedDeAcc = true;
 }

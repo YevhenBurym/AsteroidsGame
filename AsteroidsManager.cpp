@@ -1,14 +1,13 @@
-#include "UnitManager.h"
+#include "AsteroidsManager.h"
 
 #define RANDRANGE_0_1 (double)rand() / RAND_MAX
 
-UnitManager::UnitManager(Game* game) {
+AsteroidsManager::AsteroidsManager(Game* game) {
     srand(time(NULL));
     this->game = game;
-    this->isNeedDeAcc = false;
 }
 
-void UnitManager::createAsteroids() {
+void AsteroidsManager::createAsteroids() {
     CoordXY asteroidCoord = {0, 0};
     Velocity asteroidVelocity = {0, 0};
     int minVLimit = 100;
@@ -17,7 +16,11 @@ void UnitManager::createAsteroids() {
     if (this->game->getNumAsteroids() < this->game->getAsteroidslimit()) {
         int newAmountAsteroids = this->game->getNumAsteroids() + 1;
         this->game->setNumAsteroids(newAmountAsteroids);
-        asteroidCoord = this->randomizeAppearCoord(this->game->getMap()->getWMap(), this->game->getMap()->getHMap());
+
+        int wSreen, hSreen;
+        this->game->getWindow()->getSize(wSreen, hSreen);
+
+        asteroidCoord = this->randomizeAppearCoord(wSreen, hSreen, this->game->getMap()->getWMap(), this->game->getMap()->getHMap());
         asteroidVelocity = this->randomizeVelocity(minVLimit, maxVLimit, angleRange);
 
         uint8_t randomAsteroid = RANDRANGE_0_1 * 100;
@@ -30,32 +33,30 @@ void UnitManager::createAsteroids() {
     }
 }
 
-CoordXY UnitManager::randomizeAppearCoord(int wMap, int hMap) {
+CoordXY AsteroidsManager::randomizeAppearCoord(int wWindow, int hWindow, int wMap, int hMap) {
     CoordXY randomXY = {0, 0};
     uint8_t randomSide = RANDRANGE_0_1 * 3;
-    int wSreen, hSreen;
-    this->game->getWindow()->getSize(wSreen, hSreen);
 
     if (randomSide == 0) {
         randomXY.y = RANDRANGE_0_1 * hMap;
-        randomXY.x = RANDRANGE_0_1 * (wMap - wSreen) / 2 - 0 + 0;
+        randomXY.x = RANDRANGE_0_1 * (wMap - wWindow) / 2 - 0 + 0;
     }
     else if (randomSide == 1) {
         randomXY.x = RANDRANGE_0_1 * wMap;
-        randomXY.y = RANDRANGE_0_1 * (hMap - hSreen) / 2 - 0 + 0;
+        randomXY.y = RANDRANGE_0_1 * (hMap - hWindow) / 2 - 0 + 0;
     }
     else if (randomSide == 2) {
         randomXY.y = RANDRANGE_0_1 * hMap;
-        randomXY.x = RANDRANGE_0_1 * (wMap - wSreen) + wSreen;
+        randomXY.x = RANDRANGE_0_1 * (wMap - wWindow) + wWindow;
     }
     else if (randomSide == 3) {
         randomXY.x = RANDRANGE_0_1 * wMap;
-        randomXY.y = RANDRANGE_0_1 * (hMap - hSreen) + hSreen;
+        randomXY.y = RANDRANGE_0_1 * (hMap - hWindow) + hWindow;
     }
     return randomXY;
 }
 
-Velocity UnitManager::randomizeVelocity(int minVelocity, int maxVelocity, int angleRange) {
+Velocity AsteroidsManager::randomizeVelocity(int minVelocity, int maxVelocity, int angleRange) {
 
     Velocity randomV = {0, 0};
 
@@ -63,24 +64,4 @@ Velocity UnitManager::randomizeVelocity(int minVelocity, int maxVelocity, int an
     randomV.theta = 2 * (RANDRANGE_0_1 - 0.5) * angleRange;
 
     return randomV;
-}
-
-void UnitManager::deAcceleration() {
-    double step = 0.001;
-    double acc = 500;
-    double vMap = this->game->getMap()->getV().v;
-    double thetaMap = this->game->getMap()->getV().theta;
-    if (isNeedDeAcc) {
-        if (vMap > 0) {
-            vMap -= acc * step;
-        }
-        else {
-            isNeedDeAcc = false;
-        }
-        this->game->getMap()->setV(vMap, thetaMap);
-    }
-}
-
-void UnitManager::setIsNeededDeacc(bool state) {
-    this->isNeedDeAcc = true;
 }

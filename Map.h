@@ -36,6 +36,8 @@ private:
     MapSprites sprites;
     UnitSprites unitSprites;
     Window* window;
+    bool isNeedDeAcc;
+
     void createMapSprites();
     void createSprites();
     void destroySprites();
@@ -61,4 +63,6 @@ public:
 	Velocity getV() const;
     void draw();
     UnitSprites& getUnitSprites();
+    void deAcceleration();
+    void setIsNeededDeacc(bool state);
 };

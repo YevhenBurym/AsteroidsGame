@@ -78,10 +78,8 @@ public:
     double getXrel() const override;
     double getYrel() const override;
     Reticle* getReticle() const;
-    double getAngle() const;
     void shipHeadAngle();
     void makeShoot(std::vector<GameObject*>& objects);
-    int getAmmoLimit() const;
     int getNumBullets() const;
     void setNumBullets(int amount);
 };

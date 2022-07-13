@@ -260,14 +260,6 @@ void Avatar::draw() const {
     this->sprite->draw(x, y,90 - this->angleShip);
 }
 
-double Avatar::getAngle() const {
-    return this->angleShip;
-}
-
-int Avatar::getAmmoLimit() const {
-    return this->ammoLimit;
-}
-
 int Avatar::getNumBullets() const {
     return this->numBullets;
 }

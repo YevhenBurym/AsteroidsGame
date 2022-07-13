@@ -59,16 +59,16 @@ void InputComponent::onKeyPressed(SDL_Keycode key) {
 void InputComponent::onKeyReleased(SDL_Keycode key) {
     switch( key ) {
         case SDLK_UP:
-            this->game->getUnitManager()->setIsNeededDeacc(true);
+            this->game->getMap()->setIsNeededDeacc(true);
             break;
         case SDLK_DOWN:
-            this->game->getUnitManager()->setIsNeededDeacc(true);
+            this->game->getMap()->setIsNeededDeacc(true);
             break;
         case SDLK_LEFT:
-            this->game->getUnitManager()->setIsNeededDeacc(true);
+            this->game->getMap()->setIsNeededDeacc(true);
             break;
         case SDLK_RIGHT:
-            this->game->getUnitManager()->setIsNeededDeacc(true);
+            this->game->getMap()->setIsNeededDeacc(true);
             break;
         default:
             break;

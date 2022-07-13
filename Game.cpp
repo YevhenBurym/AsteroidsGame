@@ -32,7 +32,7 @@ void Game::createAvatar() {
 bool Game::init() {
     this->collisions = new Collisions(this);
     this->createAvatar();
-    this->unitManager = new UnitManager(this);
+    this->unitManager = new AsteroidsManager(this);
     return true;
 }
 
@@ -53,7 +53,7 @@ bool Game::tick() {
     this->map->draw();
     this->unitManager->createAsteroids();
     this->collisions->check();
-    this->unitManager->deAcceleration();
+    this->map->deAcceleration();
     this->calcObjectOffset();
     this->avatar->shipHeadAngle();
     this->drawObjects();
@@ -111,10 +111,6 @@ void Game::runGame() {
         SDL_Delay(1);
     }
     this->close();
-}
-
-UnitManager* Game::getUnitManager() const {
-    return this->unitManager;
 }
 
 int Game::getAmmoLimit() const {
