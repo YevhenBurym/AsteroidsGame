@@ -17,9 +17,6 @@ public:
     void createAsteroids();
     CoordXY randomizeAppearCoord(int wMap, int hMap);
     Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
-    void drawAsteroids();
-
-    void calcObjectOffset();
 
     void deAcceleration();
     void setIsNeededDeacc(bool state);

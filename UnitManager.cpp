@@ -1,10 +1,10 @@
 #include "UnitManager.h"
 
+#define RANDRANGE_0_1 (double)rand() / RAND_MAX
+
 UnitManager::UnitManager(Game* game) {
     srand(time(NULL));
     this->game = game;
-    int wSprite, hSprite;
-    this->game->getMap()->getUnitSprites().reticleSprite->getSize(wSprite, hSprite);
     this->isNeedDeAcc = false;
 }
 
@@ -64,25 +64,6 @@ Velocity UnitManager::randomizeVelocity(int minVelocity, int maxVelocity, int an
 
     return randomV;
 }
-
-void UnitManager::drawAsteroids() {
-    for (auto & object : this->game->getObjects()) {
-        object->calcCoord(object->getVx(), object->getVy(), 0.001);
-        object->draw();
-    }
-}
-
-void UnitManager::calcObjectOffset() {
-    this->game->getMap()->calcCoord(this->game->getMap()->getVx(), this->game->getMap()->getVy(), 0.001);
-
-    if (this->game->getMap()->getV().v) {
-        for (auto it = this->game->getObjects().begin(); it != this->game->getObjects().end(); ++it) {
-            (*it)->setXof(this->game->getMap()->getX());
-            (*it)->setYof(this->game->getMap()->getY());
-        }
-    }
-}
-
 
 void UnitManager::deAcceleration() {
     double step = 0.001;

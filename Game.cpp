@@ -54,10 +54,9 @@ bool Game::tick() {
     this->unitManager->createAsteroids();
     this->collisions->check();
     this->unitManager->deAcceleration();
-    this->unitManager->calcObjectOffset();
+    this->calcObjectOffset();
     this->avatar->shipHeadAngle();
-    this->unitManager->drawAsteroids();
-    this->avatar->getReticle()->draw();
+    this->drawObjects();
 
     return false;
 }
@@ -146,4 +145,23 @@ Game::~Game() {
     delete this->inputHandler;
     delete this->gameWindow;
     delete this->map;
+}
+
+void Game::drawObjects() {
+    for (auto & object : this->gameObjects) {
+        object->calcCoord(object->getVx(), object->getVy(), 0.001);
+        object->draw();
+    }
+    this->avatar->getReticle()->draw();
+}
+
+void Game::calcObjectOffset() {
+    this->map->calcCoord(this->map->getVx(), this->map->getVy(), 0.001);
+
+    if (this->map->getV().v) {
+        for (auto & gameObject : this->gameObjects) {
+            gameObject->setXof(this->map->getX());
+            gameObject->setYof(this->map->getY());
+        }
+    }
 }
