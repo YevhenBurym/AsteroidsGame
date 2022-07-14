@@ -18,10 +18,10 @@ void GameObject::limitateCoord() {
     } else	if (this->coord.y < minYCoord) {
         this->coord.y = maxYCoord;
     }
+
 }
 
 GameObject::GameObject(CoordXY coord, double velocity, double theta, Sprite* sprite, Map* map) {
-    CoordXY CoordOffset = map->getMapOffsetCoord();
     int wSprite, hSprite;
     double d = 0;
     //theta *= -1;
@@ -168,17 +168,30 @@ void Avatar::limitateCoord() {
 
     if (x >= maxXCoord) {
         this->map->setX(minXCoord - this->map->getX());
+//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
+//        std::cout <<"MaxCoordX "<< maxXCoord << std::endl;
+//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
     else if (x < minXCoord) {
         this->map->setX(maxXCoord + this->map->getX());
+//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
+//        std::cout <<"MinCoordX "<< minXCoord << std::endl;
+//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
 
     if (y >= maxYCoord) {
         this->map->setY(minYCoord - this->map->getY());
+//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
+//        std::cout <<"MaxCoordY "<< maxYCoord << std::endl;
+//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
     else if (y < minYCoord) {
         this->map->setY(maxYCoord + this->map->getY());
+//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
+//        std::cout <<"MinCoordY "<< minYCoord << std::endl;
+//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
+    //std::cout <<"MaxCoordY"<< x << ", " <<  y<< std::endl;
 }
 
 Avatar::Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, sprite, map) {

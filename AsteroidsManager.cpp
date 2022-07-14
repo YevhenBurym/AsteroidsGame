@@ -5,6 +5,8 @@
 AsteroidsManager::AsteroidsManager(Game* game) {
     srand(time(NULL));
     this->game = game;
+    this->numAsteroids = 0;
+    this->asteroidsLimit = game->getAsteroidslimit();
 }
 
 void AsteroidsManager::createAsteroids() {
@@ -13,9 +15,10 @@ void AsteroidsManager::createAsteroids() {
     int minVLimit = 100;
     int maxVLimit = 300;
     int angleRange = 180;
-    if (this->game->getNumAsteroids() < this->game->getAsteroidslimit()) {
-        int newAmountAsteroids = this->game->getNumAsteroids() + 1;
-        this->game->setNumAsteroids(newAmountAsteroids);
+    if (this->numAsteroids < this->asteroidsLimit) {
+        //int newAmountAsteroids = this->game->getNumAsteroids() + 1;
+        //this->game->setNumAsteroids(newAmountAsteroids);
+        this->numAsteroids += 1;
 
         int wSreen, hSreen;
         this->game->getWindow()->getSize(wSreen, hSreen);
@@ -64,4 +67,16 @@ Velocity AsteroidsManager::randomizeVelocity(int minVelocity, int maxVelocity, i
     randomV.theta = 2 * (RANDRANGE_0_1 - 0.5) * angleRange;
 
     return randomV;
+}
+
+int AsteroidsManager::getAsteroidslimit() const {
+    return this->asteroidsLimit;
+}
+
+int AsteroidsManager::getNumAsteroids() const {
+    return this->numAsteroids;
+}
+
+void AsteroidsManager::setNumAsteroids(int amount) {
+    this->numAsteroids = amount;
 }

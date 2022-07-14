@@ -15,7 +15,6 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
     this->wMap = wMap;
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
-    this->numAsteroids = 0;
 
     this->gameWindow = new Window("Asteroids", wScreen, hScreen, false, false);
     this->map = new Map(this->wMap, this->hMap, this->gameWindow);
@@ -32,15 +31,15 @@ void Game::createAvatar() {
 bool Game::init() {
     this->collisions = new Collisions(this);
     this->createAvatar();
-    this->unitManager = new AsteroidsManager(this);
+    this->asterManager = new AsteroidsManager(this);
     return true;
 }
 
 void Game::close() {
-    this->numAsteroids = 0;
+    //this->numAsteroids = 0;
     this->map->mapInit();
     delete this->collisions;
-    delete this->unitManager;
+    delete this->asterManager;
 
     for (auto it = this->gameObjects.begin(); it != this->gameObjects.end(); ) {
         delete (*it++);
@@ -51,7 +50,7 @@ void Game::close() {
 
 bool Game::tick() {
     this->map->draw();
-    this->unitManager->createAsteroids();
+    this->asterManager->createAsteroids();
     this->collisions->check();
     this->map->deAcceleration();
     this->calcObjectOffset();
@@ -125,14 +124,6 @@ std::vector<GameObject *> &Game::getObjects() {
     return this->gameObjects;
 }
 
-int Game::getNumAsteroids() const {
-    return this->numAsteroids;
-}
-
-void Game::setNumAsteroids(int amount) {
-    this->numAsteroids = amount;
-}
-
 Avatar* Game::getAvatar() const {
     return this->avatar;
 }
@@ -160,4 +151,8 @@ void Game::calcObjectOffset() {
             gameObject->setYof(this->map->getY());
         }
     }
+}
+
+AsteroidsManager *Game::getAsterManager() const {
+    return this->asterManager;
 }

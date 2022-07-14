@@ -173,9 +173,9 @@ void Collisions::check() {
                     it1--;
                     delete temp1;
                     delete temp2;
-                    int newAsteroidsAmount = this->game->getNumAsteroids() - 1;
+                    int newAsteroidsAmount = this->game->getAsterManager()->getNumAsteroids() - 1;
                     int newBulletsAmount = this->game->getAvatar()->getNumBullets() - 1;
-                    this->game->setNumAsteroids(newAsteroidsAmount);
+                    this->game->getAsterManager()->setNumAsteroids(newAsteroidsAmount);
                     this->game->getAvatar()->setNumBullets(newBulletsAmount);
 
                     break;

@@ -20,11 +20,10 @@ private:
     Collisions* collisions;
     Map* map;
     Window* gameWindow;
-    AsteroidsManager* unitManager;
+    AsteroidsManager* asterManager;
     int hMap, wMap;
     int asteroidsLimit;
     int ammoLimit;
-    int numAsteroids;
     std::vector<GameObject*> gameObjects;
     void createAvatar();
     void drawObjects();
@@ -39,6 +38,7 @@ public:
     void restart();
     Map* getMap() const;
     Window* getWindow() const;
+    AsteroidsManager* getAsterManager() const;
     int getAmmoLimit() const;
     int getAsteroidslimit() const;
     int getNumAsteroids() const;
