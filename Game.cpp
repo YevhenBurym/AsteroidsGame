@@ -15,13 +15,14 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
     this->wMap = wMap;
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
+    this->quit = false;
 
-    this->gameWindow = new Window("Asteroids", wScreen, hScreen, false, false);
+    this->gameWindow = new Window("Asteroids", wScreen, hScreen, false);
     this->map = new Map(this->wMap, this->hMap, this->gameWindow);
 }
 
 void Game::createAvatar() {
-    CoordXY avatarCoord;
+    Vector2D avatarCoord{0,0};
     avatarCoord.x = this->map->getWMap()/2 - this->map->getMapOffsetCoord().x;
     avatarCoord.y = this->map->getHMap()/2 - this->map->getMapOffsetCoord().y;
     this->avatar = new Avatar(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(), this->map);
@@ -29,6 +30,7 @@ void Game::createAvatar() {
 }
 
 bool Game::init() {
+    this->map->mapInit();
     this->collisions = new Collisions(this);
     this->createAvatar();
     this->asterManager = new AsteroidsManager(this);
@@ -36,8 +38,7 @@ bool Game::init() {
 }
 
 void Game::close() {
-    //this->numAsteroids = 0;
-    this->map->mapInit();
+
     delete this->collisions;
     delete this->asterManager;
 
@@ -48,16 +49,27 @@ void Game::close() {
     this->gameObjects.shrink_to_fit();
 }
 
-bool Game::tick() {
-    this->map->draw();
+void Game::handleEvents() {
+
+}
+
+
+void Game::update() {
     this->asterManager->createAsteroids();
     this->collisions->check();
     this->map->deAcceleration();
     this->calcObjectOffset();
     this->avatar->shipHeadAngle();
-    this->drawObjects();
+}
 
-    return false;
+void Game::render() {
+    SDL_RenderClear(this->gameWindow->getRenderer());
+
+    this->map->draw();
+    this->renderObjects();
+    this->gameWindow->showCursor(false);
+
+    SDL_RenderPresent(this->gameWindow->getRenderer());
 }
 
 void Game::restart() {
@@ -74,39 +86,41 @@ Window *Game::getWindow() const {
 }
 
 void Game::runGame() {
+    const int fps = 1000;
+    const int frameDelay = 1000 / fps;
+    Uint32 startTime;
+    int frameTime;
 
-    bool quit = false;
+    this->init();
 
-//    double previous = this->getWindow()->getTickCounting();
-//    double lag = 0.0;
-//    double stepMS = 16;
     //Event handler
     SDL_Event event;
     this->inputHandler = new InputComponent(this);
-//------------------------init--------------------------------------//
-    this->init();
-//------------------------------------------------------------------//
     //While application is running
-    while( !quit ) {
-//        double current = this->getWindow()->getTickCounting();
-//        double elapsed = current - previous;
-//        previous = current;
-//        lag += elapsed;
+    while( !this->quit ) {
 
         //Handle events on queue
         while( SDL_PollEvent( &event ) != 0 ) {
             //User requests quit
-            if( event.type == SDL_QUIT ) {
-                quit = true;
+            if( event.type == SDL_QUIT )  {
+                this->quit = true;
+            }
+            if( event.type == SDL_KEYDOWN && event.key.repeat == 0 && event.key.keysym.sym == SDLK_ESCAPE) {
+                this->quit = true;
             }
             this->inputHandler->handleInput(event);
         }
-//        while ( lag >= stepMS ) {
-//            this->tick();
-//            lag -= stepMS;
+
+        startTime = this->getWindow()->getTickCounting();
+        this->update();
+        this->render();
+
+        frameTime = this->getWindow()->getTickCounting() - startTime;
+//        if (frameDelay > frameTime) {
+//            //std::cout <<frameDelay - frameTime << std::endl;
+//            SDL_Delay(frameDelay - frameTime);
+//
 //        }
-        this->tick();
-        this->gameWindow->updateWindow();
         SDL_Delay(1);
     }
     this->close();
@@ -134,12 +148,12 @@ Game::~Game() {
     delete this->map;
 }
 
-void Game::drawObjects() {
+void Game::renderObjects() {
     for (auto & object : this->gameObjects) {
-        object->calcCoord(object->getVx(), object->getVy(), 0.001);
-        object->draw();
+        object->calcCoord(object->getVxy(), 0.001);
+        object->render();
     }
-    this->avatar->getReticle()->draw();
+    this->avatar->getReticle()->render();
 }
 
 void Game::calcObjectOffset() {

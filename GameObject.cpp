@@ -21,7 +21,7 @@ void GameObject::limitateCoord() {
 
 }
 
-GameObject::GameObject(CoordXY coord, double velocity, double theta, Sprite* sprite, Map* map) {
+GameObject::GameObject(Vector2D coord, double velocity, double theta, Sprite* sprite, Map* map) {
     int wSprite, hSprite;
     double d = 0;
     //theta *= -1;
@@ -35,8 +35,8 @@ GameObject::GameObject(CoordXY coord, double velocity, double theta, Sprite* spr
     this->map = map;
     this->radius = d / 2;
     this->coord = coord;
-    this->Vx = velocity * cos(theta * RAD);
-    this->Vy = -velocity * sin(theta * RAD);
+    this->Vxy.x = velocity * cos(theta * RAD);
+    this->Vxy.y = -velocity * sin(theta * RAD);
     this->sprite = sprite;
     this->mass = 1;
     this->V.v = velocity;
@@ -45,9 +45,9 @@ GameObject::GameObject(CoordXY coord, double velocity, double theta, Sprite* spr
     this->yOf = 0;
 }
 
-void GameObject::calcCoord(double Vx, double Vy, double step) {
-    this->coord.x += Vx * step;
-    this->coord.y += Vy * step;
+void GameObject::calcCoord(Vector2D Vxy, double step) {
+    this->coord.x += Vxy.x * step;
+    this->coord.y += Vxy.y * step;
     this->limitateCoord();
 
 }
@@ -67,18 +67,15 @@ void GameObject::setYof(double y) {
     this->yOf = y;
 }
 
-void GameObject::setVx(double vx) {
-    this->Vx = vx;
-}
-void GameObject::setVy(double vy) {
-    this->Vy = vy;
+void GameObject::setVxy(Vector2D vxy) {
+    this->Vxy = vxy;
 }
 
 void GameObject::setV(double v, double theta) {
     this->V.v = v;
     this->V.theta = theta;
-    this->Vx = v * cos(theta * RAD);
-    this->Vy = -v * sin(theta * RAD);
+    this->Vxy.x = v * cos(theta * RAD);
+    this->Vxy.y = -v * sin(theta * RAD);
 }
 
 double GameObject::getX() const {
@@ -96,12 +93,8 @@ double GameObject::getYrel() const {
     return this->coord.y + this->yOf;
 }
 
-double GameObject::getVx() const {
-    return this->Vx;
-}
-
-double GameObject::getVy() const {
-    return this->Vy;
+Vector2D GameObject::getVxy() const {
+    return this->Vxy;
 }
 
 Velocity GameObject::getV() const {
@@ -116,11 +109,7 @@ double GameObject::getRadius() const {
     return this->radius;
 }
 
-Sprite* GameObject::getSprite() const {
-    return this->sprite;
-}
-
-void GameObject::draw() const {
+void GameObject::render() const {
 
     int x = this->coord.x + this->xOf - this->radius;
     int y = this->coord.y + this->yOf - this->radius;
@@ -128,11 +117,11 @@ void GameObject::draw() const {
     this->sprite->draw(x, y);
 }
 
-SmallAsteroid::SmallAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
+SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
     this->mass = 1;
 }
 
-BigAsteroid::BigAsteroid(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
+BigAsteroid::BigAsteroid(Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
     this->mass = 2;
 }
 
@@ -142,8 +131,8 @@ void BigAsteroid::divide(std::vector<GameObject*>& objects) {
 
     x = this->getXrel();
     y = this->getYrel();
-    CoordXY xy1;
-    CoordXY xy2;
+    Vector2D xy1;
+    Vector2D xy2;
     xy1.x= x + this->radius;
     xy1.y= y + this->radius;
     xy2.x= x - this->radius;
@@ -152,11 +141,6 @@ void BigAsteroid::divide(std::vector<GameObject*>& objects) {
     objects.push_back(new SmallAsteroid(xy1, this->V.v, this->V.theta - 45, this->map->getUnitSprites().smallAsteroidSprite, this->map));
     objects.push_back(new SmallAsteroid(xy2, this->V.v, this->V.theta + 45, this->map->getUnitSprites().smallAsteroidSprite, this->map));
 }
-
-//SmallAsteroid* BigAsteroid::divide() {
-//    MoveableUnit* temp = this;
-//    this = new SmallAsteroid();
-//}
 
 void Avatar::limitateCoord() {
     double minXCoord = 0 - this->map->getMapOffsetCoord().x;
@@ -194,7 +178,7 @@ void Avatar::limitateCoord() {
     //std::cout <<"MaxCoordY"<< x << ", " <<  y<< std::endl;
 }
 
-Avatar::Avatar(CoordXY coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
+Avatar::Avatar(Vector2D coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
     this->reticle = new Reticle( map->getUnitSprites().reticleSprite, map );
     this->angleShip = 0;
     this->ammoLimit = ammoLimit;
@@ -225,7 +209,7 @@ void Avatar::shipHeadAngle() {
         yRet -= this->map->getY();
     }
     double alpha = 0;
-    CoordXY xyDirVector = { xAvatar - xRet, yAvatar - yRet };
+    Vector2D xyDirVector = {xAvatar - xRet, yAvatar - yRet };
     double dist = hypot(xyDirVector.x, xyDirVector.y) ;
 
     if ((xyDirVector.x == 0) && (xyDirVector.y < 0)) {
@@ -240,7 +224,7 @@ void Avatar::shipHeadAngle() {
 }
 
 void Avatar::makeShoot(std::vector<GameObject*>& objects) {
-    CoordXY avatarCoord{this->coord.x,this->coord.y};
+    Vector2D avatarCoord{this->coord.x, this->coord.y};
     this->shipHeadAngle();
     if (this->map->getV().v > 0) {
         avatarCoord.x -= this->map->getX();
@@ -266,7 +250,7 @@ Reticle *Avatar::getReticle() const {
     return this->reticle;
 }
 
-void Avatar::draw() const {
+void Avatar::render() const {
     int x = this->coord.x - this->radius;
     int y = this->coord.y - this->radius;
 
@@ -282,17 +266,17 @@ void Avatar::setNumBullets(int amount) {
 }
 
 
-Bullet::Bullet(CoordXY coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
+Bullet::Bullet(Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
 }
 
-Reticle::Reticle(Sprite *sprite, Map *map): GameObject(CoordXY{0,0}, 0, 0, sprite, map) {
+Reticle::Reticle(Sprite *sprite, Map *map): GameObject(Vector2D{0, 0}, 0, 0, sprite, map) {
     int wSprite, hSprite;
     this->sprite->getSize(wSprite, hSprite);
     this->xOf = wSprite / 2;
     this->yOf = hSprite / 2;
 }
 
-void Reticle::draw() const {
+void Reticle::render() const {
     int x = this->coord.x - this->xOf;
     int y = this->coord.y - this->yOf;
     this->sprite->draw(x,y);

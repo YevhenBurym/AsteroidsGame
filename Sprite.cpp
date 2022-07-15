@@ -5,10 +5,10 @@
 #include "Sprite.h"
 
 Sprite::Sprite(const char* pathToTexture, Window* window) {
-    this->renderer = window->getRenderer();
+    this->window = window;
     this->texture = nullptr;
 
-    this->texture = IMG_LoadTexture(this->renderer, pathToTexture);
+    this->texture = IMG_LoadTexture(window->getRenderer(), pathToTexture);
 
     if( this->texture == nullptr ) {
         std::cout << "Failed to load texture image!" << std::endl;
@@ -24,12 +24,12 @@ Sprite::~Sprite() {
 void Sprite::draw(int x, int y) {
     SDL_Rect drawParams{x, y,this->wSprite,this->hSprite};
 
-    SDL_RenderCopy( this->renderer, texture, nullptr, &drawParams );
+    SDL_RenderCopy( this->window->getRenderer(), texture, nullptr, &drawParams );
 }
 
 void Sprite::draw(int x, int y, double angle) {
     SDL_Rect drawParams{x, y,this->wSprite,this->hSprite};
-    SDL_RenderCopyEx(this->renderer, texture, nullptr, &drawParams, angle,nullptr,SDL_FLIP_NONE);
+    SDL_RenderCopyEx(this->window->getRenderer(), texture, nullptr, &drawParams, angle,nullptr,SDL_FLIP_NONE);
 }
 
 void Sprite::getSize(int &w, int &h) const {

@@ -29,7 +29,7 @@ int Map::getWMap() const {
 	return this->wMap;
 }
 
-CoordXY Map::getMapOffsetCoord() const {
+Vector2D Map::getMapOffsetCoord() const {
 	return this->offset;
 }
 
@@ -76,8 +76,8 @@ void Map::setVy(double vy) {
 }
 
 void Map::createMapSprites() {
-    this->sprites.backgroundSprite = new Sprite("data\\background.png",this->window);
-    this->sprites.dotSprite = new Sprite("data\\dot.png",this->window);
+    this->sprites.backgroundSprite = new Sprite("data\\back.png",this->window);
+    this->sprites.dotSprite = new Sprite("data\\border.png",this->window);
 }
 
 void Map::drawBackground() {
@@ -141,7 +141,7 @@ void Map::createSprites() {
     this->unitSprites.spaceshipSprite = new Sprite("data\\ship.png",this->window);
     this->unitSprites.smallAsteroidSprite = new Sprite("data\\small.png",this->window);
     this->unitSprites.bigAsteroidSprite = new Sprite("data\\big.png",this->window);
-    this->unitSprites.reticleSprite = new Sprite("data\\circle.tga",this->window);
+    this->unitSprites.reticleSprite = new Sprite("data\\reticle.png",this->window);
     this->unitSprites.bulletSprite = new Sprite("data\\bullet.png",this->window);
 }
 

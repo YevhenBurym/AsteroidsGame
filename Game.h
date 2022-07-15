@@ -24,26 +24,30 @@ private:
     int hMap, wMap;
     int asteroidsLimit;
     int ammoLimit;
+    bool quit;
     std::vector<GameObject*> gameObjects;
     void createAvatar();
-    void drawObjects();
+    void renderObjects();
     void calcObjectOffset();
 public:
     Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
     ~Game();
     bool init();
+    void handleEvents();
+    void update();
+    void render();
+
     void close();
-    bool tick();
 
     void restart();
+
     Map* getMap() const;
     Window* getWindow() const;
     AsteroidsManager* getAsterManager() const;
     int getAmmoLimit() const;
     int getAsteroidslimit() const;
-    int getNumAsteroids() const;
-    void setNumAsteroids(int amount);
     std::vector<GameObject*>& getObjects();
     Avatar* getAvatar() const;
+
     void runGame();
 };

@@ -8,7 +8,7 @@
 
 class Sprite {
 private:
-    SDL_Renderer* renderer;
+    Window* window;
     SDL_Texture* texture;
     int wSprite, hSprite;
 public:

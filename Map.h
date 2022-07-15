@@ -16,7 +16,7 @@ struct UnitSprites {
     Sprite* bulletSprite;
 };
 
-struct CoordXY {
+struct Vector2D {
 	double x;
 	double y;
 };
@@ -29,10 +29,10 @@ struct Velocity {
 class Map {
 private:
 	int hMap, wMap;
-	CoordXY xyRelative;
+	Vector2D xyRelative;
 	Velocity V;
 	int Vx,Vy;
-	CoordXY offset;
+	Vector2D offset;
     MapSprites sprites;
     UnitSprites unitSprites;
     Window* window;
@@ -49,7 +49,7 @@ public:
 	void calcCoord(double Vx, double Vy, double step);
 	int getHMap() const;
 	int getWMap() const;
-	CoordXY getMapOffsetCoord() const;
+	Vector2D getMapOffsetCoord() const;
     void mapInit();
 	void setX(double x);
 	void setY(double y);

@@ -4,9 +4,9 @@
 
 #include "Collisions.h"
 
-void Collisions::fixCoord(GameObject* unit1, GameObject* unit2, CoordXY vectorBetween) {
+void Collisions::fixCoord(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween) {
     double alpha = 0;
-    CoordXY xyOffset = { 0, 0 };
+    Vector2D xyOffset = {0, 0 };
     double currX1 = unit1->getX();
     double currY1 = unit1->getY();
     double currX2 = unit2->getX();
@@ -82,13 +82,15 @@ void Collisions::fixCoord(GameObject* unit1, GameObject* unit2, CoordXY vectorBe
     unit2->setY(newY2);
 }
 
-void Collisions::calcVelocity(GameObject* unit1, GameObject* unit2, CoordXY vectorBetween) {
+void Collisions::calcVelocity(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween) {
     double alpha = 0;
     double phi1 = 0;
     double phi2 = 0;
     double Vcentr1, Vcentr2, newVcentr1, newVcentr2;
     double Vtang1, Vtang2;
-    double V1, V2, Vx1, Vy1, Vx2, Vy2;
+    double V1, V2;
+    Vector2D Vxy1{0,0};
+    Vector2D Vxy2{0,0};
     double m1 = unit1->getMass();
     double m2 = unit2->getMass();
 
@@ -102,14 +104,14 @@ void Collisions::calcVelocity(GameObject* unit1, GameObject* unit2, CoordXY vect
         alpha = M_PI - atan2(vectorBetween.y, vectorBetween.x);
     }
 
-    Vcentr1 = unit1->getVx() * cos(alpha) - unit1->getVy() * sin(alpha);
-    Vcentr2 = unit2->getVx() * cos(alpha) - unit2->getVy() * sin(alpha);
+    Vcentr1 = unit1->getVxy().x * cos(alpha) - unit1->getVxy().y * sin(alpha);
+    Vcentr2 = unit2->getVxy().x * cos(alpha) - unit2->getVxy().y * sin(alpha);
 
     newVcentr1 = (2 * m2 * Vcentr2 + (m1 - m2) * Vcentr1) / (m1 + m2);
     newVcentr2 = (2 * m1 * Vcentr1 + (m2 - m1) * Vcentr2) / (m1 + m2);
 
-    Vtang1 = unit1->getVy() * cos(alpha) + unit1->getVx() * sin(alpha);
-    Vtang2 = unit2->getVy() * cos(alpha) + unit2->getVx() * sin(alpha);
+    Vtang1 = unit1->getVxy().y * cos(alpha) + unit1->getVxy().x * sin(alpha);
+    Vtang2 = unit2->getVxy().y * cos(alpha) + unit2->getVxy().x * sin(alpha);
 
     V1 = sqrt(newVcentr1 * newVcentr1 + Vtang1 * Vtang1);
     V2 = sqrt(newVcentr2 * newVcentr2 + Vtang2 * Vtang2);
@@ -134,24 +136,22 @@ void Collisions::calcVelocity(GameObject* unit1, GameObject* unit2, CoordXY vect
         phi2 = M_PI - atan2(Vtang2, newVcentr2);
     }
 
-    Vx1 = V1 * sin(phi1) * sin(alpha) - V1 * cos(phi1) * cos(alpha);
-    Vy1 = V1 * sin(phi1) * cos(alpha) + V1 * cos(phi1) * sin(alpha);
-    Vx2 = V2 * sin(phi2) * sin(alpha) - V2 * cos(phi2) * cos(alpha);
-    Vy2 = V2 * sin(phi2) * cos(alpha) + V2 * cos(phi2) * sin(alpha);
+    Vxy1.x = V1 * sin(phi1) * sin(alpha) - V1 * cos(phi1) * cos(alpha);
+    Vxy1.y = V1 * sin(phi1) * cos(alpha) + V1 * cos(phi1) * sin(alpha);
+    Vxy2.x = V2 * sin(phi2) * sin(alpha) - V2 * cos(phi2) * cos(alpha);
+    Vxy2.y = V2 * sin(phi2) * cos(alpha) + V2 * cos(phi2) * sin(alpha);
 
-    unit1->setVx(Vx1);
-    unit1->setVy(Vy1);
-    unit2->setVx(Vx2);
-    unit2->setVy(Vy2);
+    unit1->setVxy(Vxy1);
+    unit2->setVxy(Vxy2);
 }
 
 void Collisions::check() {
     for (auto it1 = this->game->getObjects().begin(); it1 != this->game->getObjects().end(); ++it1) {
         for (auto it2 = it1 + 1; it2 != this->game->getObjects().end(); ++it2) {
 
-            CoordXY xyCentr1 = { (*it1)->getXrel() + (*it1)->getRadius(),(*it1)->getYrel() + (*it1)->getRadius() };
-            CoordXY xyCentr2 = { (*it2)->getXrel() + (*it2)->getRadius(),(*it2)->getYrel() + (*it2)->getRadius() };
-            CoordXY xyCentrVector = { xyCentr1.x - xyCentr2.x, xyCentr1.y - xyCentr2.y };
+            Vector2D xyCentr1 = {(*it1)->getXrel() + (*it1)->getRadius(), (*it1)->getYrel() + (*it1)->getRadius() };
+            Vector2D xyCentr2 = {(*it2)->getXrel() + (*it2)->getRadius(), (*it2)->getYrel() + (*it2)->getRadius() };
+            Vector2D xyCentrVector = {xyCentr1.x - xyCentr2.x, xyCentr1.y - xyCentr2.y };
             int minDist = (*it1)->getRadius() + (*it2)->getRadius();
 
             if (hypot(xyCentrVector.x, xyCentrVector.y) < minDist && hypot(xyCentrVector.x, xyCentrVector.y) > minDist / 2) {
@@ -200,6 +200,11 @@ void Collisions::check() {
                     it2 = iter2;
 
                     bigAster->divide(this->game->getObjects());
+
+                    int newAsteroidsAmount = this->game->getAsterManager()->getNumAsteroids() + 1;
+                    int newBulletsAmount = this->game->getAvatar()->getNumBullets() - 1;
+                    this->game->getAsterManager()->setNumAsteroids(newAsteroidsAmount);
+                    this->game->getAvatar()->setNumBullets(newBulletsAmount);
 
                     delete temp1;
                     delete temp2;

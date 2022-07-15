@@ -5,13 +5,12 @@
 #include <iostream>
 #include "Window.h"
 
-Window::Window(const char* name, int width, int height, bool isFullscreen, bool isCursorShown) {
+Window::Window(const char* name, int width, int height, bool isFullscreen) {
     this->window = nullptr;
     this->renderer = nullptr;
     this->isCreate = false;
     this->hWindow = 0;
     this->wWindow = 0;
-    this->isCursorShown = isCursorShown;
 
     //Initialize SDL
     if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -81,12 +80,10 @@ uint32_t Window::getTickCounting() {
     return SDL_GetTicks();
 }
 
-void Window::updateWindow() {
-    if ( this->isCursorShown ) {
-        SDL_ShowCursor(SDL_ENABLE);
-    } else {
-        SDL_ShowCursor(SDL_DISABLE);
-    }
+void Window::render() {
+    SDL_RenderClear(this->renderer);
+
+    //SDL_RenderClear(this->renderer);
     SDL_RenderPresent( this->renderer );
 }
 
@@ -123,6 +120,14 @@ void Window::destroyTexture(SDL_Texture* texture) {
 
 void Window::getTextureSize(SDL_Texture* texture, int& w, int& h) {
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
+}
+
+void Window::showCursor(bool isShow) {
+    if ( isShow ) {
+        SDL_ShowCursor(SDL_ENABLE);
+    } else {
+        SDL_ShowCursor(SDL_DISABLE);
+    }
 }
 
 

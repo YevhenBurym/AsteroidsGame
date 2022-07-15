@@ -10,14 +10,12 @@ AsteroidsManager::AsteroidsManager(Game* game) {
 }
 
 void AsteroidsManager::createAsteroids() {
-    CoordXY asteroidCoord = {0, 0};
+    Vector2D asteroidCoord = {0, 0};
     Velocity asteroidVelocity = {0, 0};
     int minVLimit = 100;
     int maxVLimit = 300;
     int angleRange = 180;
     if (this->numAsteroids < this->asteroidsLimit) {
-        //int newAmountAsteroids = this->game->getNumAsteroids() + 1;
-        //this->game->setNumAsteroids(newAmountAsteroids);
         this->numAsteroids += 1;
 
         int wSreen, hSreen;
@@ -36,8 +34,8 @@ void AsteroidsManager::createAsteroids() {
     }
 }
 
-CoordXY AsteroidsManager::randomizeAppearCoord(int wWindow, int hWindow, int wMap, int hMap) {
-    CoordXY randomXY = {0, 0};
+Vector2D AsteroidsManager::randomizeAppearCoord(int wWindow, int hWindow, int wMap, int hMap) {
+    Vector2D randomXY = {0, 0};
     uint8_t randomSide = RANDRANGE_0_1 * 3;
 
     if (randomSide == 0) {
