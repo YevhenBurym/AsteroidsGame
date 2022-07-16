@@ -8,6 +8,8 @@
 #include "AsteroidsManager.h"
 #include "InputComponent.h"
 #include "Collisions.h"
+#include "SpaceShip.h"
+#include "Asteroid.h"
 
 class AsteroidsManager;
 class InputComponent;
@@ -15,7 +17,7 @@ class Collisions;
 
 class Game {
 private:
-    Avatar* avatar;
+    SpaceShip* ship;
     InputComponent* inputHandler;
     Collisions* collisions;
     Map* map;
@@ -26,7 +28,7 @@ private:
     int ammoLimit;
     bool quit;
     std::vector<GameObject*> gameObjects;
-    void createAvatar();
+    void createPlayer();
     void renderObjects();
     void calcObjectOffset();
 public:
@@ -47,7 +49,7 @@ public:
     int getAmmoLimit() const;
     int getAsteroidslimit() const;
     std::vector<GameObject*>& getObjects();
-    Avatar* getAvatar() const;
+    SpaceShip* getPlayer() const;
 
     void runGame();
 };

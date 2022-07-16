@@ -21,18 +21,18 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
     this->map = new Map(this->wMap, this->hMap, this->gameWindow);
 }
 
-void Game::createAvatar() {
+void Game::createPlayer() {
     Vector2D avatarCoord{0,0};
     avatarCoord.x = this->map->getWMap()/2 - this->map->getMapOffsetCoord().x;
     avatarCoord.y = this->map->getHMap()/2 - this->map->getMapOffsetCoord().y;
-    this->avatar = new Avatar(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(), this->map);
-    this->gameObjects.push_back(this->avatar);
+    this->ship = new SpaceShip(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(), this->map);
+    this->gameObjects.push_back(this->ship);
 }
 
 bool Game::init() {
     this->map->mapInit();
     this->collisions = new Collisions(this);
-    this->createAvatar();
+    this->createPlayer();
     this->asterManager = new AsteroidsManager(this);
     return true;
 }
@@ -59,7 +59,7 @@ void Game::update() {
     this->collisions->check();
     this->map->deAcceleration();
     this->calcObjectOffset();
-    this->avatar->shipHeadAngle();
+    this->ship->shipHeadAngle();
 }
 
 void Game::render() {
@@ -138,8 +138,8 @@ std::vector<GameObject *> &Game::getObjects() {
     return this->gameObjects;
 }
 
-Avatar* Game::getAvatar() const {
-    return this->avatar;
+SpaceShip* Game::getPlayer() const {
+    return this->ship;
 }
 
 Game::~Game() {
@@ -153,7 +153,7 @@ void Game::renderObjects() {
         object->calcCoord(object->getVxy(), 0.001);
         object->render();
     }
-    this->avatar->getReticle()->render();
+    this->ship->getReticle()->render();
 }
 
 void Game::calcObjectOffset() {

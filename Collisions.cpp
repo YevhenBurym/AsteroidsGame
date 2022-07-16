@@ -155,11 +155,11 @@ void Collisions::check() {
             int minDist = (*it1)->getRadius() + (*it2)->getRadius();
 
             if (hypot(xyCentrVector.x, xyCentrVector.y) < minDist && hypot(xyCentrVector.x, xyCentrVector.y) > minDist / 2) {
-                if (dynamic_cast<Avatar*>(*it1) && dynamic_cast<Bullet*>(*it2) ||
+                if (dynamic_cast<SpaceShip*>(*it1) && dynamic_cast<Bullet*>(*it2) ||
                     dynamic_cast<Bullet*>(*it1) && dynamic_cast<Bullet*>(*it2)) {
                     break;
                 }
-                else if (dynamic_cast<Avatar*>(*it1) && !dynamic_cast<Bullet*>(*it2)) {
+                else if (dynamic_cast<SpaceShip*>(*it1) && !dynamic_cast<Bullet*>(*it2)) {
                     this->game->restart();
                     return;
                 }
@@ -174,9 +174,9 @@ void Collisions::check() {
                     delete temp1;
                     delete temp2;
                     int newAsteroidsAmount = this->game->getAsterManager()->getNumAsteroids() - 1;
-                    int newBulletsAmount = this->game->getAvatar()->getNumBullets() - 1;
+                    int newBulletsAmount = this->game->getPlayer()->getNumBullets() - 1;
                     this->game->getAsterManager()->setNumAsteroids(newAsteroidsAmount);
-                    this->game->getAvatar()->setNumBullets(newBulletsAmount);
+                    this->game->getPlayer()->setNumBullets(newBulletsAmount);
 
                     break;
                 }
@@ -202,9 +202,9 @@ void Collisions::check() {
                     bigAster->divide(this->game->getObjects());
 
                     int newAsteroidsAmount = this->game->getAsterManager()->getNumAsteroids() + 1;
-                    int newBulletsAmount = this->game->getAvatar()->getNumBullets() - 1;
+                    int newBulletsAmount = this->game->getPlayer()->getNumBullets() - 1;
                     this->game->getAsterManager()->setNumAsteroids(newAsteroidsAmount);
-                    this->game->getAvatar()->setNumBullets(newBulletsAmount);
+                    this->game->getPlayer()->setNumBullets(newBulletsAmount);
 
                     delete temp1;
                     delete temp2;
