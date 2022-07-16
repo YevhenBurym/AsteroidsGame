@@ -36,20 +36,20 @@ void InputComponent::onKeyPressed(SDL_Keycode key) {
 
     switch( key ) {
         case SDLK_UP:
-            this->game->getMap()->setV(V, 270);
-            //this->game->getMap()->setVx(10);
+            //this->game->getMap()->setV(V, 270);
+            this->game->getMap()->setVy(1);
             break;
         case SDLK_DOWN:
-            this->game->getMap()->setV(V, 90);
-            //this->game->getMap()->setVx(10);
+            //this->game->getMap()->setV(V, 90);
+            this->game->getMap()->setVy(-1);
             break;
         case SDLK_LEFT:
-            this->game->getMap()->setV(V, 0);
-            //this->game->getMap()->setVx(10);
+            //this->game->getMap()->setV(V, 0);
+            this->game->getMap()->setVx(1);
             break;
         case SDLK_RIGHT:
-            this->game->getMap()->setV(V, 180);
-            //this->game->getMap()->setVx(10);
+            //this->game->getMap()->setV(V, 180);
+            this->game->getMap()->setVx(-1);
             break;
         default:
             break;
@@ -60,15 +60,19 @@ void InputComponent::onKeyReleased(SDL_Keycode key) {
     switch( key ) {
         case SDLK_UP:
             this->game->getMap()->setIsNeededDeacc(true);
+            //this->game->getMap()->setVy(0);
             break;
         case SDLK_DOWN:
             this->game->getMap()->setIsNeededDeacc(true);
+            //this->game->getMap()->setVy(0);
             break;
         case SDLK_LEFT:
-            this->game->getMap()->setIsNeededDeacc(true);
+           this->game->getMap()->setIsNeededDeacc(true);
+            //this->game->getMap()->setVx(0);
             break;
         case SDLK_RIGHT:
-            this->game->getMap()->setIsNeededDeacc(true);
+           this->game->getMap()->setIsNeededDeacc(true);
+            //this->game->getMap()->setVx(0);
             break;
         default:
             break;

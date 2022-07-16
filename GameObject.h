@@ -27,13 +27,11 @@ public:
     virtual void setXof(double x);
     virtual void setYof(double y);
     virtual void setVxy(Vector2D vxy);
-    virtual void setV(double v, double theta);
     virtual double getX() const;
     virtual double getY() const;
     virtual double getXrel() const;
     virtual double getYrel() const;
     virtual Vector2D getVxy() const;
-    virtual Velocity getV() const;
     virtual double getMass() const;
     virtual double getRadius() const;
     virtual void render() const;

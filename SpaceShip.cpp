@@ -67,7 +67,7 @@ void SpaceShip::shipHeadAngle() {
     int yAvatar = this->coord.y;
     double xRet = this->reticle->getX();
     double yRet = this->reticle->getY();
-    if (this->map->getV().v > 0) {
+    if ( this->map->getVx() != 0 || this->map->getVy() != 0 ) {
         xAvatar -= this->map->getX();
         yAvatar -= this->map->getY();
         xRet -= this->map->getX();
@@ -91,7 +91,7 @@ void SpaceShip::shipHeadAngle() {
 void SpaceShip::makeShoot(std::vector<GameObject*>& objects) {
     Vector2D avatarCoord{this->coord.x, this->coord.y};
     this->shipHeadAngle();
-    if (this->map->getV().v > 0) {
+    if ( this->map->getVx() != 0 || this->map->getVy() != 0 ) {
         avatarCoord.x -= this->map->getX();
         avatarCoord.y -= this->map->getY();
     }

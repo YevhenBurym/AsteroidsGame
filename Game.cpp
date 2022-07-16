@@ -157,9 +157,9 @@ void Game::renderObjects() {
 }
 
 void Game::calcObjectOffset() {
-    this->map->calcCoord(this->map->getVx(), this->map->getVy(), 0.001);
+    this->map->calcCoord(this->map->getVx(), this->map->getVy(), 0.5);
 
-    if (this->map->getV().v) {
+    if (this->map->getVx() != 0 || this->map->getVy() != 0) {
         for (auto & gameObject : this->gameObjects) {
             gameObject->setXof(this->map->getX());
             gameObject->setYof(this->map->getY());

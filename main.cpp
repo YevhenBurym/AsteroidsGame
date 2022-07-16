@@ -5,8 +5,8 @@ int main(int argc, char* argv[]) {
 	//-window 800x600 - map 1000x1000 - num_asteroids 10 - num_ammo 3 - ability_probability 0.3
 	int wScreen = 800;
 	int hScreen = 600;
-	int wMap = 400;
-	int hMap = 400;
+	int wMap = 500;
+	int hMap = 500;
 	int asteroidsLimit = 5;
 	int ammoLimit = 3;
 	double abilityProrability = 0.3;

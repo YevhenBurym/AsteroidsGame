@@ -59,7 +59,7 @@ void GameObject::setY(double y) {
     this->coord.y = y;
 }
 
-void GameObject::setXof(double x){
+void GameObject::setXof(double x) {
     this->xOf = x;
 }
 
@@ -69,13 +69,6 @@ void GameObject::setYof(double y) {
 
 void GameObject::setVxy(Vector2D vxy) {
     this->Vxy = vxy;
-}
-
-void GameObject::setV(double v, double theta) {
-    this->V.v = v;
-    this->V.theta = theta;
-    this->Vxy.x = v * cos(theta * RAD);
-    this->Vxy.y = -v * sin(theta * RAD);
 }
 
 double GameObject::getX() const {
@@ -95,10 +88,6 @@ double GameObject::getYrel() const {
 
 Vector2D GameObject::getVxy() const {
     return this->Vxy;
-}
-
-Velocity GameObject::getV() const {
-    return this->V;
 }
 
 double GameObject::getMass() const {

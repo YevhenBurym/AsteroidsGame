@@ -30,8 +30,7 @@ class Map {
 private:
 	int hMap, wMap;
 	Vector2D xyRelative;
-	Velocity V;
-	int Vx,Vy;
+	float Vx,Vy;
 	Vector2D offset;
     MapSprites sprites;
     UnitSprites unitSprites;
@@ -53,14 +52,12 @@ public:
     void mapInit();
 	void setX(double x);
 	void setY(double y);
-	void setV(double v, double theta);
     void setVx(double vx);
     void setVy(double vy);
 	double getX() const;
 	double getY() const;
 	double getVx() const;
 	double getVy() const;
-	Velocity getV() const;
     void draw();
     UnitSprites& getUnitSprites();
     void deAcceleration();

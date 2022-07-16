@@ -49,22 +49,11 @@ double Map::getVy() const {
 	return this->Vy;
 }
 
-Velocity Map::getV() const {
-	return this->V;
-}
-
 void Map::setX(double x) {
 	this->xyRelative.x = x;
 }
 void Map::setY(double y) {
 	this->xyRelative.y = y;
-}
-
-void Map::setV(double v, double theta) {
-	this->V.v = v;
-	this->V.theta = theta;
-	this->Vx = v * cos(this->V.theta * 3.14/180);
-	this->Vy = -v * sin(this->V.theta * 3.14/180);
 }
 
 void Map::setVx(double vx) {
@@ -163,27 +152,33 @@ void Map::mapInit() {
     this->window->getSize(wScreen,hScreen);
     this->offset.x = wMap / 2 - wScreen / 2;
     this->offset.y = hMap / 2 - hScreen / 2;
-    this->xyRelative.x = 0;
-    this->xyRelative.y = 0;
-    this->V.v = 0;
-    this->V.theta = 0;
+    this->xyRelative = {0,0};
     this->Vx = 0;
     this->Vy = 0;
 }
 
 void Map::deAcceleration() {
-    double step = 0.001;
-    double acc = 500;
-    double vMap = this->V.v;
-    double thetaMap = this->V.theta;
+    float acc = 0.003;
+    float accuracy = 0.001;
+
     if (isNeedDeAcc) {
-        if (vMap > 0) {
-            vMap -= acc * step;
+        if (this->Vx > 0) {
+            this->Vx -= acc;
+        } else if (this->Vx < 0) {
+            this->Vx += acc;
         }
-        else {
+
+        if (this->Vy > 0) {
+            this->Vy -= acc;
+        } else if (this->Vy < 0) {
+            this->Vy += acc;
+        }
+
+        if ( std::abs(this->Vx) <= accuracy && std::abs(this->Vy) <= accuracy ) {
+            this->Vx = 0;
+            this->Vy = 0;
             isNeedDeAcc = false;
         }
-        this->setV(vMap, thetaMap);
     }
 }
 
