@@ -16,7 +16,8 @@ add_executable(Asteroids main.cpp
         InputComponent.h InputComponent.cpp
         Collisions.h Collisions.cpp
         SpaceShip.h SpaceShip.cpp
-        Asteroid.h Asteroid.cpp)
+        Asteroid.h Asteroid.cpp
+        Vector2D.h Vector2D.cpp)
 
 include_directories(D:/2.SelfStudy/AsteroidsGame)
 

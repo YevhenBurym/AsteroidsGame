@@ -18,7 +18,7 @@ void InputComponent::handleInput(SDL_Event& event) {
     }
 
     if (event.type == SDL_MOUSEMOTION) {
-        this->onMouseMove(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+        this->onMouseMove(event.motion.x, event.motion.y);
         event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
     }
 
@@ -32,23 +32,17 @@ void InputComponent::handleInput(SDL_Event& event) {
 }
 
 void InputComponent::onKeyPressed(SDL_Keycode key) {
-    int V = 300;
-
     switch( key ) {
         case SDLK_UP:
-            //this->game->getMap()->setV(V, 270);
             this->game->getMap()->setVy(1);
             break;
         case SDLK_DOWN:
-            //this->game->getMap()->setV(V, 90);
             this->game->getMap()->setVy(-1);
             break;
         case SDLK_LEFT:
-            //this->game->getMap()->setV(V, 0);
             this->game->getMap()->setVx(1);
             break;
         case SDLK_RIGHT:
-            //this->game->getMap()->setV(V, 180);
             this->game->getMap()->setVx(-1);
             break;
         default:
@@ -60,19 +54,15 @@ void InputComponent::onKeyReleased(SDL_Keycode key) {
     switch( key ) {
         case SDLK_UP:
             this->game->getMap()->setIsNeededDeacc(true);
-            //this->game->getMap()->setVy(0);
             break;
         case SDLK_DOWN:
             this->game->getMap()->setIsNeededDeacc(true);
-            //this->game->getMap()->setVy(0);
             break;
         case SDLK_LEFT:
            this->game->getMap()->setIsNeededDeacc(true);
-            //this->game->getMap()->setVx(0);
             break;
         case SDLK_RIGHT:
            this->game->getMap()->setIsNeededDeacc(true);
-            //this->game->getMap()->setVx(0);
             break;
         default:
             break;
@@ -111,7 +101,7 @@ void InputComponent::onMouseButtonReleased(int MouseButton) {
     }
 }
 
-void InputComponent::onMouseMove(int x, int y, int xrelative, int yrelative) {
+void InputComponent::onMouseMove(int x, int y) {
     this->game->getPlayer()->getReticle()->setX(x);
     this->game->getPlayer()->getReticle()->setY(y);
 }

@@ -14,7 +14,7 @@ class InputComponent {
 public:
     InputComponent(Game* game);
     void handleInput(SDL_Event& event);
-    void onMouseMove(int x, int y, int xrelative, int yrelative);
+    void onMouseMove(int x, int y);
     void onKeyPressed(SDL_Keycode key);
     void onKeyReleased(SDL_Keycode key);
     void onMouseButtonPressed(int MouseButton);
@@ -26,7 +26,7 @@ class PlayerInputComponent: public InputComponent {
 public:
     PlayerInputComponent(Game* game);
     void handleInput(SDL_Event& event);
-    void onMouseMove(int x, int y, int xrelative, int yrelative);
+    void onMouseMove(int x, int y);
     void onKeyPressed(SDL_Keycode key);
     void onKeyReleased(SDL_Keycode key);
     void onMouseButtonPressed(int MouseButton);
