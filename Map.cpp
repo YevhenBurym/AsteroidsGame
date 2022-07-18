@@ -126,6 +126,7 @@ void Map::draw() {
     this->drawBorder();
 }
 
+
 void Map::createSprites() {
     this->unitSprites.spaceshipSprite = new Sprite("data\\ship.png",this->window);
     this->unitSprites.smallAsteroidSprite = new Sprite("data\\small.png",this->window);
