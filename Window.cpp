@@ -13,7 +13,7 @@ Window::Window(const char* name, int width, int height, bool isFullscreen) {
     this->wWindow = 0;
 
     //Initialize SDL
-    if ( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+    if ( SDL_Init(SDL_INIT_EVERYTHING) < 0 ) {
         std::cout << "SDL could not initialize! SDL Error: %s" << SDL_GetError() << std::endl;
     } else {
         //Set texture filtering to linear
@@ -33,7 +33,7 @@ Window::Window(const char* name, int width, int height, bool isFullscreen) {
             //windowSize
             SDL_GetWindowSize(this->window, &this->wWindow, &this->hWindow);
             //Create vsynced renderer for window
-            this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED/*| SDL_RENDERER_PRESENTVSYNC*/ );
+            this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED );
             if (this->renderer == nullptr) {
                 std::cout << "Renderer could not be created! SDL Error: %s\n" << SDL_GetError();
             } else {
@@ -83,7 +83,7 @@ uint32_t Window::getTickCounting() {
 void Window::render() {
     SDL_RenderClear(this->renderer);
 
-    //SDL_RenderClear(this->renderer);
+
     SDL_RenderPresent( this->renderer );
 }
 

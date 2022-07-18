@@ -31,11 +31,6 @@ double Vector::len() const {
     return hypot(this->x, this->y);
 }
 
-void Vector::scale(double k) {
-    this->x *= k;
-    this->y *= k;
-}
-
 bool Vector::operator==(const Vector& other) const {
     bool isEqual = this->x == other.getX() && this->y == other.getY();
 
@@ -48,32 +43,29 @@ bool Vector::operator!=(const Vector& other) const {
     return isNotEqual; 
 }
 
-Vector& Vector::operator+=(const Vector& other) {
+void Vector::operator+=(const Vector& other) {
     this->x += other.getX();
     this->y += other.getY();
-
-    return *this;
 }
 
-Vector& Vector::operator-=(const Vector& other) {
+void Vector::operator-=(const Vector& other) {
     this->x -= other.getX();
     this->y -= other.getY();
-
-    return *this;
 }
 
-Vector& Vector::operator*=(const Vector& other) {
+void Vector::operator*=(const Vector& other) {
     this->x *= other.getX();
     this->y *= other.getY();
-
-    return *this;
 }
 
-Vector& Vector::operator/=(const Vector& other) {
+void Vector::operator*=(double scalar) {
+    this->x *= scalar;
+    this->y *= scalar;
+}
+
+void Vector::operator/=(const Vector& other) {
     this->x /= other.getX();
     this->y /= other.getY();
-
-    return *this;
 }
 
 Vector Vector::operator+(const Vector& other) {
@@ -102,6 +94,17 @@ Vector Vector::operator/(const Vector& other) {
     div /= other;
 
     return div;
+}
+
+Vector Vector::operator*(double scalar) const {
+    return {this->x * scalar, this->y * scalar};
+}
+
+void Vector::normalize() {
+    double l = this->len();
+    if ( l > 0) {
+        (*this) *= (1 / l);
+    }
 }
 
 std::ostream& operator<<(std::ostream& out, const Vector& vector) {
