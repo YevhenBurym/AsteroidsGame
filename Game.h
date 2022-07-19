@@ -17,6 +17,11 @@ class Collisions;
 
 class Game {
 private:
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    int hWindow, wWindow;
+
+
     SpaceShip* ship;
     InputComponent* inputHandler;
     Collisions* collisions;
@@ -31,6 +36,7 @@ private:
     void createPlayer();
     void renderObjects();
     void calcObjectOffset();
+    bool initWindow(const char* name, int width, int height, bool isFullscreen);
 public:
     Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
     ~Game();
@@ -43,6 +49,7 @@ public:
 
     void restart();
 
+    SDL_Renderer* getRenderer() const;
     Map* getMap() const;
     Window* getWindow() const;
     AsteroidsManager* getAsterManager() const;

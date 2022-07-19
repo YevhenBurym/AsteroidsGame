@@ -8,11 +8,11 @@
 
 class Sprite {
 private:
-    Window* window;
+    SDL_Renderer* renderer;
     SDL_Texture* texture;
     int wSprite, hSprite;
 public:
-    Sprite(const char* pathToTexture, Window* window);
+    Sprite(const char* pathToTexture, SDL_Renderer* renderer);
     ~Sprite();
     void draw(int x, int y);
     void draw(int x, int y, double angle);

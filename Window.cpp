@@ -8,7 +8,6 @@
 Window::Window(const char* name, int width, int height, bool isFullscreen) {
     this->window = nullptr;
     this->renderer = nullptr;
-    this->isCreate = false;
     this->hWindow = 0;
     this->wWindow = 0;
 
@@ -45,7 +44,6 @@ Window::Window(const char* name, int width, int height, bool isFullscreen) {
                 if (!(IMG_Init(imgFlags) & imgFlags)) {
                     std::cout << "SDL_image could not initialize! SDL_image Error: %s\n" << IMG_GetError();
                 } else {
-                    this->isCreate = true;
                 }
             }
         }
@@ -67,10 +65,6 @@ SDL_Renderer *Window::getRenderer() const {
     return this->renderer;
 }
 
-bool Window::getIsCreate() const {
-    return this->isCreate;
-}
-
 void Window::getSize(int& wScreen, int& hScreen) {
     wScreen = this->wWindow;
     hScreen = this->hWindow;
@@ -78,13 +72,6 @@ void Window::getSize(int& wScreen, int& hScreen) {
 
 uint32_t Window::getTickCounting() {
     return SDL_GetTicks();
-}
-
-void Window::render() {
-    SDL_RenderClear(this->renderer);
-
-
-    SDL_RenderPresent( this->renderer );
 }
 
 SDL_Texture* Window::createTexture(const char* path) {

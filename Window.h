@@ -12,17 +12,16 @@ class Window {
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
-    bool isCreate;
     int hWindow, wWindow;
 public:
     Window(const char* name, int width, int height, bool isFullscreen);
     ~Window();
+
     SDL_Renderer* getRenderer() const;
-    bool getIsCreate() const;
     void getSize(int& wScreen, int& hScreen);
     uint32_t getTickCounting();
-    void render();
     void showCursor(bool isShow);
+
     SDL_Texture* createTexture(const char* path);
     void drawTexture(SDL_Texture *texture, int x, int y);
     void drawTexture(SDL_Texture *texture, int x, int y, double angle);

@@ -17,30 +17,17 @@ void SpaceShip::limitateCoord() {
 
     if (x >= maxXCoord) {
         this->map->setX(minXCoord - this->map->getX());
-//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
-//        std::cout <<"MaxCoordX "<< maxXCoord << std::endl;
-//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
     else if (x < minXCoord) {
         this->map->setX(maxXCoord + this->map->getX());
-//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
-//        std::cout <<"MinCoordX "<< minXCoord << std::endl;
-//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
 
     if (y >= maxYCoord) {
         this->map->setY(minYCoord - this->map->getY());
-//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
-//        std::cout <<"MaxCoordY "<< maxYCoord << std::endl;
-//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
     else if (y < minYCoord) {
         this->map->setY(maxYCoord + this->map->getY());
-//        std::cout <<"Map XY offset "<< this->map->getMapOffsetCoord().x << ", " <<  this->map->getMapOffsetCoord().y << std::endl;
-//        std::cout <<"MinCoordY "<< minYCoord << std::endl;
-//        std::cout <<"Coords "<< x << ", " <<  y<< std::endl;
     }
-    //std::cout <<"MaxCoordY"<< x << ", " <<  y<< std::endl;
 }
 
 SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
@@ -75,7 +62,6 @@ void SpaceShip::shipHeadAngle() {
     }
     double alpha = 0;
     Vector2D xyDirVector = {xAvatar - xRet, yAvatar - yRet };
-    double dist = hypot(xyDirVector.getX(), xyDirVector.getY()) ;
 
     if ((xyDirVector.getX() == 0) && (xyDirVector.getY() < 0)) {
         alpha = -M_PI / 2;

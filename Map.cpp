@@ -65,8 +65,8 @@ void Map::setVy(double vy) {
 }
 
 void Map::createMapSprites() {
-    this->sprites.backgroundSprite = new Sprite("data\\back.png",this->window);
-    this->sprites.dotSprite = new Sprite("data\\border.png",this->window);
+    this->sprites.backgroundSprite = new Sprite("data\\back.png",this->window->getRenderer());
+    this->sprites.dotSprite = new Sprite("data\\border.png",this->window->getRenderer());
 }
 
 void Map::drawBackground() {
@@ -127,11 +127,11 @@ void Map::draw() {
 }
 
 void Map::createSprites() {
-    this->unitSprites.spaceshipSprite = new Sprite("data\\ship.png",this->window);
-    this->unitSprites.smallAsteroidSprite = new Sprite("data\\small.png",this->window);
-    this->unitSprites.bigAsteroidSprite = new Sprite("data\\big.png",this->window);
-    this->unitSprites.reticleSprite = new Sprite("data\\reticle.png",this->window);
-    this->unitSprites.bulletSprite = new Sprite("data\\bullet.png",this->window);
+    this->unitSprites.spaceshipSprite = new Sprite("data\\ship.png",this->window->getRenderer());
+    this->unitSprites.smallAsteroidSprite = new Sprite("data\\small.png",this->window->getRenderer());
+    this->unitSprites.bigAsteroidSprite = new Sprite("data\\big.png",this->window->getRenderer());
+    this->unitSprites.reticleSprite = new Sprite("data\\reticle.png",this->window->getRenderer());
+    this->unitSprites.bulletSprite = new Sprite("data\\bullet.png",this->window->getRenderer());
 }
 
 void Map::destroySprites() {
