@@ -17,8 +17,8 @@ Map::~Map() {
 
 
 void Map::calcCoord(double Vx, double Vy, double step) {
-	this->xyRelative.x += Vx * step;
-	this->xyRelative.y += Vy * step;
+    this->xyRelative.setX(this->xyRelative.getX() + Vx * step);
+    this->xyRelative.setY(this->xyRelative.getY() + Vy * step);
 }
 
 int Map::getHMap() const {
@@ -34,11 +34,11 @@ Vector2D Map::getMapOffsetCoord() const {
 }
 
 double Map::getX() const {
-	return this->xyRelative.x;
+	return this->xyRelative.getX();
 }
 
 double Map::getY() const {
-	return this->xyRelative.y;
+	return this->xyRelative.getY();
 }
 
 double Map::getVx() const {
@@ -50,10 +50,10 @@ double Map::getVy() const {
 }
 
 void Map::setX(double x) {
-	this->xyRelative.x = x;
+	this->xyRelative.setX(x);
 }
 void Map::setY(double y) {
-	this->xyRelative.y = y;
+	this->xyRelative.setY(y);
 }
 
 void Map::setVx(double vx) {
@@ -95,10 +95,10 @@ void Map::drawBorder() {
     int hSprite, wSprite;
     this->sprites.dotSprite->getSize(wSprite,hSprite);
 
-    int minXCoord = 0 - this->getMapOffsetCoord().x + this->getX();
-    int maxXCoord = this->getWMap() - this->getMapOffsetCoord().x + this->getX();
-    int minYCoord = 0 - this->getMapOffsetCoord().y + this->getY();
-    int maxYCoord = this->getHMap() - this->getMapOffsetCoord().y + this->getY();
+    int minXCoord = 0 - this->getMapOffsetCoord().getX() + this->getX();
+    int maxXCoord = this->getWMap() - this->getMapOffsetCoord().getX() + this->getX();
+    int minYCoord = 0 - this->getMapOffsetCoord().getY() + this->getY();
+    int maxYCoord = this->getHMap() - this->getMapOffsetCoord().getY() + this->getY();
 
     if (maxYCoord % hSprite != 0) {
         maxYCoord += hSprite;
@@ -150,8 +150,8 @@ void Map::mapInit() {
     this->isNeedDeAcc = false;
     int wScreen, hScreen;
     this->window->getSize(wScreen,hScreen);
-    this->offset.x = wMap / 2 - wScreen / 2;
-    this->offset.y = hMap / 2 - hScreen / 2;
+    this->offset.setX(wMap / 2 - wScreen / 2);
+    this->offset.setY(hMap / 2 - hScreen / 2);
     this->xyRelative = {0,0};
     this->Vx = 0;
     this->Vy = 0;

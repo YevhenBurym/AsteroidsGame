@@ -12,6 +12,7 @@ protected:
     Vector2D coord;
     Velocity V;
     Vector2D Vxy;
+    Vector2D acceleration;
     double xOf, yOf;
     double mass;
     double radius;

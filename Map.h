@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "Sprite.h"
+#include "Vector2D.h"
 
 struct MapSprites {
     Sprite* backgroundSprite;
@@ -14,11 +15,6 @@ struct UnitSprites {
     Sprite* spaceshipSprite;
     Sprite* reticleSprite;
     Sprite* bulletSprite;
-};
-
-struct Vector2D {
-	double x;
-	double y;
 };
 
 struct Velocity {

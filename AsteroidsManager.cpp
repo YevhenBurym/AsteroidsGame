@@ -39,20 +39,20 @@ Vector2D AsteroidsManager::randomizeAppearCoord(int wWindow, int hWindow, int wM
     uint8_t randomSide = RANDRANGE_0_1 * 3;
 
     if (randomSide == 0) {
-        randomXY.y = RANDRANGE_0_1 * hMap;
-        randomXY.x = RANDRANGE_0_1 * (wMap - wWindow) / 2 - 0 + 0;
+        randomXY.setY(RANDRANGE_0_1 * hMap);
+        randomXY.setX(RANDRANGE_0_1 * (wMap - wWindow) / 2 - 0 + 0);
     }
     else if (randomSide == 1) {
-        randomXY.x = RANDRANGE_0_1 * wMap;
-        randomXY.y = RANDRANGE_0_1 * (hMap - hWindow) / 2 - 0 + 0;
+        randomXY.setX(RANDRANGE_0_1 * wMap);
+        randomXY.setY(RANDRANGE_0_1 * (hMap - hWindow) / 2 - 0 + 0);
     }
     else if (randomSide == 2) {
-        randomXY.y = RANDRANGE_0_1 * hMap;
-        randomXY.x = RANDRANGE_0_1 * (wMap - wWindow) + wWindow;
+        randomXY.setY(RANDRANGE_0_1 * hMap);
+        randomXY.setX(RANDRANGE_0_1 * (wMap - wWindow) + wWindow);
     }
     else if (randomSide == 3) {
-        randomXY.x = RANDRANGE_0_1 * wMap;
-        randomXY.y = RANDRANGE_0_1 * (hMap - hWindow) + hWindow;
+        randomXY.setX(RANDRANGE_0_1 * wMap);
+        randomXY.setY(RANDRANGE_0_1 * (hMap - hWindow) + hWindow);
     }
     return randomXY;
 }

@@ -13,66 +13,66 @@ void Collisions::fixCoord(GameObject* unit1, GameObject* unit2, Vector2D vectorB
     double currY2 = unit2->getY();
     double newX1 = 0, newY1 = 0, newX2 = 0, newY2 = 0;
     int minDist = unit1->getRadius() + unit2->getRadius();
-    double segmentDist = hypot(vectorBetween.x, vectorBetween.y) - minDist;
+    double segmentDist = hypot(vectorBetween.getX(), vectorBetween.getY()) - minDist;
 
-    if ((vectorBetween.x == 0) && (vectorBetween.y < 0)) {
+    if ((vectorBetween.getX() == 0) && (vectorBetween.getY() < 0)) {
         alpha = -M_PI / 2;
     }
-    else if ((vectorBetween.x == 0) && (vectorBetween.y > 0)) {
+    else if ((vectorBetween.getX() == 0) && (vectorBetween.getY() > 0)) {
         alpha = M_PI / 2;
     }
     else {
-        alpha = M_PI - atan2(vectorBetween.y, vectorBetween.x);
+        alpha = M_PI - atan2(vectorBetween.getY(), vectorBetween.getX());
     }
-    xyOffset.x = std::abs(segmentDist * cos(alpha));
-    xyOffset.y = std::abs(segmentDist * sin(alpha));
+    xyOffset.setX(std::abs(segmentDist * cos(alpha)));
+    xyOffset.setY(std::abs(segmentDist * sin(alpha)));
 
-    if ((vectorBetween.x > 0) && (vectorBetween.y > 0)) {
-        newX1 = currX1 + xyOffset.x;
-        newY1 = currY1 + xyOffset.y;
-        newX2 = currX2 - xyOffset.x;
-        newY2 = currY2 - xyOffset.y;
+    if ((vectorBetween.getX() > 0) && (vectorBetween.getY() > 0)) {
+        newX1 = currX1 + xyOffset.getX();
+        newY1 = currY1 + xyOffset.getY();
+        newX2 = currX2 - xyOffset.getX();
+        newY2 = currY2 - xyOffset.getY();
     }
-    else if ((vectorBetween.x < 0) && (vectorBetween.y > 0)) {
-        newX1 = currX1 - xyOffset.x;
-        newY1 = currY1 + xyOffset.y;
-        newX2 = currX2 + xyOffset.x;
-        newY2 = currY2 - xyOffset.y;
+    else if ((vectorBetween.getX() < 0) && (vectorBetween.getY() > 0)) {
+        newX1 = currX1 - xyOffset.getX();
+        newY1 = currY1 + xyOffset.getY();
+        newX2 = currX2 + xyOffset.getX();
+        newY2 = currY2 - xyOffset.getY();
     }
-    else if ((vectorBetween.x > 0) && (vectorBetween.y < 0)) {
-        newX1 = currX1 + xyOffset.x;
-        newY1 = currY1 - xyOffset.y;
-        newX2 = currX2 - xyOffset.x;
-        newY2 = currY2 + xyOffset.y;
+    else if ((vectorBetween.getX() > 0) && (vectorBetween.getY() < 0)) {
+        newX1 = currX1 + xyOffset.getX();
+        newY1 = currY1 - xyOffset.getY();
+        newX2 = currX2 - xyOffset.getX();
+        newY2 = currY2 + xyOffset.getY();
     }
-    else if ((vectorBetween.x < 0) && (vectorBetween.y < 0)) {
-        newX1 = currX1 - xyOffset.x;
-        newY1 = currY1 - xyOffset.y;
-        newX2 = currX2 + xyOffset.x;
-        newY2 = currY2 + xyOffset.y;
+    else if ((vectorBetween.getX()  < 0) && (vectorBetween.getY() < 0)) {
+        newX1 = currX1 - xyOffset.getX();
+        newY1 = currY1 - xyOffset.getY();
+        newX2 = currX2 + xyOffset.getX();
+        newY2 = currY2 + xyOffset.getY();
     }
-    else if ((vectorBetween.x == 0) && (vectorBetween.y > 0)) {
+    else if ((vectorBetween.getX()  == 0) && (vectorBetween.getY() > 0)) {
         newX1 = currX1;
-        newY1 = currY1 + xyOffset.y;
+        newY1 = currY1 + xyOffset.getY();
         newX2 = currX2;
-        newY2 = currY2 - xyOffset.y;
+        newY2 = currY2 - xyOffset.getY();
     }
-    else if ((vectorBetween.x == 0) && (vectorBetween.y < 0)) {
+    else if ((vectorBetween.getX()  == 0) && (vectorBetween.getY() < 0)) {
         newX1 = currX1;
-        newY1 = currY1 + xyOffset.y;
+        newY1 = currY1 + xyOffset.getY();
         newX2 = currX2;
-        newY2 = currY2 - xyOffset.y;
+        newY2 = currY2 - xyOffset.getY();
     }
-    else if ((vectorBetween.x < 0) && (vectorBetween.y == 0)) {
-        newX1 = currX1 - xyOffset.x;
+    else if ((vectorBetween.getX()  < 0) && (vectorBetween.getY() == 0)) {
+        newX1 = currX1 - xyOffset.getX();
         newY1 = currY1;
-        newX2 = currX2 + xyOffset.x;
+        newX2 = currX2 + xyOffset.getX();
         newY2 = currY2;
     }
-    else if ((vectorBetween.x > 0) && (vectorBetween.y == 0)) {
-        newX1 = currX1 - xyOffset.x;
+    else if ((vectorBetween.getX()  > 0) && (vectorBetween.getY() == 0)) {
+        newX1 = currX1 - xyOffset.getX();
         newY1 = currY1;
-        newX2 = currX2 + xyOffset.x;
+        newX2 = currX2 + xyOffset.getX();
         newY2 = currY2;
     }
 
@@ -94,24 +94,24 @@ void Collisions::calcVelocity(GameObject* unit1, GameObject* unit2, Vector2D vec
     double m1 = unit1->getMass();
     double m2 = unit2->getMass();
 
-    if ((vectorBetween.x == 0) && (vectorBetween.y < 0)) {
+    if ((vectorBetween.getX() == 0) && (vectorBetween.getY() < 0)) {
         alpha = -M_PI / 2;
     }
-    else if ((vectorBetween.x == 0) && (vectorBetween.y > 0)) {
+    else if ((vectorBetween.getX() == 0) && (vectorBetween.getY() > 0)) {
         alpha = M_PI / 2;
     }
     else {
-        alpha = M_PI - atan2(vectorBetween.y, vectorBetween.x);
+        alpha = M_PI - atan2(vectorBetween.getY(), vectorBetween.getX());
     }
 
-    Vcentr1 = unit1->getVxy().x * cos(alpha) - unit1->getVxy().y * sin(alpha);
-    Vcentr2 = unit2->getVxy().x * cos(alpha) - unit2->getVxy().y * sin(alpha);
+    Vcentr1 = unit1->getVxy().getX() * cos(alpha) - unit1->getVxy().getY() * sin(alpha);
+    Vcentr2 = unit2->getVxy().getX() * cos(alpha) - unit2->getVxy().getY() * sin(alpha);
 
     newVcentr1 = (2 * m2 * Vcentr2 + (m1 - m2) * Vcentr1) / (m1 + m2);
     newVcentr2 = (2 * m1 * Vcentr1 + (m2 - m1) * Vcentr2) / (m1 + m2);
 
-    Vtang1 = unit1->getVxy().y * cos(alpha) + unit1->getVxy().x * sin(alpha);
-    Vtang2 = unit2->getVxy().y * cos(alpha) + unit2->getVxy().x * sin(alpha);
+    Vtang1 = unit1->getVxy().getY() * cos(alpha) + unit1->getVxy().getX() * sin(alpha);
+    Vtang2 = unit2->getVxy().getY() * cos(alpha) + unit2->getVxy().getX() * sin(alpha);
 
     V1 = sqrt(newVcentr1 * newVcentr1 + Vtang1 * Vtang1);
     V2 = sqrt(newVcentr2 * newVcentr2 + Vtang2 * Vtang2);
@@ -136,10 +136,10 @@ void Collisions::calcVelocity(GameObject* unit1, GameObject* unit2, Vector2D vec
         phi2 = M_PI - atan2(Vtang2, newVcentr2);
     }
 
-    Vxy1.x = V1 * sin(phi1) * sin(alpha) - V1 * cos(phi1) * cos(alpha);
-    Vxy1.y = V1 * sin(phi1) * cos(alpha) + V1 * cos(phi1) * sin(alpha);
-    Vxy2.x = V2 * sin(phi2) * sin(alpha) - V2 * cos(phi2) * cos(alpha);
-    Vxy2.y = V2 * sin(phi2) * cos(alpha) + V2 * cos(phi2) * sin(alpha);
+    Vxy1.setX(V1 * sin(phi1) * sin(alpha) - V1 * cos(phi1) * cos(alpha));
+    Vxy1.setY(V1 * sin(phi1) * cos(alpha) + V1 * cos(phi1) * sin(alpha));
+    Vxy2.setX(V2 * sin(phi2) * sin(alpha) - V2 * cos(phi2) * cos(alpha));
+    Vxy2.setY(V2 * sin(phi2) * cos(alpha) + V2 * cos(phi2) * sin(alpha));
 
     unit1->setVxy(Vxy1);
     unit2->setVxy(Vxy2);
@@ -151,10 +151,10 @@ void Collisions::check() {
 
             Vector2D xyCentr1 = {(*it1)->getXrel() + (*it1)->getRadius(), (*it1)->getYrel() + (*it1)->getRadius() };
             Vector2D xyCentr2 = {(*it2)->getXrel() + (*it2)->getRadius(), (*it2)->getYrel() + (*it2)->getRadius() };
-            Vector2D xyCentrVector = {xyCentr1.x - xyCentr2.x, xyCentr1.y - xyCentr2.y };
+            Vector2D xyCentrVector = {xyCentr1.getX() - xyCentr2.getX(), xyCentr1.getY() - xyCentr2.getY() };
             int minDist = (*it1)->getRadius() + (*it2)->getRadius();
 
-            if (hypot(xyCentrVector.x, xyCentrVector.y) < minDist && hypot(xyCentrVector.x, xyCentrVector.y) > minDist / 2) {
+            if (hypot(xyCentrVector.getX(), xyCentrVector.getY()) < minDist && hypot(xyCentrVector.getX(), xyCentrVector.getY()) > minDist / 2) {
                 if (dynamic_cast<SpaceShip*>(*it1) && dynamic_cast<Bullet*>(*it2) ||
                     dynamic_cast<Bullet*>(*it1) && dynamic_cast<Bullet*>(*it2)) {
                     break;

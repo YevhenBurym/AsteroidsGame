@@ -23,8 +23,8 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
 
 void Game::createPlayer() {
     Vector2D avatarCoord{0,0};
-    avatarCoord.x = this->map->getWMap()/2 - this->map->getMapOffsetCoord().x;
-    avatarCoord.y = this->map->getHMap()/2 - this->map->getMapOffsetCoord().y;
+    avatarCoord.setX(this->map->getWMap()/2 - this->map->getMapOffsetCoord().getX());
+    avatarCoord.setY(this->map->getHMap()/2 - this->map->getMapOffsetCoord().getY());
     this->ship = new SpaceShip(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(), this->map);
     this->gameObjects.push_back(this->ship);
 }

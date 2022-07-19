@@ -8,12 +8,12 @@ Bullet::Bullet(Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map
 }
 
 void SpaceShip::limitateCoord() {
-    double minXCoord = 0 - this->map->getMapOffsetCoord().x;
-    double maxXCoord = this->map->getWMap() - this->map->getMapOffsetCoord().x;
-    double minYCoord = 0 - this->map->getMapOffsetCoord().y;
-    double maxYCoord = this->map->getHMap() - this->map->getMapOffsetCoord().y;
-    double x = this->coord.x + this->xOf;
-    double y = this->coord.y + this->yOf;
+    double minXCoord = 0 - this->map->getMapOffsetCoord().getX();
+    double maxXCoord = this->map->getWMap() - this->map->getMapOffsetCoord().getX();
+    double minYCoord = 0 - this->map->getMapOffsetCoord().getY();
+    double maxYCoord = this->map->getHMap() - this->map->getMapOffsetCoord().getY();
+    double x = this->coord.getX() + this->xOf;
+    double y = this->coord.getY() + this->yOf;
 
     if (x >= maxXCoord) {
         this->map->setX(minXCoord - this->map->getX());
@@ -54,17 +54,17 @@ SpaceShip::~SpaceShip() {
 }
 
 double SpaceShip::getXrel() const {
-    return this->coord.x;
+    return this->coord.getX();
 }
 
 double SpaceShip::getYrel() const {
-    return this->coord.y;
+    return this->coord.getY();
 }
 
 
 void SpaceShip::shipHeadAngle() {
-    int xAvatar = this->coord.x;
-    int yAvatar = this->coord.y;
+    int xAvatar = this->coord.getX();
+    int yAvatar = this->coord.getY();
     double xRet = this->reticle->getX();
     double yRet = this->reticle->getY();
     if ( this->map->getVx() != 0 || this->map->getVy() != 0 ) {
@@ -75,25 +75,25 @@ void SpaceShip::shipHeadAngle() {
     }
     double alpha = 0;
     Vector2D xyDirVector = {xAvatar - xRet, yAvatar - yRet };
-    double dist = hypot(xyDirVector.x, xyDirVector.y) ;
+    double dist = hypot(xyDirVector.getX(), xyDirVector.getY()) ;
 
-    if ((xyDirVector.x == 0) && (xyDirVector.y < 0)) {
+    if ((xyDirVector.getX() == 0) && (xyDirVector.getY() < 0)) {
         alpha = -M_PI / 2;
-    } else if ((xyDirVector.x == 0) && (xyDirVector.y > 0)) {
+    } else if ((xyDirVector.getX() == 0) && (xyDirVector.getY() > 0)) {
         alpha = M_PI / 2;
     } else {
-        alpha = M_PI - atan2(xyDirVector.y, xyDirVector.x);
+        alpha = M_PI - atan2(xyDirVector.getY(), xyDirVector.getX());
     }
     alpha = alpha * 180 / M_PI;
     this->angleShip = alpha; // для розрахунку направлення корабля
 }
 
 void SpaceShip::makeShoot(std::vector<GameObject*>& objects) {
-    Vector2D avatarCoord{this->coord.x, this->coord.y};
+    Vector2D avatarCoord{this->coord.getX(), this->coord.getY()};
     this->shipHeadAngle();
     if ( this->map->getVx() != 0 || this->map->getVy() != 0 ) {
-        avatarCoord.x -= this->map->getX();
-        avatarCoord.y -= this->map->getY();
+        avatarCoord.setX(avatarCoord.getX() - this->map->getX());
+        avatarCoord.setY(avatarCoord.getY() - this->map->getY());
     }
     if (this->numBullets < this->ammoLimit) {
         this->numBullets += 1;
@@ -116,8 +116,8 @@ Reticle* SpaceShip::getReticle() const {
 }
 
 void SpaceShip::render() const {
-    int x = this->coord.x - this->radius;
-    int y = this->coord.y - this->radius;
+    int x = this->coord.getX() - this->radius;
+    int y = this->coord.getY() - this->radius;
 
     this->sprite->draw(x, y,90 - this->angleShip);
 }
@@ -138,7 +138,7 @@ Reticle::Reticle(Sprite *sprite, Map *map): GameObject(Vector2D{0, 0}, 0, 0, spr
 }
 
 void Reticle::render() const {
-    int x = this->coord.x - this->xOf;
-    int y = this->coord.y - this->yOf;
+    int x = this->coord.getX() - this->xOf;
+    int y = this->coord.getY() - this->yOf;
     this->sprite->draw(x,y);
 }
