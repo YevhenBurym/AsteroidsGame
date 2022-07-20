@@ -16,7 +16,7 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
     this->quit = false;
-    this->initWindow("Asteroids", wScreen, hScreen, false);
+    //this->initWindow("Asteroids", wScreen, hScreen, false);
     this->gameWindow = new Window("Asteroids", wScreen, hScreen, false);
     this->map = new Map(this->wMap, this->hMap, this->gameWindow);
 }
@@ -30,6 +30,7 @@ void Game::createPlayer() {
 }
 
 bool Game::init() {
+    this->inputHandler = new InputComponent(this);
     this->map->mapInit();
     this->collisions = new Collisions(this);
     this->createPlayer();
@@ -41,6 +42,7 @@ void Game::close() {
 
     delete this->collisions;
     delete this->asterManager;
+    delete this->inputHandler;
 
     for (auto it = this->gameObjects.begin(); it != this->gameObjects.end(); ) {
         delete (*it++);
@@ -63,13 +65,13 @@ void Game::update() {
 }
 
 void Game::render() {
-    SDL_RenderClear(this->renderer);
+    SDL_RenderClear(this->gameWindow->getRenderer());
 
     this->map->draw();
     this->renderObjects();
     this->gameWindow->showCursor(false);
 
-    SDL_RenderPresent(this->renderer);
+    SDL_RenderPresent(this->gameWindow->getRenderer());
 }
 
 void Game::restart() {
@@ -86,30 +88,17 @@ Window *Game::getWindow() const {
 }
 
 void Game::runGame() {
-    const int fps = 1000;
+    const int fps = 60;
     const int frameDelay = 1000 / fps;
     Uint32 startTime;
     int frameTime;
 
     this->init();
 
-    //Event handler
-    SDL_Event event;
-    this->inputHandler = new InputComponent(this);
     //While application is running
     while( !this->quit ) {
 
-        //Handle events on queue
-        while( SDL_PollEvent( &event ) != 0 ) {
-            //User requests quit
-            if( event.type == SDL_QUIT )  {
-                this->quit = true;
-            }
-            if( event.type == SDL_KEYDOWN && event.key.repeat == 0 && event.key.keysym.sym == SDLK_ESCAPE) {
-                this->quit = true;
-            }
-            this->inputHandler->handleInput(event);
-        }
+        this->inputHandler->update();
 
         startTime = this->getWindow()->getTickCounting();
         this->update();
@@ -124,6 +113,7 @@ void Game::runGame() {
         SDL_Delay(1);
     }
     this->close();
+    this->clean();
 }
 
 int Game::getAmmoLimit() const {
@@ -221,5 +211,19 @@ bool Game::initWindow(const char* name, int width, int height, bool isFullscreen
 
 SDL_Renderer *Game::getRenderer() const {
     return this->renderer;
+}
+
+void Game::clean() {
+    SDL_DestroyRenderer( this->renderer );
+    SDL_DestroyWindow( this->window );
+    this->renderer = nullptr;
+    this->window = nullptr;
+    //Quit SDL subsystems
+    IMG_Quit();
+    SDL_Quit();
+}
+
+void Game::setQuit(bool quit) {
+    this->quit = quit;
 }
 

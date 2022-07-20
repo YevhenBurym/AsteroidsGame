@@ -13,7 +13,7 @@ class InputComponent {
     Game* game;
 public:
     InputComponent(Game* game);
-    void handleInput(SDL_Event& event);
+    void update();
     void onMouseMove(int x, int y);
     void onKeyPressed(SDL_Keycode key);
     void onKeyReleased(SDL_Keycode key);

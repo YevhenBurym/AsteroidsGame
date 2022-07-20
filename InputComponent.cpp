@@ -8,25 +8,72 @@ InputComponent::InputComponent(Game* game) {
     this->game = game;
 }
 
-void InputComponent::handleInput(SDL_Event& event) {
-    //If a key was pressed
-    if( event.type == SDL_KEYDOWN && event.key.repeat == 0 ) {
-        this->onKeyPressed(event.key.keysym.sym);
-    //If a key was released
-    } else if( event.type == SDL_KEYUP && event.key.repeat == 0 ) {
-        this->onKeyReleased(event.key.keysym.sym);
-    }
+void InputComponent::update() {
+    //Event handler
+    SDL_Event event;
 
-    if (event.type == SDL_MOUSEMOTION) {
-        this->onMouseMove(event.motion.x, event.motion.y);
-        event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
-    }
+    while( SDL_PollEvent( &event ) ) {
 
-    if( event.type == SDL_MOUSEBUTTONDOWN ) {
-        this->onMouseButtonPressed(event.button.button);
+        if (event.type == SDL_QUIT) {
+            this->game->setQuit(true);
+        }
+        if (event.type == SDL_KEYDOWN && event.key.repeat == 0 && event.key.keysym.sym == SDLK_ESCAPE) {
+            this->game->setQuit(true);
+        }
+        //If a key was pressed
+        if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
+            this->onKeyPressed(event.key.keysym.sym);
+            //If a key was released
+        } else if (event.type == SDL_KEYUP && event.key.repeat == 0) {
+            this->onKeyReleased(event.key.keysym.sym);
+        }
 
-    } else if( event.type == SDL_MOUSEBUTTONUP ) {
-        this->onMouseButtonReleased(event.button.button);
+        if (event.type == SDL_MOUSEMOTION) {
+            this->onMouseMove(event.motion.x, event.motion.y);
+            event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
+        }
+
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            this->onMouseButtonPressed(event.button.button);
+
+        } else if (event.type == SDL_MOUSEBUTTONUP) {
+            this->onMouseButtonReleased(event.button.button);
+        }
+//    switch (event.type) {
+//        case SDL_QUIT:
+//            SDL_Quit();
+//            break;
+//
+//        case SDL_MOUSEMOTION:
+//            //onMouseMove(event);
+//            this->onMouseMove(event.motion.x, event.motion.y);
+//            event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
+//            break;
+//
+//        case SDL_MOUSEBUTTONDOWN:
+//            this->onMouseButtonPressed(event.button.button);
+//            //onMouseButtonDown(event);
+//            break;
+//
+//        case SDL_MOUSEBUTTONUP:
+//            this->onMouseButtonReleased(event.button.button);
+//            //onMouseButtonUp(event);
+//            break;
+//
+//        case SDL_KEYDOWN:
+//            this->onKeyPressed(event.key.keysym.sym);
+//            //onKeyDown();
+//            break;
+//
+//        case SDL_KEYUP:
+//            this->onKeyReleased(event.key.keysym.sym);
+//            //onKeyUp();
+//            break;
+//
+//        default:
+//            break;
+//
+//    }
     }
 
 }

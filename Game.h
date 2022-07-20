@@ -46,9 +46,10 @@ public:
     void render();
 
     void close();
+    void clean();
 
     void restart();
-
+    void setQuit(bool quit);
     SDL_Renderer* getRenderer() const;
     Map* getMap() const;
     Window* getWindow() const;

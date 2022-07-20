@@ -77,7 +77,7 @@ double GameObject::getX() const {
 }
 
 double GameObject::getY() const {
-    return this->coord.getX();
+    return this->coord.getY();
 }
 
 double GameObject::getXrel() const {
