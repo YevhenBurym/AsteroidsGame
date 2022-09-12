@@ -13,67 +13,36 @@ void InputComponent::update() {
     SDL_Event event;
 
     while( SDL_PollEvent( &event ) ) {
+        switch (event.type) {
+            case SDL_QUIT:
+                SDL_Quit();
+                break;
 
-        if (event.type == SDL_QUIT) {
-            this->game->setQuit(true);
-        }
-        if (event.type == SDL_KEYDOWN && event.key.repeat == 0 && event.key.keysym.sym == SDLK_ESCAPE) {
-            this->game->setQuit(true);
-        }
-        //If a key was pressed
-        if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-            this->onKeyPressed(event.key.keysym.sym);
-            //If a key was released
-        } else if (event.type == SDL_KEYUP && event.key.repeat == 0) {
-            this->onKeyReleased(event.key.keysym.sym);
-        }
+            case SDL_MOUSEMOTION:
+                this->onMouseMove(event.motion.x, event.motion.y);
+                event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
+                break;
 
-        if (event.type == SDL_MOUSEMOTION) {
-            this->onMouseMove(event.motion.x, event.motion.y);
-            event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
-        }
+            case SDL_MOUSEBUTTONDOWN:
+                this->onMouseButtonPressed(event.button.button);
+                break;
 
-        if (event.type == SDL_MOUSEBUTTONDOWN) {
-            this->onMouseButtonPressed(event.button.button);
+            case SDL_MOUSEBUTTONUP:
+                this->onMouseButtonReleased(event.button.button);
+                break;
 
-        } else if (event.type == SDL_MOUSEBUTTONUP) {
-            this->onMouseButtonReleased(event.button.button);
+            case SDL_KEYDOWN:
+                this->onKeyPressed(event.key.keysym.sym);
+                break;
+
+            case SDL_KEYUP:
+                this->onKeyReleased(event.key.keysym.sym);
+                break;
+
+            default:
+                break;
+
         }
-//    switch (event.type) {
-//        case SDL_QUIT:
-//            SDL_Quit();
-//            break;
-//
-//        case SDL_MOUSEMOTION:
-//            //onMouseMove(event);
-//            this->onMouseMove(event.motion.x, event.motion.y);
-//            event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
-//            break;
-//
-//        case SDL_MOUSEBUTTONDOWN:
-//            this->onMouseButtonPressed(event.button.button);
-//            //onMouseButtonDown(event);
-//            break;
-//
-//        case SDL_MOUSEBUTTONUP:
-//            this->onMouseButtonReleased(event.button.button);
-//            //onMouseButtonUp(event);
-//            break;
-//
-//        case SDL_KEYDOWN:
-//            this->onKeyPressed(event.key.keysym.sym);
-//            //onKeyDown();
-//            break;
-//
-//        case SDL_KEYUP:
-//            this->onKeyReleased(event.key.keysym.sym);
-//            //onKeyUp();
-//            break;
-//
-//        default:
-//            break;
-//
-//    }
     }
 
 }
@@ -91,6 +60,9 @@ void InputComponent::onKeyPressed(SDL_Keycode key) {
             break;
         case SDLK_RIGHT:
             this->game->getMap()->setVx(-1);
+            break;
+        case SDLK_ESCAPE:
+            this->game->setQuit(true);
             break;
         default:
             break;
