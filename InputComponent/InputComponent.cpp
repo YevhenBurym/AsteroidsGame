@@ -4,7 +4,7 @@
 
 #include "InputComponent.h"
 
-InputComponent::InputComponent(Game* game) {
+InputComponent::InputComponent(Game *game) {
     this->game = game;
 }
 
@@ -12,12 +12,11 @@ void InputComponent::update() {
     //Event handler
     SDL_Event event;
 
-    while( SDL_PollEvent( &event ) ) {
+    while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-                SDL_Quit();
+                this->game->setQuit(true);
                 break;
-
             case SDL_MOUSEMOTION:
                 this->onMouseMove(event.motion.x, event.motion.y);
                 event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
@@ -48,7 +47,7 @@ void InputComponent::update() {
 }
 
 void InputComponent::onKeyPressed(SDL_Keycode key) {
-    switch( key ) {
+    switch (key) {
         case SDLK_UP:
             this->game->getMap()->setVy(1);
             break;
@@ -70,7 +69,7 @@ void InputComponent::onKeyPressed(SDL_Keycode key) {
 }
 
 void InputComponent::onKeyReleased(SDL_Keycode key) {
-    switch( key ) {
+    switch (key) {
         case SDLK_UP:
             this->game->getMap()->setIsNeededDeacc(true);
             break;
@@ -78,10 +77,10 @@ void InputComponent::onKeyReleased(SDL_Keycode key) {
             this->game->getMap()->setIsNeededDeacc(true);
             break;
         case SDLK_LEFT:
-           this->game->getMap()->setIsNeededDeacc(true);
+            this->game->getMap()->setIsNeededDeacc(true);
             break;
         case SDLK_RIGHT:
-           this->game->getMap()->setIsNeededDeacc(true);
+            this->game->getMap()->setIsNeededDeacc(true);
             break;
         default:
             break;

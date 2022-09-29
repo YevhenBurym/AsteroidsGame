@@ -5,7 +5,9 @@
 #pragma once
 #include <cmath>
 #include <vector>
-#include "../GameObject/GameObject.h"
+
+#include "../GameObject/SpaceShip.h"
+#include "../GameObject/Asteroid.h"
 #include "../Game/Game.h"
 
 

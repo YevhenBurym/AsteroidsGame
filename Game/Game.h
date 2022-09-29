@@ -8,12 +8,14 @@
 #include "../AsteroidManager/AsteroidsManager.h"
 #include "../InputComponent/InputComponent.h"
 #include "../Collisions/Collisions.h"
-#include "../GameObject/SpaceShip.h"
-#include "../GameObject/Asteroid.h"
 
 class AsteroidsManager;
 class InputComponent;
 class Collisions;
+class SpaceShip;
+class GameObject;
+//class SmallAsteroid;
+//class BigAsteroid;
 
 class Game {
 private:

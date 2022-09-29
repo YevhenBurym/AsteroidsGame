@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include <cmath>
 
 void GameObject::limitateCoord() {
     double minXCoord = 0 - map->getMapOffsetCoord().getX();

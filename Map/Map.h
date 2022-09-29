@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include "../Sprite/Sprite.h"
-
 #include "../Vector2D/Vector2D.h"
 
 struct MapSprites {

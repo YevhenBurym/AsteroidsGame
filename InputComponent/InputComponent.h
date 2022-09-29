@@ -6,8 +6,9 @@
 
 #include "../Game/Game.h"
 
-class Game;
+#include "SDL.h"
 
+class Game;
 
 class InputComponent {
     Game* game;

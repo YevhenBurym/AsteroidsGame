@@ -2,7 +2,6 @@
 // Created by Евгений on 06.07.2022.
 //
 
-#include <iostream>
 #include "Window.h"
 
 Window::Window(const char* name, int width, int height, bool isFullscreen) {
