@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Map.h"
-#include "Window.h"
-#include "Sprite.h"
+#include "../Map/Map.h"
+#include "../Window.h"
+#include "../Sprite/Sprite.h"
 #include <vector>
 
 #define RAD 3.14/180

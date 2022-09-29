@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cmath>
-#include "Sprite.h"
+#include "../Sprite/Sprite.h"
 
-#include "Vector2D.h"
+#include "../Vector2D/Vector2D.h"
 
 struct MapSprites {
     Sprite* backgroundSprite;

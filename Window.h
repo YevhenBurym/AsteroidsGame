@@ -19,12 +19,4 @@ public:
 
     SDL_Renderer* getRenderer() const;
     void getSize(int& wScreen, int& hScreen);
-    uint32_t getTickCounting();
-    void showCursor(bool isShow);
-
-    SDL_Texture* createTexture(const char* path);
-    void drawTexture(SDL_Texture *texture, int x, int y);
-    void drawTexture(SDL_Texture *texture, int x, int y, double angle);
-    void destroyTexture(SDL_Texture *texture);
-    void getTextureSize(SDL_Texture *texture, int &w, int &h);
 };

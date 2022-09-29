@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Game.h"
+#include "../Game/Game.h"
 
 class Game;
 

@@ -69,8 +69,7 @@ void Game::render() {
 
     this->map->draw();
     this->renderObjects();
-    this->gameWindow->showCursor(false);
-
+    SDL_ShowCursor(SDL_DISABLE);
     SDL_RenderPresent(this->gameWindow->getRenderer());
 }
 
@@ -91,7 +90,7 @@ void Game::runGame() {
     const int fps = 60;
     const int frameDelay = 1000 / fps;
     Uint32 startTime;
-    int frameTime;
+    Uint32 frameTime;
 
     this->init();
 
@@ -100,11 +99,11 @@ void Game::runGame() {
 
         this->inputHandler->update();
 
-        startTime = this->getWindow()->getTickCounting();
+        startTime = SDL_GetTicks();
         this->update();
         this->render();
 
-        frameTime = this->getWindow()->getTickCounting() - startTime;
+        frameTime = SDL_GetTicks() - startTime;
 //        if (frameDelay > frameTime) {
 //            //std::cout <<frameDelay - frameTime << std::endl;
 //            SDL_Delay(frameDelay - frameTime);

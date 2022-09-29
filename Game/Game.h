@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "Map.h"
-#include "AsteroidsManager.h"
-#include "InputComponent.h"
-#include "Collisions.h"
-#include "SpaceShip.h"
-#include "Asteroid.h"
+#include "../Map/Map.h"
+#include "../AsteroidManager/AsteroidsManager.h"
+#include "../InputComponent/InputComponent.h"
+#include "../Collisions/Collisions.h"
+#include "../GameObject/SpaceShip.h"
+#include "../GameObject/Asteroid.h"
 
 class AsteroidsManager;
 class InputComponent;

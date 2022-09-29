@@ -5,8 +5,8 @@
 #pragma once
 #include <cmath>
 #include <vector>
-#include "GameObject.h"
-#include "Game.h"
+#include "../GameObject/GameObject.h"
+#include "../Game/Game.h"
 
 
 class Collisions {

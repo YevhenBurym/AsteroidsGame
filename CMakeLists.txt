@@ -4,20 +4,18 @@ project(Asteroids)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(Asteroids main.cpp
-        Map.cpp
-        Map.h
-        GameObject.cpp
-        GameObject.h
-        AsteroidsManager.cpp
-        AsteroidsManager.h
-        Game.h Game.cpp
-        Window.h Window.cpp
-        Sprite.h Sprite.cpp
-        InputComponent.h InputComponent.cpp
-        Collisions.h Collisions.cpp
-        SpaceShip.h SpaceShip.cpp
-        Asteroid.h Asteroid.cpp
-        Vector2D.h Vector2D.cpp)
+        Map/Map.cpp
+        GameObject/GameObject.cpp
+        AsteroidManager/AsteroidsManager.cpp
+        Game/Game.cpp
+        Window.cpp
+        Sprite/Sprite.cpp
+        InputComponent/InputComponent.cpp
+        Collisions/Collisions.cpp
+        GameObject/SpaceShip.cpp
+        GameObject/Asteroid.cpp
+        Vector2D/Vector2D.cpp
+        SpriteManager/SpriteManager.cpp)
 
 include_directories(D:/2.SelfStudy/AsteroidsGame)
 
