@@ -1,4 +1,4 @@
-#include "Game/Game.h"
+#include "src/Game/Game.h"
 #include <sstream>
 
 int main(int argc, char* argv[]) {
@@ -58,7 +58,8 @@ int main(int argc, char* argv[]) {
 
 	}
     Game* game = new Game(wScreen, hScreen, wMap, hMap, asteroidsLimit, ammoLimit, abilityProrability);
-    game->runGame();
+    game->run();
 
 	return 0;
 }
+

@@ -4,28 +4,20 @@ project(Asteroids)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(Asteroids main.cpp
-        Map/Map.cpp
-        GameObject/GameObject.cpp
-        AsteroidManager/AsteroidsManager.cpp
-        Game/Game.cpp
-        Window.cpp
-        Sprite/Sprite.cpp
-        InputComponent/InputComponent.cpp
-        Collisions/Collisions.cpp
-        GameObject/SpaceShip.cpp
-        GameObject/Asteroid.cpp
-        Vector2D/Vector2D.cpp
-        SpriteManager/SpriteManager.cpp)
+        src/Map/Map.cpp
+        src/GameObject/GameObject.cpp
+        src/ObjectManager/ObjectManager.cpp
+        src/Game/Game.cpp
+        src/GameWindow/GameWindow.cpp
+        src/Sprite/Sprite.cpp
+        src/InputComponent/InputComponent.cpp
+        src/Collisions/Collisions.cpp
+        src/GameObject/SpaceShip.cpp
+        src/GameObject/Asteroid.cpp
+        src/Vector2D/Vector2D.cpp
+        src/SpriteManager/SpriteManager.cpp)
 
-include_directories(D:/2.SelfStudy/AsteroidsGame)
-
-include_directories(C:/mingwLibs/SDL2/include/SDL2)
-include_directories(C:/mingwLibs/SDL_Image/include/SDL2)
-include_directories(C:/mingwLibs/SDL_Image/bin)
-
-target_link_libraries(Asteroids
-        -LC:/mingwLibs/SDL2/lib
-        -LC:/mingwLibs/SDL_Image/lib
+target_link_libraries(Asteroids -LD:/2.SelfStudy/myProjects/AsteroidsGame/SDL2/lib
         -lmingw32
         -lSDL2main
         -lSDL2
