@@ -8,14 +8,11 @@
 #include "../AsteroidManager/AsteroidsManager.h"
 #include "../InputComponent/InputComponent.h"
 #include "../Collisions/Collisions.h"
+#include "../SpriteManager/SpriteManager.h"
 
 class AsteroidsManager;
 class InputComponent;
 class Collisions;
-class SpaceShip;
-class GameObject;
-//class SmallAsteroid;
-//class BigAsteroid;
 
 class Game {
 private:
@@ -23,7 +20,7 @@ private:
     SDL_Renderer* renderer;
     int hWindow, wWindow;
 
-
+    SpriteManager* spriteManager;
     SpaceShip* ship;
     InputComponent* inputHandler;
     Collisions* collisions;
@@ -38,6 +35,7 @@ private:
     void createPlayer();
     void renderObjects();
     void calcObjectOffset();
+    void loadSprites();
     bool initWindow(const char* name, int width, int height, bool isFullscreen);
 public:
     Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);

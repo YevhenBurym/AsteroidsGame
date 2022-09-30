@@ -21,15 +21,28 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
     this->map = new Map(this->wMap, this->hMap, this->gameWindow);
 }
 
+void Game::loadSprites() {
+    this->spriteManager->load("data\\back.png", "background");
+    this->spriteManager->load("data\\border.png", "border");
+    this->spriteManager->load("data\\ship.png", "spaceship");
+    this->spriteManager->load("data\\small.png", "small_asteroid");
+    this->spriteManager->load("data\\big.png", "big_asteroid");
+    this->spriteManager->load("data\\reticle.png", "reticle");
+    this->spriteManager->load("data\\bullet.png", "bullet");
+}
+
 void Game::createPlayer() {
-    Vector2D avatarCoord{0,0};
-    avatarCoord.setX(this->map->getWMap()/2 - this->map->getMapOffsetCoord().getX());
-    avatarCoord.setY(this->map->getHMap()/2 - this->map->getMapOffsetCoord().getY());
-    this->ship = new SpaceShip(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(), this->map);
+    Vector2D avatarCoord{0, 0};
+    avatarCoord.setX(this->map->getWMap() / 2 - this->map->getMapOffsetCoord().getX());
+    avatarCoord.setY(this->map->getHMap() / 2 - this->map->getMapOffsetCoord().getY());
+    this->ship = new SpaceShip(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(),
+                               this->map);
     this->gameObjects.push_back(this->ship);
 }
 
 bool Game::init() {
+    this->spriteManager = new SpriteManager(this->gameWindow->getRenderer());
+    this->loadSprites();
     this->inputHandler = new InputComponent(this);
     this->map->mapInit();
     this->collisions = new Collisions(this);
@@ -43,8 +56,9 @@ void Game::close() {
     delete this->collisions;
     delete this->asterManager;
     delete this->inputHandler;
+    delete this->spriteManager;
 
-    for (auto it = this->gameObjects.begin(); it != this->gameObjects.end(); ) {
+    for (auto it = this->gameObjects.begin(); it != this->gameObjects.end();) {
         delete (*it++);
     }
     this->gameObjects.clear();
@@ -78,7 +92,7 @@ void Game::restart() {
     this->init();
 }
 
-Map* Game::getMap() const {
+Map *Game::getMap() const {
     return this->map;
 }
 
@@ -95,7 +109,7 @@ void Game::runGame() {
     this->init();
 
     //While application is running
-    while( !this->quit ) {
+    while (!this->quit) {
 
         this->inputHandler->update();
 
@@ -127,7 +141,7 @@ std::vector<GameObject *> &Game::getObjects() {
     return this->gameObjects;
 }
 
-SpaceShip* Game::getPlayer() const {
+SpaceShip *Game::getPlayer() const {
     return this->ship;
 }
 
@@ -138,7 +152,7 @@ Game::~Game() {
 }
 
 void Game::renderObjects() {
-    for (auto & object : this->gameObjects) {
+    for (auto &object : this->gameObjects) {
         object->calcCoord(object->getVxy(), 0.001);
         object->render();
     }
@@ -149,7 +163,7 @@ void Game::calcObjectOffset() {
     this->map->calcCoord(this->map->getVx(), this->map->getVy(), 0.5);
 
     if (this->map->getVx() != 0 || this->map->getVy() != 0) {
-        for (auto & gameObject : this->gameObjects) {
+        for (auto &gameObject : this->gameObjects) {
             gameObject->setXof(this->map->getX());
             gameObject->setYof(this->map->getY());
         }
@@ -160,7 +174,7 @@ AsteroidsManager *Game::getAsterManager() const {
     return this->asterManager;
 }
 
-bool Game::initWindow(const char* name, int width, int height, bool isFullscreen) {
+bool Game::initWindow(const char *name, int width, int height, bool isFullscreen) {
     this->window = nullptr;
     this->renderer = nullptr;
     this->hWindow = 0;
@@ -168,7 +182,7 @@ bool Game::initWindow(const char* name, int width, int height, bool isFullscreen
     bool isCreate;
 
     //Initialize SDL
-    if ( SDL_Init(SDL_INIT_EVERYTHING) < 0 ) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         std::cout << "SDL could not initialize! SDL Error: %s" << SDL_GetError() << std::endl;
     } else {
         //Set texture filtering to linear
@@ -182,13 +196,13 @@ bool Game::initWindow(const char* name, int width, int height, bool isFullscreen
         }
         this->window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
                                         windowFlags);
-        if( this->window == nullptr ) {
+        if (this->window == nullptr) {
             std::cout << "Window could not be created! SDL Error: %s\n" << SDL_GetError();
         } else {
             //windowSize
             SDL_GetWindowSize(this->window, &this->wWindow, &this->hWindow);
             //Create vsynced renderer for window
-            this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED );
+            this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
             if (this->renderer == nullptr) {
                 std::cout << "Renderer could not be created! SDL Error: %s\n" << SDL_GetError();
             } else {
@@ -213,8 +227,8 @@ SDL_Renderer *Game::getRenderer() const {
 }
 
 void Game::clean() {
-    SDL_DestroyRenderer( this->renderer );
-    SDL_DestroyWindow( this->window );
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
     this->renderer = nullptr;
     this->window = nullptr;
     //Quit SDL subsystems
