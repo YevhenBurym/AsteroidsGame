@@ -17,7 +17,13 @@ add_executable(Asteroids main.cpp
         src/Vector2D/Vector2D.cpp
         src/SpriteManager/SpriteManager.cpp)
 
-target_link_libraries(Asteroids -LD:/2.SelfStudy/myProjects/AsteroidsGame/SDL2/lib
+
+include_directories(${CMAKE_SOURCE_DIR}/SDL2/include/SDl2)
+include_directories(${CMAKE_SOURCE_DIR}/SDL2/bin)
+include_directories(${CMAKE_SOURCE_DIR}/SDL2/lib)
+
+target_link_libraries(Asteroids
+        -L${CMAKE_SOURCE_DIR}/SDL2/lib
         -lmingw32
         -lSDL2main
         -lSDL2

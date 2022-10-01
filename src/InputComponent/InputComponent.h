@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../../SDL2/include/SDL2/SDL.h"
+#include "SDL.h"
 #include "../ObjectManager/ObjectManager.h"
 
 class InputComponent {

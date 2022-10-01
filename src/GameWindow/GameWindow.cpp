@@ -5,13 +5,13 @@
 #include "GameWindow.h"
 
 void GameWindow::loadSprites() {
-    this->spriteManager->load("src\\assets\\back.png", "background");
-    this->spriteManager->load("src\\assets\\border.png", "border");
-    this->spriteManager->load("src\\assets\\ship.png", "spaceship");
-    this->spriteManager->load("src\\assets\\small.png", "small_asteroid");
-    this->spriteManager->load("src\\assets\\big.png", "big_asteroid");
-    this->spriteManager->load("src\\assets\\reticle.png", "reticle");
-    this->spriteManager->load("src\\assets\\bullet.png", "bullet");
+    this->spriteManager->load("assets\\back.png", "background");
+    this->spriteManager->load("assets\\border.png", "border");
+    this->spriteManager->load("assets\\ship.png", "spaceship");
+    this->spriteManager->load("assets\\small.png", "small_asteroid");
+    this->spriteManager->load("assets\\big.png", "big_asteroid");
+    this->spriteManager->load("assets\\reticle.png", "reticle");
+    this->spriteManager->load("assets\\bullet.png", "bullet");
 }
 
 GameWindow::GameWindow(const char *name, int width, int height, bool isFullscreen) {
