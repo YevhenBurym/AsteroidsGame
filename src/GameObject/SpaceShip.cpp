@@ -14,7 +14,6 @@ void SpaceShip::limitateCoord() {
     double maxYCoord = this->map->getHMap() - this->map->getMapOffsetCoord().getY();
     double x = this->coord.getX() + this->xOf;
     double y = this->coord.getY() + this->yOf;
-
     if (x >= maxXCoord) {
         this->map->setX(minXCoord - this->map->getX());
     }
@@ -83,13 +82,19 @@ void SpaceShip::makeShoot(std::vector<GameObject*>& objects) {
     }
     if (this->numBullets < this->ammoLimit) {
         this->numBullets += 1;
-        objects.push_back(new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map));
+        auto bullet = new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map);
+        bullet->setXof(this->map->getX());
+        bullet->setYof(this->map->getY());
+        objects.push_back(bullet);
     } else {
         for (auto it = objects.begin(); it != objects.end(); ++it) {
             if (dynamic_cast<Bullet*>(*it)) {
                 delete (*it);
                 objects.erase(it);
-                objects.push_back(new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map));
+                auto bullet = new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map);
+                bullet->setXof(this->map->getX());
+                bullet->setYof(this->map->getY());
+                objects.push_back(bullet);
                 return;
             }
         }

@@ -7,8 +7,8 @@ int main(int argc, char* argv[]) {
 	int hScreen = 600;
 	int wMap = 500;
 	int hMap = 500;
-	int asteroidsLimit = 5;
-	int ammoLimit = 3;
+	int asteroidsLimit = 15;
+	int ammoLimit = 10;
 	double abilityProrability = 0.3;
 
 	for (int i = 1; i < argc; ++i) {

@@ -5,12 +5,12 @@
 #include "Game.h"
 
 Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability) {
-//    if (wMap < wScreen) {
-//        wMap = wScreen;
-//    }
-//    if (hMap < hScreen) {
-//        hMap = wScreen;
-//    }
+    if (wMap < wScreen) {
+        wMap = wScreen;
+    }
+    if (hMap < hScreen) {
+        hMap = wScreen;
+    }
     this->hMap = hMap;
     this->wMap = wMap;
     this->asteroidsLimit = asteroidsLimit;

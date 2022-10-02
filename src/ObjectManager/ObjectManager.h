@@ -15,7 +15,7 @@ private:
     int ammoLimit;
     int numAsteroids;
     std::vector<GameObject*> gameObjects;
-    Vector2D randomizeAppearCoord(int wWindow, int hWindow, int wMap, int hMap);
+    Vector2D randomizeAppearCoord();
     Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
     void createPlayer();
     void createAsteroids();

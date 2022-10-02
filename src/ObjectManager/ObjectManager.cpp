@@ -33,36 +33,42 @@ void ObjectManager::createAsteroids() {
     int wScreen = this->window->getSize().width;
     int hScreen = this->window->getSize().height;
 
-    asteroidCoord = this->randomizeAppearCoord(wScreen, hScreen, this->map->getWMap(), this->map->getHMap());
+    asteroidCoord = this->randomizeAppearCoord();
     asteroidVelocity = this->randomizeVelocity(minVLimit, maxVLimit, angleRange);
 
     uint8_t randomAsteroid = RANDRANGE_0_1 * 100;
 
     if (randomAsteroid > 80) {
-        this->getObjects().push_back(new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
-                                                     this->map->getUnitSprites().bigAsteroidSprite, this->map));
+        auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
+                                           this->map->getUnitSprites().bigAsteroidSprite, this->map);
+        bigAsteroid->setXof(this->map->getX());
+        bigAsteroid->setYof(this->map->getY());
+        this->getObjects().push_back(bigAsteroid);
     } else {
-        this->getObjects().push_back(new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
-                                                       this->map->getUnitSprites().smallAsteroidSprite, this->map));
+        auto smallAsteroid = new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
+                                               this->map->getUnitSprites().smallAsteroidSprite, this->map);
+        smallAsteroid->setXof(this->map->getX());
+        smallAsteroid->setYof(this->map->getY());
+        this->getObjects().push_back(smallAsteroid);
     }
 }
 
-Vector2D ObjectManager::randomizeAppearCoord(int wWindow, int hWindow, int wMap, int hMap) {
+Vector2D ObjectManager::randomizeAppearCoord() {
     Vector2D randomXY = {0, 0};
     uint8_t randomSide = RANDRANGE_0_1 * 3;
 
     if (randomSide == 0) {
-        randomXY.setY(RANDRANGE_0_1 * hMap);
-        randomXY.setX(RANDRANGE_0_1 * (wMap - wWindow) / 2 - 0 + 0);
+        randomXY.setY(RANDRANGE_0_1 * this->map->getHMap() - this->map->getMapOffsetCoord().getY());
+        randomXY.setX(RANDRANGE_0_1 * (this->map->getWMap() - this->window->getSize().width) / 2 - this->map->getMapOffsetCoord().getX());
     } else if (randomSide == 1) {
-        randomXY.setX(RANDRANGE_0_1 * wMap);
-        randomXY.setY(RANDRANGE_0_1 * (hMap - hWindow) / 2 - 0 + 0);
+        randomXY.setX(RANDRANGE_0_1 * this->map->getWMap() - this->map->getMapOffsetCoord().getX());
+        randomXY.setY(RANDRANGE_0_1 * (this->map->getHMap() - this->window->getSize().height) / 2 - this->map->getMapOffsetCoord().getY());
     } else if (randomSide == 2) {
-        randomXY.setY(RANDRANGE_0_1 * hMap);
-        randomXY.setX(RANDRANGE_0_1 * (wMap - wWindow) + wWindow);
+        randomXY.setY(RANDRANGE_0_1 * this->map->getHMap() - this->map->getMapOffsetCoord().getY());
+        randomXY.setX(RANDRANGE_0_1 * (this->map->getWMap() - this->window->getSize().width) + this->window->getSize().width - this->map->getMapOffsetCoord().getX());
     } else if (randomSide == 3) {
-        randomXY.setX(RANDRANGE_0_1 * wMap);
-        randomXY.setY(RANDRANGE_0_1 * (hMap - hWindow) + hWindow);
+        randomXY.setX(RANDRANGE_0_1 * this->map->getWMap() - this->map->getMapOffsetCoord().getX());
+        randomXY.setY(RANDRANGE_0_1 * (this->map->getHMap() - this->window->getSize().height) + this->window->getSize().height - this->map->getMapOffsetCoord().getY());
     }
     return randomXY;
 }
