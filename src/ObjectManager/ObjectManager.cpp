@@ -7,7 +7,7 @@ void ObjectManager::createPlayer() {
     avatarCoord.setX(this->map->getWMap() / 2 - this->map->getMapOffsetCoord().getX());
     avatarCoord.setY(this->map->getHMap() / 2 - this->map->getMapOffsetCoord().getY());
     this->gameObjects.push_back(
-            new SpaceShip(avatarCoord, 0, 0, this->map->getUnitSprites().spaceshipSprite, this->getAmmoLimit(),
+            new SpaceShip(avatarCoord, 0, 0, "spaceship", this->window->getSpriteManager(), this->getAmmoLimit(),
                           this->map));
 }
 
@@ -30,9 +30,6 @@ void ObjectManager::createAsteroids() {
     int angleRange = 180;
     this->numAsteroids += 1;
 
-    int wScreen = this->window->getSize().width;
-    int hScreen = this->window->getSize().height;
-
     asteroidCoord = this->randomizeAppearCoord();
     asteroidVelocity = this->randomizeVelocity(minVLimit, maxVLimit, angleRange);
 
@@ -40,13 +37,13 @@ void ObjectManager::createAsteroids() {
 
     if (randomAsteroid > 80) {
         auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
-                                           this->map->getUnitSprites().bigAsteroidSprite, this->map);
+                                           "big_asteroid", this->window->getSpriteManager(), this->map);
         bigAsteroid->setXof(this->map->getX());
         bigAsteroid->setYof(this->map->getY());
         this->getObjects().push_back(bigAsteroid);
     } else {
         auto smallAsteroid = new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
-                                               this->map->getUnitSprites().smallAsteroidSprite, this->map);
+                                               "small_asteroid",this->window->getSpriteManager() , this->map);
         smallAsteroid->setXof(this->map->getX());
         smallAsteroid->setYof(this->map->getY());
         this->getObjects().push_back(smallAsteroid);

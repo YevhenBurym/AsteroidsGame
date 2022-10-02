@@ -15,11 +15,13 @@ protected:
     double xOf, yOf;
     double mass;
     double radius;
-    Sprite* sprite;
+    std::string textureID;
+    int wSprite, hSprite;
+    TextureManager* textureManager;
     Map* map;
     virtual void limitateCoord();
 public:
-    GameObject(Vector2D coord, double velocity, double theta, Sprite* sprite, Map* map);
+    GameObject(Vector2D coord, double velocity, double theta, std::string textureID, TextureManager* textureManager, Map* map);
     virtual ~GameObject() = default;
     virtual void calcCoord(Vector2D Vxy, double step);
     virtual void setX(double x);

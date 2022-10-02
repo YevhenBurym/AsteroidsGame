@@ -20,23 +20,23 @@ void GameObject::limitateCoord() {
 
 }
 
-GameObject::GameObject(Vector2D coord, double velocity, double theta, Sprite* sprite, Map* map) {
-    int wSprite, hSprite;
+GameObject::GameObject(Vector2D coord, double velocity, double theta, std::string textureID, TextureManager* textureManager, Map* map) {
     double d = 0;
     //theta *= -1;
-    sprite->getSize(wSprite,hSprite);
+    this->textureManager = textureManager;
+    this->textureID = textureID;
+    textureManager->getTextureSize(textureID,this->wSprite,this->hSprite);
 
-    if (wSprite % hSprite == wSprite) {
-        d = hSprite - (hSprite % wSprite) / 2;
+    if (this->wSprite % this->hSprite == this->wSprite) {
+        d = this->hSprite - (this->hSprite % this->wSprite) / 2;
     } else {
-        d = wSprite - (wSprite % hSprite) / 2;
+        d = this->wSprite - (this->wSprite % this->hSprite) / 2;
     }
     this->map = map;
     this->radius = d / 2;
     this->coord = coord;
     this->Vxy.setX(velocity * cos(theta * RAD));
     this->Vxy.setY(-velocity * sin(theta * RAD));
-    this->sprite = sprite;
     this->mass = 1;
     this->V.v = velocity;
     this->V.theta = theta;
@@ -99,10 +99,9 @@ double GameObject::getRadius() const {
 }
 
 void GameObject::render() const {
-
     int x = this->coord.getX() + this->xOf - this->radius;
     int y = this->coord.getY() + this->yOf - this->radius;
 
-    this->sprite->draw(x, y);
+    this->textureManager->draw(this->textureID,x,y,this->wSprite,this->hSprite);
 }
 

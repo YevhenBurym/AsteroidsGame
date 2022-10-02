@@ -4,7 +4,7 @@
 
 #include "SpaceShip.h"
 
-Bullet::Bullet(Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
+Bullet::Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : GameObject(coord, velocity, theta, textureID, textureManager, map) {
 }
 
 void SpaceShip::limitateCoord() {
@@ -29,8 +29,8 @@ void SpaceShip::limitateCoord() {
     }
 }
 
-SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, sprite, map) {
-    this->reticle = new Reticle(map->getUnitSprites().reticleSprite, map );
+SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, textureID, textureManager, map) {
+    this->reticle = new Reticle("reticle", this->textureManager, map );
     this->angleShip = 0;
     this->ammoLimit = ammoLimit;
     this->numBullets = 0;
@@ -82,7 +82,7 @@ void SpaceShip::makeShoot(std::vector<GameObject*>& objects) {
     }
     if (this->numBullets < this->ammoLimit) {
         this->numBullets += 1;
-        auto bullet = new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map);
+        auto bullet = new Bullet(avatarCoord, 800, this->angleShip, "bullet", this->textureManager, this->map);
         bullet->setXof(this->map->getX());
         bullet->setYof(this->map->getY());
         objects.push_back(bullet);
@@ -91,7 +91,7 @@ void SpaceShip::makeShoot(std::vector<GameObject*>& objects) {
             if (dynamic_cast<Bullet*>(*it)) {
                 delete (*it);
                 objects.erase(it);
-                auto bullet = new Bullet(avatarCoord, 800, this->angleShip, this->map->getUnitSprites().bulletSprite, this->map);
+                auto bullet = new Bullet(avatarCoord, 800, this->angleShip, "bullet", this->textureManager, this->map);
                 bullet->setXof(this->map->getX());
                 bullet->setYof(this->map->getY());
                 objects.push_back(bullet);
@@ -110,7 +110,7 @@ void SpaceShip::render() const {
     int x = this->coord.getX() - this->radius;
     int y = this->coord.getY() - this->radius;
 
-    this->sprite->draw(x, y,90 - this->angleShip);
+    this->textureManager->draw(this->textureID,x,y,this->wSprite,this->hSprite,90 - this->angleShip);
 }
 
 int SpaceShip::getNumBullets() const {
@@ -121,15 +121,13 @@ void SpaceShip::setNumBullets(int amount) {
     this->numBullets = amount;
 }
 
-Reticle::Reticle(Sprite *sprite, Map *map): GameObject(Vector2D{0, 0}, 0, 0, sprite, map) {
-    int wSprite, hSprite;
-    this->sprite->getSize(wSprite, hSprite);
-    this->xOf = wSprite / 2;
-    this->yOf = hSprite / 2;
+Reticle::Reticle(std::string textureID, TextureManager* textureManager, Map *map): GameObject(Vector2D{0, 0}, 0, 0, textureID, textureManager, map) {
+    this->xOf = this->wSprite / 2;
+    this->yOf = this->hSprite / 2;
 }
 
 void Reticle::render() const {
     int x = this->coord.getX() - this->xOf;
     int y = this->coord.getY() - this->yOf;
-    this->sprite->draw(x,y);
+    this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite);
 }

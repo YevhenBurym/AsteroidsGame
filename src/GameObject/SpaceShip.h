@@ -8,12 +8,12 @@
 
 class Bullet : public GameObject {
 public:
-    Bullet(Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map);
+    Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
 };
 
 class Reticle : public GameObject {
 public:
-    Reticle(Sprite* sprite, Map* map);
+    Reticle(std::string textureID, TextureManager* textureManager, Map* map);
     void render() const override;
 };
 
@@ -25,7 +25,7 @@ private:
     int numBullets;
     void limitateCoord() override;
 public:
-    SpaceShip(Vector2D coord, int velocity, int theta, Sprite* sprite, int ammoLimit, Map* map);
+    SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map);
     ~SpaceShip() override;
     void render() const override;
     double getXrel() const override;

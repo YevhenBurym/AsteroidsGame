@@ -8,11 +8,11 @@
 
 class SmallAsteroid : public GameObject {
 public:
-    SmallAsteroid (Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map);
+    SmallAsteroid (Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
 };
 
 class BigAsteroid : public GameObject {
 public:
-    BigAsteroid(Vector2D coord, int velocity, int theta, Sprite* sprite, Map* map);
+    BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
     void divide(std::vector<GameObject*>& objects);
 };

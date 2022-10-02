@@ -56,7 +56,7 @@ GameWindow::GameWindow(const char *name, int width, int height, bool isFullscree
                 }
             }
         }
-        this->spriteManager = new SpriteManager(this->renderer);
+        this->spriteManager = new TextureManager(this->renderer);
         this->loadSprites();
     }
 }
@@ -77,7 +77,7 @@ SDL_Renderer *GameWindow::getRenderer() const {
     return this->renderer;
 }
 
-SpriteManager *GameWindow::getSpriteManager() const {
+TextureManager *GameWindow::getSpriteManager() const {
     return this->spriteManager;
 }
 

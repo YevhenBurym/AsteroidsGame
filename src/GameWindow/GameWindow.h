@@ -7,7 +7,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "SDL_image.h"
-#include "../SpriteManager/SpriteManager.h"
+#include "../TextureManager/TextureManager.h"
 
 struct WindowSize {
     int width;
@@ -16,7 +16,7 @@ struct WindowSize {
 
 class GameWindow {
 private:
-    SpriteManager* spriteManager;
+    TextureManager* spriteManager;
     SDL_Window* window;
     SDL_Renderer* renderer;
     WindowSize size;
@@ -26,6 +26,6 @@ public:
     ~GameWindow();
 
     SDL_Renderer* getRenderer() const;
-    SpriteManager* getSpriteManager() const;
+    TextureManager* getSpriteManager() const;
     WindowSize getSize() const;
 };

@@ -1,21 +1,8 @@
 #pragma once
 
 #include <cmath>
-#include "../Sprite/Sprite.h"
 #include "../Vector2D/Vector2D.h"
-
-struct MapSprites {
-    Sprite* backgroundSprite;
-    Sprite* dotSprite;
-};
-
-struct UnitSprites {
-    Sprite* bigAsteroidSprite;
-    Sprite* smallAsteroidSprite;
-    Sprite* spaceshipSprite;
-    Sprite* reticleSprite;
-    Sprite* bulletSprite;
-};
+#include "../GameWindow/GameWindow.h"
 
 struct Velocity {
 	double v;
@@ -28,19 +15,14 @@ private:
 	Vector2D xyRelative;
 	float Vx,Vy;
 	Vector2D offset;
-    MapSprites sprites;
-    UnitSprites unitSprites;
     GameWindow* window;
     bool isNeedDeAcc;
 
-    void createMapSprites();
-    void createSprites();
-    void destroySprites();
     void drawBackground();
     void drawBorder();
 public:
 	Map(int wMap, int HMap, GameWindow* window);
-	~Map();
+	~Map() = default;
 	void calcCoord(double Vx, double Vy, double step);
 	int getHMap() const;
 	int getWMap() const;
@@ -54,7 +36,6 @@ public:
 	double getY() const;
 	double getVx() const;
 	double getVy() const;
-    UnitSprites& getUnitSprites();
     void setIsNeededDeAcc(bool state);
     void render();
     void update();
