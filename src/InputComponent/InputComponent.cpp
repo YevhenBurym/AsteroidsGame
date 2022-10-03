@@ -5,6 +5,7 @@
 #include "InputComponent.h"
 
 InputComponent::InputComponent(ObjectManager *objectManager, Map* map) {
+    this->initMouseButtons();
     this->objectManager = objectManager;
     this->map = map;
     this->player = dynamic_cast<SpaceShip*>(this->objectManager->getObjects().front());
@@ -93,13 +94,13 @@ void InputComponent::onKeyReleased(SDL_Keycode key) {
 void InputComponent::onMouseButtonPressed(int MouseButton) {
     switch (MouseButton) {
         case SDL_BUTTON_LEFT:
-
+                this->mouseButtonStates[LEFT] = true;
             break;
         case SDL_BUTTON_MIDDLE:
-
+                this->mouseButtonStates[MIDDLE] = true;
             break;
         case SDL_BUTTON_RIGHT:
-
+                this->mouseButtonStates[RIGHT] = true;
             break;
         default:
             break;
@@ -110,12 +111,13 @@ void InputComponent::onMouseButtonReleased(int MouseButton) {
     switch (MouseButton) {
         case SDL_BUTTON_LEFT:
             this->player->makeShoot(this->objectManager->getObjects());
+                this->mouseButtonStates[LEFT] = false;
             break;
         case SDL_BUTTON_MIDDLE:
-
+                this->mouseButtonStates[MIDDLE] = false;
             break;
         case SDL_BUTTON_RIGHT:
-
+                this->mouseButtonStates[RIGHT] = false;
             break;
         default:
             break;
@@ -123,6 +125,9 @@ void InputComponent::onMouseButtonReleased(int MouseButton) {
 }
 
 void InputComponent::onMouseMove(int x, int y) {
+    this->mousePosition.setX(x);
+    this->mousePosition.setY(y);
+
     this->player->getReticle()->setX(x);
     this->player->getReticle()->setY(y);
 }
@@ -131,3 +136,16 @@ bool InputComponent::getFlagQuitGame() const {
     return quitGame;
 }
 
+Vector2D InputComponent::getMousePosition() {
+    return this->mousePosition;
+}
+
+bool InputComponent::getMouseButtonState(int button) {
+    return this->mouseButtonStates[button];
+}
+
+void InputComponent::initMouseButtons() {
+    for (int i = 0; i < 3; i++) {
+        this->mouseButtonStates.push_back(false);
+    }
+}

@@ -4,15 +4,15 @@
 
 #include "Asteroid.h"
 
-SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : GameObject(coord, velocity, theta, textureID, textureManager, map) {
+SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
     this->mass = 1;
 }
 
-BigAsteroid::BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : GameObject(coord, velocity, theta, textureID, textureManager, map) {
+BigAsteroid::BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
     this->mass = 2;
 }
 
-void BigAsteroid::divide(std::vector<GameObject*>& objects) {
+void BigAsteroid::divide(std::vector<MovableGameObject*>& objects) {
     Vector2D xy1;
     Vector2D xy2;
     xy1.setX(this->coord.getX() + this->xOf + this->radius);

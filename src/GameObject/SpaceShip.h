@@ -4,20 +4,20 @@
 
 #pragma once
 
-#include "GameObject.h"
+#include "MovableGameObject.h"
 
-class Bullet : public GameObject {
+class Bullet : public MovableGameObject {
 public:
     Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
 };
 
-class Reticle : public GameObject {
+class Reticle : public MovableGameObject {
 public:
     Reticle(std::string textureID, TextureManager* textureManager, Map* map);
     void render() const override;
 };
 
-class SpaceShip : public GameObject {
+class SpaceShip : public MovableGameObject {
 private:
     Reticle* reticle;
     double angleShip;
@@ -32,7 +32,7 @@ public:
     double getYrel() const override;
     Reticle* getReticle() const;
     void shipHeadAngle();
-    void makeShoot(std::vector<GameObject*>& objects);
+    void makeShoot(std::vector<MovableGameObject*>& objects);
     int getNumBullets() const;
     void setNumBullets(int amount);
 };

@@ -12,6 +12,12 @@ void GameWindow::loadSprites() {
     this->spriteManager->load("assets\\big.png", "big_asteroid");
     this->spriteManager->load("assets\\reticle.png", "reticle");
     this->spriteManager->load("assets\\bullet.png", "bullet");
+    this->spriteManager->load("assets\\startButton.png", "start_button");
+    this->spriteManager->load("assets\\exitButton.png", "exit_button");
+    this->spriteManager->load("assets\\resumeButton.png", "resume_button");
+    this->spriteManager->load("assets\\menuButton.png", "menu_button");
+    this->spriteManager->load("assets\\restartButton.png", "restart_button");
+    this->spriteManager->load("assets\\gameOver.png", "gameOver");
 }
 
 GameWindow::GameWindow(const char *name, int width, int height, bool isFullscreen) {

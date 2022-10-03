@@ -14,7 +14,7 @@ private:
     int asteroidsLimit;
     int ammoLimit;
     int numAsteroids;
-    std::vector<GameObject*> gameObjects;
+    std::vector<MovableGameObject*> gameObjects;
     Vector2D randomizeAppearCoord();
     Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
     void createPlayer();
@@ -22,7 +22,7 @@ private:
 public:
     ObjectManager(GameWindow* window, Map* map, int asteroidsLimit, int ammoLimit);
     ~ObjectManager();
-    std::vector<GameObject*>& getObjects();
+    std::vector<MovableGameObject*>& getObjects();
     int getAmmoLimit() const;
     int getNumAsteroids() const;
     void setNumAsteroids(int amount);

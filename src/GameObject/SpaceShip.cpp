@@ -4,7 +4,7 @@
 
 #include "SpaceShip.h"
 
-Bullet::Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : GameObject(coord, velocity, theta, textureID, textureManager, map) {
+Bullet::Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
 }
 
 void SpaceShip::limitateCoord() {
@@ -29,7 +29,7 @@ void SpaceShip::limitateCoord() {
     }
 }
 
-SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map) : GameObject(coord, velocity, theta, textureID, textureManager, map) {
+SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
     this->reticle = new Reticle("reticle", this->textureManager, map );
     this->angleShip = 0;
     this->ammoLimit = ammoLimit;
@@ -73,7 +73,7 @@ void SpaceShip::shipHeadAngle() {
     this->angleShip = alpha; // для розрахунку направлення корабля
 }
 
-void SpaceShip::makeShoot(std::vector<GameObject*>& objects) {
+void SpaceShip::makeShoot(std::vector<MovableGameObject*>& objects) {
     Vector2D avatarCoord{this->coord.getX(), this->coord.getY()};
     this->shipHeadAngle();
     if ( this->map->getVx() != 0 || this->map->getVy() != 0 ) {
@@ -121,7 +121,7 @@ void SpaceShip::setNumBullets(int amount) {
     this->numBullets = amount;
 }
 
-Reticle::Reticle(std::string textureID, TextureManager* textureManager, Map *map): GameObject(Vector2D{0, 0}, 0, 0, textureID, textureManager, map) {
+Reticle::Reticle(std::string textureID, TextureManager* textureManager, Map *map): MovableGameObject(Vector2D{0, 0}, 0, 0, textureID, textureManager, map) {
     this->xOf = this->wSprite / 2;
     this->yOf = this->hSprite / 2;
 }

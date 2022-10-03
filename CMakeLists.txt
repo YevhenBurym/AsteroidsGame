@@ -14,7 +14,9 @@ add_executable(Asteroids main.cpp
         src/GameObject/SpaceShip.cpp
         src/GameObject/Asteroid.cpp
         src/Vector2D/Vector2D.cpp
-        src/TextureManager/TextureManager.cpp)
+        src/TextureManager/TextureManager.cpp
+        src/GameObject/MovableGameObject.cpp
+        src/GameObject/Button.cpp)
 
 
 include_directories(${CMAKE_SOURCE_DIR}/SDL2/include/SDl2)

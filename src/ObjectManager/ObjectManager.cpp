@@ -80,7 +80,7 @@ Velocity ObjectManager::randomizeVelocity(int minVelocity, int maxVelocity, int 
     return randomV;
 }
 
-std::vector<GameObject *> &ObjectManager::getObjects() {
+std::vector<MovableGameObject *> &ObjectManager::getObjects() {
     return this->gameObjects;
 }
 

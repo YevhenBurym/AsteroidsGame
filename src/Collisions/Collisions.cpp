@@ -4,7 +4,7 @@
 
 #include "Collisions.h"
 
-void Collisions::fixCoord(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween) {
+void Collisions::fixCoord(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween) {
     double alpha = 0;
     Vector2D xyOffset = {0, 0 };
     double currX1 = unit1->getX();
@@ -82,7 +82,7 @@ void Collisions::fixCoord(GameObject* unit1, GameObject* unit2, Vector2D vectorB
     unit2->setY(newY2);
 }
 
-void Collisions::calcVelocity(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween) {
+void Collisions::calcVelocity(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween) {
     double alpha = 0;
     double phi1 = 0;
     double phi2 = 0;
@@ -168,8 +168,8 @@ void Collisions::update() {
                 }
                 else if (dynamic_cast<Bullet*>(*it1) && dynamic_cast<SmallAsteroid*>(*it2) ||
                          dynamic_cast<Bullet*>(*it2) && dynamic_cast<SmallAsteroid*>(*it1)) {
-                    GameObject* temp1 = (*it1);
-                    GameObject* temp2 = (*it2);
+                    MovableGameObject* temp1 = (*it1);
+                    MovableGameObject* temp2 = (*it2);
                     it2 = this->objectManager->getObjects().erase(it2);
                     it2--;
                     it1 = this->objectManager->getObjects().erase(it1);
@@ -193,8 +193,8 @@ void Collisions::update() {
                     else if (dynamic_cast<BigAsteroid*>(*it1)) {
                         bigAster = dynamic_cast<BigAsteroid*>(*it1);
                     }
-                    GameObject* temp1 = (*it1);
-                    GameObject* temp2 = (*it2);
+                    MovableGameObject* temp1 = (*it1);
+                    MovableGameObject* temp2 = (*it2);
                     auto iter1 = it1-1;
                     auto iter2 = it2-1;
                     it2 = this->objectManager->getObjects().erase(it2);

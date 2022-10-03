@@ -4,15 +4,15 @@
 
 #pragma once
 
-#include "GameObject.h"
+#include "MovableGameObject.h"
 
-class SmallAsteroid : public GameObject {
+class SmallAsteroid : public MovableGameObject {
 public:
     SmallAsteroid (Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
 };
 
-class BigAsteroid : public GameObject {
+class BigAsteroid : public MovableGameObject {
 public:
     BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
-    void divide(std::vector<GameObject*>& objects);
+    void divide(std::vector<MovableGameObject*>& objects);
 };
