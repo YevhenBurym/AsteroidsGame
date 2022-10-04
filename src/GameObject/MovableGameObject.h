@@ -29,6 +29,7 @@ public:
     virtual double getMass() const;
     virtual double getRadius() const;
     virtual void render() const;
+    virtual void update();
 };
 
 

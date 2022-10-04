@@ -3,24 +3,26 @@
 //
 
 #include "GameWindow.h"
+#include "../GameStates/MenuState.h"
 
 void GameWindow::loadSprites() {
-    this->spriteManager->load("assets\\back.png", "background");
-    this->spriteManager->load("assets\\border.png", "border");
-    this->spriteManager->load("assets\\ship.png", "spaceship");
-    this->spriteManager->load("assets\\small.png", "small_asteroid");
-    this->spriteManager->load("assets\\big.png", "big_asteroid");
-    this->spriteManager->load("assets\\reticle.png", "reticle");
-    this->spriteManager->load("assets\\bullet.png", "bullet");
-    this->spriteManager->load("assets\\startButton.png", "start_button");
-    this->spriteManager->load("assets\\exitButton.png", "exit_button");
-    this->spriteManager->load("assets\\resumeButton.png", "resume_button");
-    this->spriteManager->load("assets\\menuButton.png", "menu_button");
-    this->spriteManager->load("assets\\restartButton.png", "restart_button");
-    this->spriteManager->load("assets\\gameOver.png", "gameOver");
+    this->textureManager->load("assets\\back.png", "background");
+    this->textureManager->load("assets\\border.png", "border");
+    this->textureManager->load("assets\\ship.png", "spaceship");
+    this->textureManager->load("assets\\small.png", "small_asteroid");
+    this->textureManager->load("assets\\big.png", "big_asteroid");
+    this->textureManager->load("assets\\reticle.png", "reticle");
+    this->textureManager->load("assets\\bullet.png", "bullet");
+    this->textureManager->load("assets\\startButton.png", "start_button");
+    this->textureManager->load("assets\\exitButton.png", "exit_button");
+    this->textureManager->load("assets\\resumeButton.png", "resume_button");
+    this->textureManager->load("assets\\menuButton.png", "menu_button");
+    this->textureManager->load("assets\\restartButton.png", "restart_button");
+    this->textureManager->load("assets\\gameOver.png", "gameOver");
 }
 
 GameWindow::GameWindow(const char *name, int width, int height, bool isFullscreen) {
+    this->quitGame = false;
     this->window = nullptr;
     this->renderer = nullptr;
     this->size.width = 0;
@@ -62,14 +64,18 @@ GameWindow::GameWindow(const char *name, int width, int height, bool isFullscree
                 }
             }
         }
-        this->spriteManager = new TextureManager(this->renderer);
+        this->inputHandler = new InputComponent();
+        this->textureManager = new TextureManager(this->renderer);
         this->loadSprites();
+        this->gameStateMachine = new GameStateMachine();
+        //this->gameStateMachine->changeState(new MenuState(this,))
     }
 }
 
 GameWindow::~GameWindow() {
-    delete this->spriteManager;
-
+    delete this->inputHandler;
+    delete this->textureManager;
+    delete this->gameStateMachine;
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
     this->renderer = nullptr;
@@ -83,11 +89,26 @@ SDL_Renderer *GameWindow::getRenderer() const {
     return this->renderer;
 }
 
-TextureManager *GameWindow::getSpriteManager() const {
-    return this->spriteManager;
+TextureManager *GameWindow::getTextureManager() const {
+    return this->textureManager;
 }
 
 WindowSize GameWindow::getSize() const {
     return this->size;
 }
 
+GameStateMachine *GameWindow::getGameStateMachine() const {
+    return this->gameStateMachine;
+}
+
+InputComponent* GameWindow::getInputHadler() const {
+    return this->inputHandler;
+}
+
+void GameWindow::setFlagQuitGame(bool status) {
+    this->quitGame = status;
+}
+
+bool GameWindow::getFlagQuitGame() const {
+    return this->quitGame;
+}

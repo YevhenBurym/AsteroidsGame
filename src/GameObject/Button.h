@@ -17,9 +17,9 @@ private:
     };
     std::function<void()> m_callback;
     bool m_bReleased;
-    int m_currentFrame;
+    int currentFrame;
 public:
     Button(Vector2D coord, std::string textureID, TextureManager* textureManager, InputComponent *inputComponent, std::function<void()> callback);
     void render() const override;
-    void update();
+    void update() override;
 };

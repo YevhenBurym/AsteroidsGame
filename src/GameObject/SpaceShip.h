@@ -23,9 +23,13 @@ private:
     double angleShip;
     int ammoLimit;
     int numBullets;
+    InputComponent* inputHandler;
+    std::vector<MovableGameObject*>* gameObjects;
+    bool buttonLeftPress;
     void limitateCoord() override;
 public:
-    SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map);
+    SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager,
+            int ammoLimit, Map* map, InputComponent* inputHandler, std::vector<MovableGameObject*>* objects);
     ~SpaceShip() override;
     void render() const override;
     double getXrel() const override;
@@ -35,4 +39,5 @@ public:
     void makeShoot(std::vector<MovableGameObject*>& objects);
     int getNumBullets() const;
     void setNumBullets(int amount);
+    void update() override;
 };

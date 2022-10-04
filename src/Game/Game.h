@@ -6,14 +6,12 @@
 
 #include "../Map/Map.h"
 #include "../ObjectManager/ObjectManager.h"
-#include "../InputComponent/InputComponent.h"
+//#include "../InputComponent/InputComponent.h"
 #include "../Collisions/Collisions.h"
-
-
 
 class Game {
 private:
-    InputComponent* inputHandler;
+    //InputComponent* inputHandler;
     Collisions* collisions;
     Map* map;
     GameWindow* gameWindow;

@@ -5,13 +5,14 @@
 #include "Button.h"
 
 void Button::render() const {
-    this->textureManager->drawFrame(this->textureID, this->coord.getX(),this->coord.getY(),this->wSprite, this->hSprite,0, this->m_currentFrame);
+    this->textureManager->drawFrame(this->textureID, this->coord.getX(),this->coord.getY(),this->wSprite, this->hSprite,0, this->currentFrame);
 }
 
 Button::Button(Vector2D coord, std::string textureID, TextureManager *textureManager, InputComponent *inputComponent,
                std::function<void()> callback):GameObject(coord, textureID, textureManager) {
+    this->wSprite /= 2;
     this->inputComponent = inputComponent;
-    this->m_currentFrame = MOUSE_OUT;
+    this->currentFrame = MOUSE_OUT;
     this->m_bReleased = false;
 }
 
@@ -28,9 +29,9 @@ void Button::update() {
             this->m_bReleased = false;
         } else if (!this->inputComponent->getMouseButtonState(LEFT)) {
             this->m_bReleased = true;
-            this->m_currentFrame = MOUSE_OVER;
+            this->currentFrame = MOUSE_OVER;
         }
     } else {
-        this->m_currentFrame = MOUSE_OUT;
+        this->currentFrame = MOUSE_OUT;
     }
 }

@@ -95,3 +95,6 @@ void MovableGameObject::render() const {
     this->textureManager->draw(this->textureID,x,y,this->wSprite,this->hSprite);
 }
 
+void MovableGameObject::update() {
+
+}

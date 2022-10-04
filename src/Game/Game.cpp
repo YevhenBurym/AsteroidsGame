@@ -22,13 +22,16 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
 bool Game::init() {
     this->map->mapInit();
     this->objectManager = new ObjectManager(this->gameWindow, this->map, this->asteroidsLimit, this->ammoLimit);
-    this->inputHandler = new InputComponent(this->objectManager, this->map);
+    //this->inputHandler = new InputComponent(/*this->objectManager, this->map*/);
     this->collisions = new Collisions(this->objectManager);
     return true;
 }
 
 void Game::update() {
-    this->inputHandler->update();
+    this->gameWindow->getInputHadler()->update();
+    if (this->gameWindow->getInputHadler()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+        this->gameWindow->setFlagQuitGame(true);
+    }
     this->map->update();
     this->objectManager->update();
     try {
@@ -57,7 +60,8 @@ void Game::run() {
     this->init();
 
     //While application is running
-    while (!this->inputHandler->getFlagQuitGame()) {
+    while (!this->gameWindow->getFlagQuitGame() &&
+    !this->gameWindow->getInputHadler()->getFlagQuitGame()) {
         startTime = SDL_GetTicks();
 
         this->update();
@@ -75,7 +79,7 @@ void Game::run() {
 }
 
 Game::~Game() {
-    delete this->inputHandler;
+    //delete this->inputHandler;
     delete this->gameWindow;
     delete this->map;
 }
@@ -83,7 +87,7 @@ Game::~Game() {
 void Game::close() {
     delete this->collisions;
     delete this->objectManager;
-    delete this->inputHandler;
+    //delete this->inputHandler;
 }
 
 void Game::restart() {

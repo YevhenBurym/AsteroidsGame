@@ -8,6 +8,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "../TextureManager/TextureManager.h"
+#include "../GameStates/GameStateMachine.h"
+#include "../InputComponent/InputComponent.h"
 
 struct WindowSize {
     int width;
@@ -16,16 +18,23 @@ struct WindowSize {
 
 class GameWindow {
 private:
-    TextureManager* spriteManager;
+    InputComponent* inputHandler;
+    TextureManager* textureManager;
+    GameStateMachine* gameStateMachine;
     SDL_Window* window;
     SDL_Renderer* renderer;
     WindowSize size;
+    bool quitGame;
     void loadSprites();
 public:
     GameWindow(const char* name, int width, int height, bool isFullscreen);
     ~GameWindow();
 
     SDL_Renderer* getRenderer() const;
-    TextureManager* getSpriteManager() const;
+    TextureManager* getTextureManager() const;
     WindowSize getSize() const;
+    GameStateMachine* getGameStateMachine() const;
+    InputComponent* getInputHadler() const;
+    bool getFlagQuitGame() const;
+    void setFlagQuitGame(bool status);
 };

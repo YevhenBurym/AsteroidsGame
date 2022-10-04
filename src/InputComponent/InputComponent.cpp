@@ -4,11 +4,11 @@
 
 #include "InputComponent.h"
 
-InputComponent::InputComponent(ObjectManager *objectManager, Map* map) {
+InputComponent::InputComponent(/*ObjectManager *objectManager*/) {
     this->initMouseButtons();
-    this->objectManager = objectManager;
-    this->map = map;
-    this->player = dynamic_cast<SpaceShip*>(this->objectManager->getObjects().front());
+    this->keyStates = SDL_GetKeyboardState(nullptr);
+    //this->objectManager = objectManager;
+    //this->player = dynamic_cast<SpaceShip*>(this->objectManager->getObjects().front());
     this->quitGame = false;
 }
 
@@ -25,23 +25,18 @@ void InputComponent::update() {
                 this->onMouseMove(event.motion.x, event.motion.y);
                 event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
                 break;
-
             case SDL_MOUSEBUTTONDOWN:
                 this->onMouseButtonPressed(event.button.button);
                 break;
-
             case SDL_MOUSEBUTTONUP:
                 this->onMouseButtonReleased(event.button.button);
                 break;
-
             case SDL_KEYDOWN:
-                this->onKeyPressed(event.key.keysym.sym);
+                this->onKeyPressed();
                 break;
-
             case SDL_KEYUP:
-                this->onKeyReleased(event.key.keysym.sym);
+                this->onKeyReleased();
                 break;
-
             default:
                 break;
 
@@ -50,45 +45,12 @@ void InputComponent::update() {
 
 }
 
-void InputComponent::onKeyPressed(SDL_Keycode key) {
-    switch (key) {
-        case SDLK_UP:
-            this->map->setVy(1);
-            break;
-        case SDLK_DOWN:
-            this->map->setVy(-1);
-            break;
-        case SDLK_LEFT:
-            this->map->setVx(1);
-            break;
-        case SDLK_RIGHT:
-            this->map->setVx(-1);
-            break;
-        case SDLK_ESCAPE:
-                this->quitGame = true;
-            break;
-        default:
-            break;
-    }
+void InputComponent::onKeyPressed() {
+    this->keyStates = SDL_GetKeyboardState(nullptr);
 }
 
-void InputComponent::onKeyReleased(SDL_Keycode key) {
-    switch (key) {
-        case SDLK_UP:
-            this->map->setIsNeededDeAcc(true);
-            break;
-        case SDLK_DOWN:
-            this->map->setIsNeededDeAcc(true);
-            break;
-        case SDLK_LEFT:
-            this->map->setIsNeededDeAcc(true);
-            break;
-        case SDLK_RIGHT:
-            this->map->setIsNeededDeAcc(true);
-            break;
-        default:
-            break;
-    }
+void InputComponent::onKeyReleased() {
+    this->keyStates = SDL_GetKeyboardState(nullptr);
 }
 
 void InputComponent::onMouseButtonPressed(int MouseButton) {
@@ -110,7 +72,6 @@ void InputComponent::onMouseButtonPressed(int MouseButton) {
 void InputComponent::onMouseButtonReleased(int MouseButton) {
     switch (MouseButton) {
         case SDL_BUTTON_LEFT:
-            this->player->makeShoot(this->objectManager->getObjects());
                 this->mouseButtonStates[LEFT] = false;
             break;
         case SDL_BUTTON_MIDDLE:
@@ -127,13 +88,6 @@ void InputComponent::onMouseButtonReleased(int MouseButton) {
 void InputComponent::onMouseMove(int x, int y) {
     this->mousePosition.setX(x);
     this->mousePosition.setY(y);
-
-    this->player->getReticle()->setX(x);
-    this->player->getReticle()->setY(y);
-}
-
-bool InputComponent::getFlagQuitGame() const {
-    return quitGame;
 }
 
 Vector2D InputComponent::getMousePosition() {
@@ -148,4 +102,15 @@ void InputComponent::initMouseButtons() {
     for (int i = 0; i < 3; i++) {
         this->mouseButtonStates.push_back(false);
     }
+}
+
+bool InputComponent::isKeyDown(SDL_Scancode key) {
+    if (this->keyStates != nullptr) {
+        return this->keyStates[key] == 1;
+    }
+    return false;
+}
+
+bool InputComponent::getFlagQuitGame() const {
+    return this->quitGame;
 }

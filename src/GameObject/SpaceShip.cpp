@@ -29,11 +29,14 @@ void SpaceShip::limitateCoord() {
     }
 }
 
-SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
+SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map, InputComponent* inputHandler, std::vector<MovableGameObject*>* objects) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
     this->reticle = new Reticle("reticle", this->textureManager, map );
     this->angleShip = 0;
     this->ammoLimit = ammoLimit;
     this->numBullets = 0;
+    this->inputHandler = inputHandler;
+    this->gameObjects = objects;
+    this->buttonLeftPress = false;
 }
 SpaceShip::~SpaceShip() {
     delete this->reticle;
@@ -119,6 +122,19 @@ int SpaceShip::getNumBullets() const {
 
 void SpaceShip::setNumBullets(int amount) {
     this->numBullets = amount;
+}
+
+void SpaceShip::update() {
+    Vector2D mousePos = this->inputHandler->getMousePosition();
+    this->reticle->setX(mousePos.getX());
+    this->reticle->setY(mousePos.getY());
+
+    if (this->inputHandler->getMouseButtonState(LEFT) && !this->buttonLeftPress) {
+        this->buttonLeftPress = true;
+        this->makeShoot(*this->gameObjects);
+    } else if (!this->inputHandler->getMouseButtonState(LEFT)) {
+        this->buttonLeftPress = false;
+    }
 }
 
 Reticle::Reticle(std::string textureID, TextureManager* textureManager, Map *map): MovableGameObject(Vector2D{0, 0}, 0, 0, textureID, textureManager, map) {

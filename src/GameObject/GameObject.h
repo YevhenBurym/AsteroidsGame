@@ -22,4 +22,5 @@ public:
     virtual double getX() const;
     virtual double getY() const;
     virtual void render() const;
+    virtual void update() = 0;
 };

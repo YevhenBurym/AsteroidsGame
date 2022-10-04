@@ -5,7 +5,9 @@
 #pragma once
 
 #include "SDL.h"
-#include "../ObjectManager/ObjectManager.h"
+#include "../Vector2D/Vector2D.h"
+#include <vector>
+//#include "../ObjectManager/ObjectManager.h"
 
 enum MouseButtons {
     LEFT = 0,
@@ -14,23 +16,24 @@ enum MouseButtons {
 };
 
 class InputComponent {
-    SpaceShip* player;
-    ObjectManager* objectManager;
-    Map* map;
+    //SpaceShip* player;
+    //ObjectManager* objectManager;
     bool quitGame;
     Vector2D mousePosition;
     std::vector<bool> mouseButtonStates;
+    const Uint8* keyStates;
 public:
-    InputComponent(ObjectManager* objectManager, Map* map);
+    InputComponent(/*ObjectManager* objectManager*/);
     void update();
     void onMouseMove(int x, int y);
-    void onKeyPressed(SDL_Keycode key);
-    void onKeyReleased(SDL_Keycode key);
+    void onKeyPressed();
+    void onKeyReleased();
     void onMouseButtonPressed(int MouseButton);
     void onMouseButtonReleased(int MouseButton);
-    bool getFlagQuitGame() const;
     Vector2D getMousePosition();
     bool getMouseButtonState(int button);
     void initMouseButtons();
+    bool isKeyDown(SDL_Scancode key);
+    bool getFlagQuitGame() const;
 };
 

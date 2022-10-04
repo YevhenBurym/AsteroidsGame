@@ -7,8 +7,8 @@ void ObjectManager::createPlayer() {
     avatarCoord.setX(this->map->getWMap() / 2 - this->map->getMapOffsetCoord().getX());
     avatarCoord.setY(this->map->getHMap() / 2 - this->map->getMapOffsetCoord().getY());
     this->gameObjects.push_back(
-            new SpaceShip(avatarCoord, 0, 0, "spaceship", this->window->getSpriteManager(), this->getAmmoLimit(),
-                          this->map));
+            new SpaceShip(avatarCoord, 0, 0, "spaceship", this->window->getTextureManager(), this->getAmmoLimit(),
+                          this->map, this->window->getInputHadler(), &this->gameObjects));
 }
 
 ObjectManager::ObjectManager(GameWindow *window, Map *map, int asteroidsLimit, int ammoLimit) {
@@ -37,13 +37,13 @@ void ObjectManager::createAsteroids() {
 
     if (randomAsteroid > 80) {
         auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
-                                           "big_asteroid", this->window->getSpriteManager(), this->map);
+                                           "big_asteroid", this->window->getTextureManager(), this->map);
         bigAsteroid->setXof(this->map->getX());
         bigAsteroid->setYof(this->map->getY());
         this->getObjects().push_back(bigAsteroid);
     } else {
         auto smallAsteroid = new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
-                                               "small_asteroid",this->window->getSpriteManager() , this->map);
+                                               "small_asteroid", this->window->getTextureManager() , this->map);
         smallAsteroid->setXof(this->map->getX());
         smallAsteroid->setYof(this->map->getY());
         this->getObjects().push_back(smallAsteroid);
@@ -114,7 +114,7 @@ void ObjectManager::render() {
 
 void ObjectManager::update() {
     this->createAsteroids();
-
+    this->gameObjects[0]->update();
     this->map->calcCoord(this->map->getVx(), this->map->getVy(), 0.5);
 
     if (this->map->getVx() != 0 || this->map->getVy() != 0) {

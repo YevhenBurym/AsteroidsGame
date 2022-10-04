@@ -65,7 +65,7 @@ void Map::drawBackground() {
     int rowLim = hScreen;
     int colLim = wScreen;
 
-    this->window->getSpriteManager()->getTextureSize("background",wSprite,hSprite);
+    this->window->getTextureManager()->getTextureSize("background", wSprite, hSprite);
     if (hScreen % hSprite != 0) {
         rowLim += hSprite;
     }
@@ -74,14 +74,14 @@ void Map::drawBackground() {
     }
     for ( int row = 0; row <= rowLim; row += hSprite ) {
         for ( int col = 0; col <= colLim; col += wSprite ) {
-            this->window->getSpriteManager()->draw("background", col, row, wSprite, hSprite);
+            this->window->getTextureManager()->draw("background", col, row, wSprite, hSprite);
         }
     }
 }
 
 void Map::drawBorder() {
     int hSprite, wSprite;
-    this->window->getSpriteManager()->getTextureSize("border",wSprite,hSprite);
+    this->window->getTextureManager()->getTextureSize("border", wSprite, hSprite);
 
     int minXCoord = 0 - this->getMapOffsetCoord().getX() + this->getX();
     int maxXCoord = this->getWMap() - this->getMapOffsetCoord().getX() + this->getX();
@@ -96,16 +96,16 @@ void Map::drawBorder() {
     }
 
     for (int i = minXCoord; i <= maxXCoord; i += wSprite) {
-        this->window->getSpriteManager()->draw("border", i, minYCoord, wSprite, hSprite);
+        this->window->getTextureManager()->draw("border", i, minYCoord, wSprite, hSprite);
     }
     for (int i = minYCoord; i <= maxYCoord; i += hSprite) {
-        this->window->getSpriteManager()->draw("border", minXCoord, i, wSprite, hSprite);
+        this->window->getTextureManager()->draw("border", minXCoord, i, wSprite, hSprite);
     }
     for (int i = minXCoord; i <= maxXCoord; i += wSprite) {
-        this->window->getSpriteManager()->draw("border", i, maxYCoord, wSprite, hSprite);
+        this->window->getTextureManager()->draw("border", i, maxYCoord, wSprite, hSprite);
     }
     for (int i = minYCoord; i <= maxYCoord; i += hSprite) {
-        this->window->getSpriteManager()->draw("border", maxXCoord, i, wSprite, hSprite);
+        this->window->getTextureManager()->draw("border", maxXCoord, i, wSprite, hSprite);
     }
 }
 
@@ -126,6 +126,27 @@ void Map::mapInit() {
 }
 
 void Map::update() {
+    if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_UP)) {
+        this->Vy = 1;
+    } else {
+        this->isNeedDeAcc = true;
+    }
+    if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_DOWN)) {
+        this->Vy = -1;
+    } else {
+        this->isNeedDeAcc = true;
+    }
+    if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_LEFT)) {
+        this->Vx = 1;
+    } else {
+        this->isNeedDeAcc = true;
+    }
+    if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_RIGHT)) {
+        this->Vx = -1;
+    } else {
+        this->isNeedDeAcc = true;
+    }
+
     float acc = 0.003;
     float accuracy = 0.001;
 
