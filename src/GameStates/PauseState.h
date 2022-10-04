@@ -14,14 +14,13 @@
 class PauseState : public GameState {
 private:
     GameWindow* gameWindow;
-    InputComponent* inputComponent;
     void s_pauseToMain();
     void s_resumePlay();
 
     static const std::string pauseID;
     std::vector<Button *> menuButtons;
 public:
-    PauseState(GameWindow* gameWindow, InputComponent* inputComponent);
+    PauseState(GameWindow* gameWindow);
     void update() override;
     void render() override;
     bool onEnter() override;

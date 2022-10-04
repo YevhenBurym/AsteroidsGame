@@ -12,6 +12,6 @@ private:
     int currentFrame;
 public:
     GameOverMessage(Vector2D coord, std::string textureID, TextureManager* textureManager, int animationSpeed);
-    void render(SDL_Renderer* pRenderer);
-    void update();
+    void render() const override;
+    void update() override;
 };

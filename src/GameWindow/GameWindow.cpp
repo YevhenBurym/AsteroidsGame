@@ -18,7 +18,7 @@ void GameWindow::loadSprites() {
     this->textureManager->load("assets\\resumeButton.png", "resume_button");
     this->textureManager->load("assets\\menuButton.png", "menu_button");
     this->textureManager->load("assets\\restartButton.png", "restart_button");
-    this->textureManager->load("assets\\gameOver.png", "gameOver");
+    this->textureManager->load("assets\\gameOver.png", "game_over");
 }
 
 GameWindow::GameWindow(const char *name, int width, int height, bool isFullscreen) {
@@ -54,7 +54,8 @@ GameWindow::GameWindow(const char *name, int width, int height, bool isFullscree
                 std::cout << "Renderer could not be created! SDL Error: %s\n" << SDL_GetError();
             } else {
                 //Initialize renderer color
-                SDL_SetRenderDrawColor(this->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                //SDL_SetRenderDrawColor(this->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                SDL_SetRenderDrawColor(this->renderer,0,0,0,255);
 
                 //Initialize PNG loading
                 int imgFlags = IMG_INIT_PNG;
@@ -68,7 +69,6 @@ GameWindow::GameWindow(const char *name, int width, int height, bool isFullscree
         this->textureManager = new TextureManager(this->renderer);
         this->loadSprites();
         this->gameStateMachine = new GameStateMachine();
-        //this->gameStateMachine->changeState(new MenuState(this,))
     }
 }
 

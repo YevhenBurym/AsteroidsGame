@@ -13,14 +13,14 @@
 class MenuState : public GameState {
 private:
     GameWindow* gameWindow;
-    InputComponent* inputComponent;
     static const std::string menuID;
     std::vector<Button*> menuButtons;
     // call back functions for menu items
     void s_menuToPlay();
     void s_exitFromMenu();
 public:
-    MenuState(GameWindow* gameWindow, InputComponent* inputComponent);
+    MenuState(GameWindow* gameWindow);
+    ~MenuState() override;
     void update() override;
     void render() override;
     bool onEnter() override;

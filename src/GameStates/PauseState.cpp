@@ -4,15 +4,14 @@
 
 #include "PauseState.h"
 
-PauseState::PauseState(GameWindow* gameWindow, InputComponent* inputComponent) {
+PauseState::PauseState(GameWindow* gameWindow) {
     this->gameWindow = gameWindow;
-    this->inputComponent = inputComponent;
 }
 
 const std::string PauseState::pauseID = "PAUSE";
 
 void PauseState::s_pauseToMain() {
-    this->gameWindow->getGameStateMachine()->changeState(new MenuState(this->gameWindow,this->inputComponent));
+    this->gameWindow->getGameStateMachine()->changeState(new MenuState(this->gameWindow));
 }
 
 void PauseState::s_resumePlay() {
@@ -20,20 +19,27 @@ void PauseState::s_resumePlay() {
 }
 
 void PauseState::update() {
-    for (auto &button : this->menuButtons) {
-        button->update();
+//    for (auto &button : this->menuButtons) {
+//        button->update();
+//    }
+    for(int i = 0; i < this->menuButtons.size(); i++) {
+        this->menuButtons[i]->update();
     }
 }
 
 void PauseState::render() {
-    for (auto &button : this->menuButtons) {
-        button->render();
+    for(int i = 0; i < this->menuButtons.size(); i++) {
+        this->menuButtons[i]->render();
     }
+//    for (auto &button : this->menuButtons) {
+//        button->render();
+//    }
 }
 
 bool PauseState::onEnter() {
-    auto menuButton = new Button({220,100},"menu_button",this->gameWindow->getTextureManager(),this->inputComponent,[this]() { s_pauseToMain(); });
-    auto resumeButton = new Button({220,300},"resume_button",this->gameWindow->getTextureManager(),this->inputComponent,[this]() { s_resumePlay(); });
+    SDL_ShowCursor(SDL_ENABLE);
+    auto menuButton = new Button({220,100},"menu_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),[this]() { s_pauseToMain(); });
+    auto resumeButton = new Button({220,300},"resume_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),[this]() { s_resumePlay(); });
 
     this->menuButtons.push_back(menuButton);
     this->menuButtons.push_back(resumeButton);
@@ -47,7 +53,7 @@ bool PauseState::onExit() {
     }
     this->menuButtons.clear();
 // reset the mouse button states to false
-    this->inputComponent->initMouseButtons();
+    this->gameWindow->getInputHadler()->initMouseButtons();
     std::cout << "exiting PauseState\n";
     return true;
 }

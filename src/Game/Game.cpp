@@ -20,34 +20,35 @@ Game::Game(int wScreen, int hScreen, int wMap, int hMap, int asteroidsLimit, int
 }
 
 bool Game::init() {
-    this->map->mapInit();
-    this->objectManager = new ObjectManager(this->gameWindow, this->map, this->asteroidsLimit, this->ammoLimit);
-    //this->inputHandler = new InputComponent(/*this->objectManager, this->map*/);
-    this->collisions = new Collisions(this->objectManager);
+    //this->map->mapInit();
+    //this->objectManager = new ObjectManager(this->gameWindow, this->map, this->asteroidsLimit, this->ammoLimit);
+    //this->collisions = new Collisions(this->objectManager);
+    this->gameWindow->getGameStateMachine()->changeState(new MenuState(this->gameWindow));
     return true;
 }
 
 void Game::update() {
     this->gameWindow->getInputHadler()->update();
-    if (this->gameWindow->getInputHadler()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
-        this->gameWindow->setFlagQuitGame(true);
-    }
-    this->map->update();
-    this->objectManager->update();
-    try {
-        this->collisions->update();
-    } catch (YouDied) {
-        this->restart();
-    }
-
+//    if (this->gameWindow->getInputHadler()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+//        this->gameWindow->setFlagQuitGame(true);
+//    }
+//    this->map->update();
+//    this->objectManager->update();
+//    try {
+//        this->collisions->update();
+//    } catch (YouDied) {
+//        this->restart();
+//    }
+    this->gameWindow->getGameStateMachine()->update();
 }
 
 void Game::render() {
     SDL_RenderClear(this->gameWindow->getRenderer());
 
-    this->map->render();
-    this->objectManager->render();
-    SDL_ShowCursor(SDL_DISABLE);
+    //this->map->render();
+    //this->objectManager->render();
+    this->gameWindow->getGameStateMachine()->render();
+    //SDL_ShowCursor(SDL_DISABLE);
     SDL_RenderPresent(this->gameWindow->getRenderer());
 }
 
@@ -79,15 +80,13 @@ void Game::run() {
 }
 
 Game::~Game() {
-    //delete this->inputHandler;
     delete this->gameWindow;
     delete this->map;
 }
 
 void Game::close() {
-    delete this->collisions;
-    delete this->objectManager;
-    //delete this->inputHandler;
+    //delete this->collisions;
+    //delete this->objectManager;
 }
 
 void Game::restart() {

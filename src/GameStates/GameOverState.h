@@ -12,7 +12,7 @@
 
 class GameOverState : public GameState {
 public:
-    GameOverState(GameWindow* gameWindow, InputComponent* inputComponent);
+    GameOverState(GameWindow* gameWindow);
     void update() override;
     void render() override;
     bool onEnter() override;
@@ -21,7 +21,6 @@ public:
 
 private:
     GameWindow* gameWindow;
-    InputComponent* inputComponent;
     void s_gameOverToMain();
     void s_restartPlay();
     static const std::string gameOverID;
