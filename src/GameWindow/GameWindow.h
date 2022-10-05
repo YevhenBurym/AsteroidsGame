@@ -10,6 +10,7 @@
 #include "../TextureManager/TextureManager.h"
 #include "../GameStates/GameStateMachine.h"
 #include "../InputComponent/InputComponent.h"
+#include "../GameParameters/GameParameters.h"
 
 struct WindowSize {
     int width;
@@ -18,6 +19,7 @@ struct WindowSize {
 
 class GameWindow {
 private:
+    GameParameters* parameters;
     InputComponent* inputHandler;
     TextureManager* textureManager;
     GameStateMachine* gameStateMachine;
@@ -27,7 +29,7 @@ private:
     bool quitGame;
     void loadSprites();
 public:
-    GameWindow(const char* name, int width, int height, bool isFullscreen);
+    GameWindow(GameParameters* parameters);
     ~GameWindow();
 
     SDL_Renderer* getRenderer() const;
@@ -35,6 +37,7 @@ public:
     WindowSize getSize() const;
     GameStateMachine* getGameStateMachine() const;
     InputComponent* getInputHadler() const;
+    GameParameters* getParameters() const;
     bool getFlagQuitGame() const;
     void setFlagQuitGame(bool status);
 };

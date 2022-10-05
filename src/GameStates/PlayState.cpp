@@ -9,7 +9,7 @@ const std::string PlayState::playID = "PLAY";
 
 PlayState::PlayState(GameWindow* gameWindow) {
     this->gameWindow = gameWindow;
-    this->map = new Map(800/*this->wMap*/, 600/*this->hMap*/, this->gameWindow);
+    this->map = new Map(this->gameWindow);
 }
 
 void PlayState::update() {
@@ -37,7 +37,7 @@ void PlayState::render() {
 bool PlayState::onEnter() {
     SDL_ShowCursor(SDL_DISABLE);
     this->map->mapInit();
-    this->objectManager = new ObjectManager(this->gameWindow, this->map, 5/*this->asteroidsLimit*/, 5/*this->ammoLimit*/);
+    this->objectManager = new ObjectManager(this->gameWindow, this->map);
     this->collisions = new Collisions(this->objectManager);
 
 //    GameObject *player = new Player(new LoaderParams(500, 100, 128, 55, "helicopter", this->game->getTextureManager()),

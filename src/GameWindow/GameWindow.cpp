@@ -21,7 +21,9 @@ void GameWindow::loadSprites() {
     this->textureManager->load("assets\\gameOver.png", "game_over");
 }
 
-GameWindow::GameWindow(const char *name, int width, int height, bool isFullscreen) {
+GameWindow::GameWindow(GameParameters* parameters) {
+    this->parameters = parameters;
+    const char *gameName = "Asteroids";
     this->quitGame = false;
     this->window = nullptr;
     this->renderer = nullptr;
@@ -38,11 +40,11 @@ GameWindow::GameWindow(const char *name, int width, int height, bool isFullscree
         }
 
         Uint32 windowFlags = SDL_WINDOW_SHOWN;
-        if (isFullscreen) {
+        if (this->parameters->getIsFullScreen()) {
             windowFlags = windowFlags | SDL_WINDOW_FULLSCREEN_DESKTOP;
         }
-        this->window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
-                                        windowFlags);
+        this->window = SDL_CreateWindow(gameName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                this->parameters->getWScreen(), this->parameters->getHScreen(), windowFlags);
         if (this->window == nullptr) {
             std::cout << "Window could not be created! SDL Error: %s\n" << SDL_GetError();
         } else {
@@ -73,6 +75,7 @@ GameWindow::GameWindow(const char *name, int width, int height, bool isFullscree
 }
 
 GameWindow::~GameWindow() {
+    delete this->parameters;
     delete this->inputHandler;
     delete this->textureManager;
     delete this->gameStateMachine;
@@ -103,6 +106,10 @@ GameStateMachine *GameWindow::getGameStateMachine() const {
 
 InputComponent* GameWindow::getInputHadler() const {
     return this->inputHandler;
+}
+
+GameParameters* GameWindow::getParameters() const {
+    return this->parameters;
 }
 
 void GameWindow::setFlagQuitGame(bool status) {

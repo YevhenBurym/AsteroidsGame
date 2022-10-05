@@ -20,7 +20,7 @@ private:
     void createPlayer();
     void createAsteroids();
 public:
-    ObjectManager(GameWindow* window, Map* map, int asteroidsLimit, int ammoLimit);
+    ObjectManager(GameWindow* window, Map* map);
     ~ObjectManager();
     std::vector<MovableGameObject*>& getObjects();
     int getAmmoLimit() const;

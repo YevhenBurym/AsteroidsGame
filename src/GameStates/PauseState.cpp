@@ -38,8 +38,8 @@ void PauseState::render() {
 
 bool PauseState::onEnter() {
     SDL_ShowCursor(SDL_ENABLE);
-    auto menuButton = new Button({220,100},"menu_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),[this]() { s_pauseToMain(); });
-    auto resumeButton = new Button({220,300},"resume_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),[this]() { s_resumePlay(); });
+    auto menuButton = new Button({280,150},"menu_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),[this]() { s_pauseToMain(); });
+    auto resumeButton = new Button({280,350},"resume_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),[this]() { s_resumePlay(); });
 
     this->menuButtons.push_back(menuButton);
     this->menuButtons.push_back(resumeButton);
@@ -54,6 +54,8 @@ bool PauseState::onExit() {
     this->menuButtons.clear();
 // reset the mouse button states to false
     this->gameWindow->getInputHadler()->initMouseButtons();
+
+    SDL_ShowCursor(SDL_DISABLE);
     std::cout << "exiting PauseState\n";
     return true;
 }

@@ -22,7 +22,8 @@ add_executable(Asteroids main.cpp
         src/GameStates/PauseState.cpp
         src/GameStates/MenuState.cpp
         src/GameStates/GameOverState.cpp
-        src/GameObject/GameOverMessage.cpp)
+        src/GameObject/GameOverMessage.cpp
+        src/GameParameters/GameParameters.cpp)
 
 
 include_directories(${CMAKE_SOURCE_DIR}/SDL2/include/SDl2)

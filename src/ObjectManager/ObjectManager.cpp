@@ -11,13 +11,13 @@ void ObjectManager::createPlayer() {
                           this->map, this->window->getInputHadler(), &this->gameObjects));
 }
 
-ObjectManager::ObjectManager(GameWindow *window, Map *map, int asteroidsLimit, int ammoLimit) {
+ObjectManager::ObjectManager(GameWindow *window, Map *map) {
     srand(time(NULL));
     this->map = map;
     this->window = window;
     this->numAsteroids = 0;
-    this->ammoLimit = ammoLimit;
-    this->asteroidsLimit = asteroidsLimit;
+    this->ammoLimit = window->getParameters()->getAmmoLimit();
+    this->asteroidsLimit = window->getParameters()->getAsteroidsLimit();
     this->createPlayer();
 }
 

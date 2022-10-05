@@ -1,9 +1,9 @@
 #include "Map.h"
 
-Map::Map(int wMap, int hMap, GameWindow* window) {
+Map::Map(GameWindow* window) {
 	this->window = window;
-    this->hMap = hMap;
-    this->wMap = wMap;
+    this->hMap = window->getParameters()->getHMap();
+    this->wMap = window->getParameters()->getWMap();
     this->Vx = 0;
     this->Vy = 0;
     this->isNeedDeAcc = false;

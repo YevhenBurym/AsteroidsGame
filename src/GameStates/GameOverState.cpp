@@ -39,9 +39,9 @@ void GameOverState::render() {
 
 bool GameOverState::onEnter() {
     SDL_ShowCursor(SDL_ENABLE);
-    auto gameOverText = new GameOverMessage({165,100},"game_over",this->gameWindow->getTextureManager(),2);
-    auto button1 = new Button({220,200},"menu_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(), [this]() {s_gameOverToMain();});
-    auto button2 = new Button({220,300},"restart_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(), [this]() {s_restartPlay();});
+    auto gameOverText = new GameOverMessage({220,150},"game_over",this->gameWindow->getTextureManager(),2);
+    auto button1 = new Button({280,250},"menu_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(), [this]() {s_gameOverToMain();});
+    auto button2 = new Button({280,350},"restart_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(), [this]() {s_restartPlay();});
     this->gameOverObjects.push_back(gameOverText);
     this->gameOverObjects.push_back(button1);
     this->gameOverObjects.push_back(button2);

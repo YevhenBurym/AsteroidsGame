@@ -21,7 +21,7 @@ private:
     void drawBackground();
     void drawBorder();
 public:
-	Map(int wMap, int HMap, GameWindow* window);
+	Map(GameWindow* window);
 	~Map() = default;
 	void calcCoord(double Vx, double Vy, double step);
 	int getHMap() const;
