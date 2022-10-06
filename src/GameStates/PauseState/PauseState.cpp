@@ -18,9 +18,18 @@ PauseState::PauseState(GameWindow *gameWindow) {
             }
     };
 
-    auto menuButton = new Button({280, 150}, "menu_button", this->gameWindow->getTextureManager(),
+    int hMenu,wMenu;
+    int hResume,wResume;
+    this->gameWindow->getTextureManager()->getTextureSize("menu_button", wMenu, hMenu);
+    this->gameWindow->getTextureManager()->getTextureSize("resume_button", wResume, hResume);
+    double xMenu = this->gameWindow->getSize().width / 2 - wMenu / 4;
+    double yMenu = 2 * this->gameWindow->getSize().height / 5 - hMenu / 2;
+    double xResume = this->gameWindow->getSize().width / 2 - wResume / 4;
+    double yResume = 3 * this->gameWindow->getSize().height / 5 - hResume / 2;
+
+    auto menuButton = new Button({xMenu, yMenu}, "menu_button", this->gameWindow->getTextureManager(),
                                  this->gameWindow->getInputHadler(), toMain);
-    auto resumeButton = new Button({280, 350}, "resume_button", this->gameWindow->getTextureManager(),
+    auto resumeButton = new Button({xResume, yResume}, "resume_button", this->gameWindow->getTextureManager(),
                                    this->gameWindow->getInputHadler(), toResume);
     this->menuButtons.push_back(menuButton);
     this->menuButtons.push_back(resumeButton);

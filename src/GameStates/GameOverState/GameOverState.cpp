@@ -18,10 +18,26 @@ GameOverState::GameOverState(GameWindow *gameWindow) {
             }
     };
 
-    auto gameOverText = new GameOverMessage({220, 150}, "game_over", this->gameWindow->getTextureManager(), 2);
-    auto button1 = new Button({280, 250}, "menu_button", this->gameWindow->getTextureManager(),
+    int hMenu,wMenu;
+    int hRestart,wRestart;
+    int hGameOver,wGameOver;
+    this->gameWindow->getTextureManager()->getTextureSize("game_over", wGameOver, hGameOver);
+    this->gameWindow->getTextureManager()->getTextureSize("menu_button", wMenu, hMenu);
+    this->gameWindow->getTextureManager()->getTextureSize("restart_button", wRestart, hRestart);
+
+    double xGameOver = this->gameWindow->getSize().width / 2 - wGameOver / 4;
+    double yGameOver = this->gameWindow->getSize().height / 5 - hGameOver / 2;
+
+
+    double xMenu = this->gameWindow->getSize().width / 2 - wMenu / 4;
+    double yMenu = 2 * this->gameWindow->getSize().height / 5 - hMenu / 2;
+    double xRestart = this->gameWindow->getSize().width / 2 - wRestart / 4;
+    double yRestart = 3 * this->gameWindow->getSize().height / 5 - hRestart / 2;
+
+    auto gameOverText = new GameOverMessage({xGameOver, yGameOver}, "game_over", this->gameWindow->getTextureManager(), 2);
+    auto button1 = new Button({xMenu, yMenu}, "menu_button", this->gameWindow->getTextureManager(),
                               this->gameWindow->getInputHadler(), toMain);
-    auto button2 = new Button({280, 350}, "restart_button", this->gameWindow->getTextureManager(),
+    auto button2 = new Button({xRestart, yRestart}, "restart_button", this->gameWindow->getTextureManager(),
                               this->gameWindow->getInputHadler(), toRestart);
     this->gameOverObjects.push_back(gameOverText);
     this->gameOverObjects.push_back(button1);

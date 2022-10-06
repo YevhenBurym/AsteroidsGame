@@ -77,7 +77,7 @@ void SpaceShip::makeShoot(std::vector<MovableGameObject*>& objects) {
     this->shipHeadAngle();
     if (this->numBullets < this->ammoLimit) {
         this->numBullets += 1;
-        auto bullet = new Bullet(avatarCoord, 800, this->angleShip, "bullet", this->textureManager, this->map);
+        auto bullet = new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map);
         bullet->setXof(this->map->getXY().getX());
         bullet->setYof(this->map->getXY().getY());
         objects.push_back(bullet);
@@ -86,7 +86,7 @@ void SpaceShip::makeShoot(std::vector<MovableGameObject*>& objects) {
             if (dynamic_cast<Bullet*>(*it)) {
                 delete (*it);
                 objects.erase(it);
-                auto bullet = new Bullet(avatarCoord, 800, this->angleShip, "bullet", this->textureManager, this->map);
+                auto bullet = new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map);
                 bullet->setXof(this->map->getXY().getX());
                 bullet->setYof(this->map->getXY().getY());
                 objects.push_back(bullet);

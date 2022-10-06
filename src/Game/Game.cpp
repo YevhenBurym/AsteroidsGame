@@ -45,12 +45,11 @@ void Game::run() {
         this->render();
 
         frameTime = SDL_GetTicks() - startTime;
-//        if (frameDelay > frameTime) {
-//            //std::cout <<frameDelay - frameTime << std::endl;
-//            SDL_Delay(frameDelay - frameTime);
-//
-//        }
-        SDL_Delay(1);
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+
+        }
+        //SDL_Delay(1);
     }
 }
 

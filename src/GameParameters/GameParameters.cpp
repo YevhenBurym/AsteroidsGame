@@ -6,6 +6,12 @@
 
 
 GameParameters::GameParameters(int wScreen, int hScreen, bool isFullscreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability) {
+    if (wScreen < 640) {
+        wScreen = 640;
+    }
+    if (hScreen < 480) {
+        hScreen = 480;
+    }
     if (wMap < wScreen) {
         wMap = wScreen;
     }

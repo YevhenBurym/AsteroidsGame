@@ -36,8 +36,8 @@ void ObjectManager::createAsteroids() {
     if (this->numAsteroids >= this->asteroidsLimit) return;
     Vector2D asteroidCoord = {0, 0};
     Velocity asteroidVelocity = {0, 0};
-    int minVLimit = 100;
-    int maxVLimit = 300;
+    int minVLimit = 800;
+    int maxVLimit = 1600;
     int angleRange = 180;
     this->numAsteroids += 1;
 

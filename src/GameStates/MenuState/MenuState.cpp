@@ -20,14 +20,18 @@ MenuState::MenuState(GameWindow *gameWindow) {
                 this->gameWindow->setFlagQuitGame(true);
             }
     };
-//    int h,w;
-//    this->gameWindow->getTextureManager()->getTextureSize("start_button",w,h);
-//    double x = this->gameWindow->getSize().width /2 - w/3;
-//    double y = this->gameWindow->getSize().height/2 - h/3;
+    int hStart,wStart;
+    int hExit,wExit;
+    this->gameWindow->getTextureManager()->getTextureSize("start_button",wStart,hStart);
+    this->gameWindow->getTextureManager()->getTextureSize("exit_button",wExit,hExit);
+    double xStart = this->gameWindow->getSize().width /2 - wStart / 4;
+    double yStart = 2 * this->gameWindow->getSize().height / 5 - hStart / 2;
+    double xExit = this->gameWindow->getSize().width / 2 - wExit / 4;
+    double yExit = 3 * this->gameWindow->getSize().height / 5 - hExit / 2;
 
-    auto playButton = new Button({280, 150}, "start_button", this->gameWindow->getTextureManager(),
+    auto playButton = new Button({xStart, yStart}, "start_button", this->gameWindow->getTextureManager(),
                                  this->gameWindow->getInputHadler(), toPlay);
-    auto exitButton = new Button({280, 350}, "exit_button", this->gameWindow->getTextureManager(),
+    auto exitButton = new Button({xExit, yExit}, "exit_button", this->gameWindow->getTextureManager(),
                                  this->gameWindow->getInputHadler(), toExit);
     this->menuButtons.push_back(playButton);
     this->menuButtons.push_back(exitButton);

@@ -14,8 +14,8 @@ Map::Map(GameWindow* window) {
 }
 
 void Map::calcCoord() {
-    this->xyRelative.setX(this->xyRelative.getX() + this->Vxy.getX() * 0.5);
-    this->xyRelative.setY(this->xyRelative.getY() + this->Vxy.getY() * 0.5);
+    this->xyRelative.setX(this->xyRelative.getX() + this->Vxy.getX() * 2);
+    this->xyRelative.setY(this->xyRelative.getY() + this->Vxy.getY() * 2);
 }
 
 int Map::getHMap() const {
