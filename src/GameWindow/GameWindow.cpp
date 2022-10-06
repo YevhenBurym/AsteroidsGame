@@ -63,7 +63,7 @@ GameWindow::GameWindow(GameParameters *parameters) {
         this->inputHandler = new InputHandler();
         this->textureManager = new TextureManager(this->renderer);
         this->loadSprites();
-        this->gameStateMachine = new GameStateMachine();
+        this->gameStateMachine = new StateMachine();
     }
 }
 
@@ -90,7 +90,7 @@ WindowSize GameWindow::getSize() const {
     return this->size;
 }
 
-GameStateMachine *GameWindow::getGameStateMachine() const {
+StateMachine *GameWindow::getGameStateMachine() const {
     return this->gameStateMachine;
 }
 

@@ -8,13 +8,14 @@ const std::string PlayState::playID = "PLAY";
 
 PlayState::PlayState(GameWindow* gameWindow) {
     this->gameWindow = gameWindow;
-    this->objectManager = new ObjectManager(this->gameWindow/*, this->map*/);
+    this->objectManager = new ObjectManager(this->gameWindow);
     this->collisions = new Collisions(this->objectManager);
-    //this->map = new Map(this->gameWindow);
+    SDL_ShowCursor(SDL_DISABLE);
 }
 
 PlayState::~PlayState() {
-    //delete this->map;
+   delete this->objectManager;
+   delete this->collisions;
 }
 
 void PlayState::update() {
@@ -35,18 +36,6 @@ void PlayState::update() {
 
 void PlayState::render() {
     this->objectManager->render();
-}
-
-bool PlayState::onEnter() {
-    SDL_ShowCursor(SDL_DISABLE);
-    //this->map->mapInit();
-    return true;
-}
-
-bool PlayState::onExit() {
-
-
-    return true;
 }
 
 std::string PlayState::getStateID() const {

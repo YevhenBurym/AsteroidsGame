@@ -8,7 +8,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "../TextureManager/TextureManager.h"
-#include "../StateMachine/GameStateMachine.h"
+#include "../StateMachine/StateMachine.h"
 #include "../InputHandler/InputHandler.h"
 #include "../GameParameters/GameParameters.h"
 
@@ -22,7 +22,7 @@ private:
     GameParameters* parameters;
     InputHandler* inputHandler;
     TextureManager* textureManager;
-    GameStateMachine* gameStateMachine;
+    StateMachine* gameStateMachine;
     SDL_Window* window;
     SDL_Renderer* renderer;
     WindowSize size;
@@ -35,7 +35,7 @@ public:
     SDL_Renderer* getRenderer() const;
     TextureManager* getTextureManager() const;
     WindowSize getSize() const;
-    GameStateMachine* getGameStateMachine() const;
+    StateMachine* getGameStateMachine() const;
     InputHandler* getInputHadler() const;
     GameParameters* getParameters() const;
     bool getFlagQuitGame() const;

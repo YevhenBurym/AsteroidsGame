@@ -17,7 +17,7 @@ add_executable(Asteroids main.cpp
         src/TextureManager/TextureManager.cpp
         src/GameObject/MovableGameObject/MovableGameObject.cpp
         src/GameObject/Button/Button.cpp
-        src/StateMachine/GameStateMachine.cpp
+        src/StateMachine/StateMachine.cpp
         src/GameStates/PlayState/PlayState.cpp
         src/GameStates/PauseState/PauseState.cpp
         src/GameStates/MenuState/MenuState.cpp

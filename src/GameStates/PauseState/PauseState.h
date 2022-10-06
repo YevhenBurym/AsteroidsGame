@@ -20,7 +20,5 @@ public:
     ~PauseState() override;
     void update() override;
     void render() override;
-    bool onEnter() override;
-    bool onExit() override;
     std::string getStateID() const override;
 };

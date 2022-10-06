@@ -7,13 +7,13 @@
 #include <vector>
 #include "../GameStates/GameState.h"
 
-class GameStateMachine {
+class StateMachine {
 private:
     GameState* needToDelete;
     bool isChange;
     std::vector<GameState *> gameStates;
 public:
-    GameStateMachine();
+    StateMachine();
     void pushState(GameState *pState);
     void changeState(GameState *pState);
     void popState();
