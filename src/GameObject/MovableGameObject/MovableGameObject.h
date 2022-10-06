@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#include "GameObject.h"
-#include "../Map/Map.h"
+#include "../GameObject.h"
+#include "../../Map/Map.h"
 
 class MovableGameObject: public GameObject {
 protected:

@@ -7,8 +7,8 @@ int main(int argc, char* argv[]) {
 	int hScreen = 600;
 	int wMap = 500;
 	int hMap = 500;
-	int asteroidsLimit = 15;
-	int ammoLimit = 10;
+	int asteroidsLimit = 5;
+	int ammoLimit = 5;
 	double abilityProrability = 0.3;
 
 	for (int i = 1; i < argc; ++i) {
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
 	}
     Game* game = new Game(new GameParameters(wScreen, hScreen, false, wMap, hMap, asteroidsLimit, ammoLimit, abilityProrability));
-    game->run();
+	game->run();
 
 	return 0;
 }

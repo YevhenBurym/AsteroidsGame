@@ -15,7 +15,7 @@ private:
     SDL_Renderer* renderer;
     std::map<std::string, SDL_Texture*> textureMap;
 public:
-    TextureManager(SDL_Renderer* renderer);
+    explicit TextureManager(SDL_Renderer* renderer);
     bool load(const char* pathToTexture,std::string textureID);
     void draw(std::string textureID, int x, int y, int width, int height, double angle = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
     void drawFrame(std::string textureID, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_RendererFlip flip = SDL_FLIP_NONE);

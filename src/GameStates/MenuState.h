@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "PlayState.h"
-#include "../GameObject/Button.h"
+#include "../GameObject/Button/Button.h"
 #include "../GameWindow/GameWindow.h"
 
 class MenuState : public GameState {
@@ -15,9 +15,6 @@ private:
     GameWindow* gameWindow;
     static const std::string menuID;
     std::vector<Button*> menuButtons;
-    // call back functions for menu items
-    void s_menuToPlay();
-    void s_exitFromMenu();
 public:
     MenuState(GameWindow* gameWindow);
     ~MenuState() override;

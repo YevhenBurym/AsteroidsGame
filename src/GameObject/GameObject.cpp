@@ -24,7 +24,7 @@ double GameObject::getY() const {
     return this->coord.getY();
 }
 
-void GameObject::render() const {
+void GameObject::render() {
     this->textureManager->draw(this->textureID,this->coord.getX(),this->coord.getY(),this->wSprite,this->hSprite);
 }
 

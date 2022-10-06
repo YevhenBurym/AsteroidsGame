@@ -5,8 +5,8 @@
 #pragma once
 
 #include <functional>
-#include "GameObject.h"
-#include "../InputComponent/InputComponent.h"
+#include "../GameObject.h"
+#include "../../InputComponent/InputComponent.h"
 
 class Button: public GameObject {
 private:
@@ -19,7 +19,7 @@ private:
     bool m_bReleased;
     int currentFrame;
 public:
-    Button(Vector2D coord, std::string textureID, TextureManager* textureManager, InputComponent *inputComponent, std::function<void()> callback);
-    void render() const override;
+    Button(Vector2D coord, std::string textureID, TextureManager* textureManager, InputComponent *inputComponent, std::function<void()>& callback);
+    void render() override;
     void update() override;
 };

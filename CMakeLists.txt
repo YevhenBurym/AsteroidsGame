@@ -11,18 +11,18 @@ add_executable(Asteroids main.cpp
         src/GameWindow/GameWindow.cpp
         src/InputComponent/InputComponent.cpp
         src/Collisions/Collisions.cpp
-        src/GameObject/SpaceShip.cpp
-        src/GameObject/Asteroid.cpp
+        src/GameObject/MovableGameObject/SpaceShip.cpp
+        src/GameObject/MovableGameObject/Asteroid.cpp
         src/Vector2D/Vector2D.cpp
         src/TextureManager/TextureManager.cpp
-        src/GameObject/MovableGameObject.cpp
-        src/GameObject/Button.cpp
+        src/GameObject/MovableGameObject/MovableGameObject.cpp
+        src/GameObject/Button/Button.cpp
         src/GameStates/GameStateMachine.cpp
         src/GameStates/PlayState.cpp
         src/GameStates/PauseState.cpp
         src/GameStates/MenuState.cpp
         src/GameStates/GameOverState.cpp
-        src/GameObject/GameOverMessage.cpp
+        src/GameObject/GameOverMessage/GameOverMessage.cpp
         src/GameParameters/GameParameters.cpp)
 
 

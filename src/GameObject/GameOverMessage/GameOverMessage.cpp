@@ -14,6 +14,6 @@ void GameOverMessage::update() {
     this->currentFrame = int(((SDL_GetTicks() / (1000 / this->animationSpeed)) % 2));
 }
 
-void GameOverMessage::render() const {
+void GameOverMessage::render() {
     this->textureManager->drawFrame(this->textureID, this->coord.getX(),this->coord.getY(),this->wSprite, this->hSprite,1, this->currentFrame);
 }

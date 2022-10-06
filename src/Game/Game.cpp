@@ -9,6 +9,7 @@ Game::Game(GameParameters* parameters) {
 }
 
 bool Game::init() {
+    //this->gameWindow->getGameStateMachine()->changeState(new PlayState(this->gameWindow));
     this->gameWindow->getGameStateMachine()->changeState(new MenuState(this->gameWindow));
     return true;
 }

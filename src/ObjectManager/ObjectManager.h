@@ -4,8 +4,8 @@
 #include <vector>
 #include "../GameWindow/GameWindow.h"
 #include "../Map/Map.h"
-#include "../GameObject/SpaceShip.h"
-#include "../GameObject/Asteroid.h"
+#include "../GameObject/MovableGameObject/SpaceShip.h"
+#include "../GameObject/MovableGameObject/Asteroid.h"
 
 class ObjectManager {
 private:

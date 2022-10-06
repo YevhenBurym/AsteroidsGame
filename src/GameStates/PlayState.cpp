@@ -15,7 +15,6 @@ PlayState::PlayState(GameWindow* gameWindow) {
 void PlayState::update() {
     this->gameWindow->getInputHadler()->update();
     if (this->gameWindow->getInputHadler()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
-        //this->gameWindow->setFlagQuitGame(true);
         this->gameWindow->getGameStateMachine()->pushState(new PauseState(this->gameWindow));
     }
     this->map->update();
@@ -23,11 +22,12 @@ void PlayState::update() {
     try {
         this->collisions->update();
     } catch (YouDied) {
-        //this->restart();
-        this->gameWindow->getGameStateMachine()->pushState(new GameOverState(this->gameWindow));
+        this->gameWindow->getGameStateMachine()->changeState(new GameOverState(this->gameWindow));
+        if (this->gameWindow->getGameStateMachine()->needToErasePrevState()) {
+            return;
+        };
     }
 }
-
 
 void PlayState::render() {
     this->map->render();

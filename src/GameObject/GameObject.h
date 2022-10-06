@@ -21,6 +21,6 @@ public:
     virtual void setY(double y);
     virtual double getX() const;
     virtual double getY() const;
-    virtual void render() const;
+    virtual void render();
     virtual void update() = 0;
 };

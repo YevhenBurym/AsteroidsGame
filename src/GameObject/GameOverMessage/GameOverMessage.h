@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "GameObject.h"
+#include "../GameObject.h"
 
 class GameOverMessage: public GameObject {
 private:
@@ -12,6 +12,6 @@ private:
     int currentFrame;
 public:
     GameOverMessage(Vector2D coord, std::string textureID, TextureManager* textureManager, int animationSpeed);
-    void render() const override;
+    void render() override;
     void update() override;
 };

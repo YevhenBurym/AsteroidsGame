@@ -8,7 +8,7 @@
 #include "GameState.h"
 #include "PauseState.h"
 #include "GameOverState.h"
-#include "../GameObject/Button.h"
+#include "../GameObject/Button/Button.h"
 #include "../Map/Map.h"
 #include "../ObjectManager/ObjectManager.h"
 #include "../Collisions/Collisions.h"
