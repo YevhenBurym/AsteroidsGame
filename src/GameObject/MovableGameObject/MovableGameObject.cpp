@@ -5,23 +5,17 @@
 #include "MovableGameObject.h"
 
 void MovableGameObject::limitateCoord() {
-    double minXCoord = 0 - this->map->getMapOffsetCoord().getX();
-    double maxXCoord = this->map->getWMap() - this->map->getMapOffsetCoord().getX();
-    double minYCoord = 0 - this->map->getMapOffsetCoord().getY();
-    double maxYCoord = this->map->getHMap() - this->map->getMapOffsetCoord().getY();
-
-    if (this->coord.getX() >= maxXCoord) {
-        this->coord.setX(minXCoord);
-    } else if (this->coord.getX() < minXCoord) {
-        this->coord.setX(maxXCoord);
+    if (this->coord.getX() >= this->map->getMaxCoord().getX()) {
+        this->coord.setX(this->map->getMinCoord().getX());
+    } else if (this->coord.getX() < this->map->getMinCoord().getX()) {
+        this->coord.setX(this->map->getMaxCoord().getX());
     }
 
-    if (this->coord.getY() >= maxYCoord) {
-        this->coord.setY(minYCoord);
-    } else	if (this->coord.getY() < minYCoord) {
-        this->coord.setY(maxYCoord);
+    if (this->coord.getY() >= this->map->getMaxCoord().getY()) {
+        this->coord.setY(this->map->getMinCoord().getY());
+    } else	if (this->coord.getY() < this->map->getMinCoord().getY()) {
+        this->coord.setY(this->map->getMaxCoord().getY());
     }
-
 }
 
 MovableGameObject::MovableGameObject(Vector2D coord, double velocity, double theta,
@@ -47,8 +41,8 @@ MovableGameObject::MovableGameObject(Vector2D coord, double velocity, double the
     this->mass = 1;
     this->V.v = velocity;
     this->V.theta = theta;
-    this->xOf = 0;
-    this->yOf = 0;
+    this->xOf = this->map->getXY().getX();
+    this->yOf = this->map->getXY().getY();
     this->acceleration = {0,0};
 }
 
@@ -56,14 +50,6 @@ void MovableGameObject::calcCoord() {
     this->coord.setX(this->coord.getX() + this->Vxy.getX() * 0.001);
     this->coord.setY(this->coord.getY() + this->Vxy.getY() * 0.001);
     this->limitateCoord();
-}
-
-void MovableGameObject::setXof(double x) {
-    this->xOf = x;
-}
-
-void MovableGameObject::setYof(double y) {
-    this->yOf = y;
 }
 
 void MovableGameObject::setVxy(Vector2D vxy) {
@@ -98,4 +84,6 @@ void MovableGameObject::render() const {
 
 void MovableGameObject::update() {
     this->calcCoord();
+    this->xOf = this->map->getXY().getX();
+    this->yOf = this->map->getXY().getY();
 }

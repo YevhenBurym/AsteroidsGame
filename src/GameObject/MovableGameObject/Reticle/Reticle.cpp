@@ -4,13 +4,13 @@
 
 #include "Reticle.h"
 
-Reticle::Reticle(std::string textureID, TextureManager* textureManager, Map *map): MovableGameObject(Vector2D{0, 0}, 0, 0, textureID, textureManager, map) {
-    this->xOf = this->wSprite / 2;
-    this->yOf = this->hSprite / 2;
-}
+Reticle::Reticle(std::string textureID, TextureManager *textureManager) : GameObject(Vector2D{0, 0}, textureID,
+                                                                                     textureManager) {}
 
-void Reticle::render() const {
-    int x = this->coord.getX() - this->xOf;
-    int y = this->coord.getY() - this->yOf;
+void Reticle::render() {
+    int x = this->coord.getX() - this->wSprite / 2;
+    int y = this->coord.getY() - this->hSprite / 2;
     this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite);
 }
+
+void Reticle::update() {}

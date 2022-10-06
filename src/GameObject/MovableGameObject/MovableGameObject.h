@@ -22,8 +22,6 @@ public:
     MovableGameObject(Vector2D coord, double velocity, double theta,
             std::string textureID, TextureManager* textureManager, Map* map);
     ~MovableGameObject() override = default;
-    virtual void setXof(double x);
-    virtual void setYof(double y);
     virtual void setVxy(Vector2D vxy);
     virtual double getXrel() const;
     virtual double getYrel() const;

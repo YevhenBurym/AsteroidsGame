@@ -4,10 +4,11 @@
 
 #pragma once
 
-#include "../MovableGameObject.h"
+#include "../../GameObject.h"
 
-class Reticle : public MovableGameObject {
+class Reticle : public GameObject {
 public:
-    Reticle(std::string textureID, TextureManager* textureManager, Map* map);
-    void render() const override;
+    Reticle(std::string textureID, TextureManager* textureManager);
+    void render() override;
+    void update() override;
 };

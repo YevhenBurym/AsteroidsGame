@@ -5,12 +5,37 @@ Map::Map(GameWindow* window) {
     this->hMap = window->getParameters()->getHMap();
     this->wMap = window->getParameters()->getWMap();
     this->Vxy = {0,0};
-    this->isNeedDeAcc = false;
-    //this->mapInit();
 
     this->offset.setX(this->wMap / 2 - this->window->getSize().width / 2);
     this->offset.setY(this->hMap / 2 - this->window->getSize().height / 2);
+
+    this->maxCoord.setX( this->wMap - this->offset.getX());
+    this->maxCoord.setY( this->hMap - this->offset.getY());
+    this->minCoord.setX(  -this->offset.getX());
+    this->minCoord.setY( -this->offset.getY());
+
     this->xyRelative = {0,0};
+}
+
+void Map::deAcc() {
+    float acc = 0.003;
+    float accuracy = 0.001;
+
+    if (this->Vxy.getX() > 0) {
+        this->Vxy.setX(Vxy.getX() - acc);
+    } else if (this->Vxy.getX() < 0) {
+        this->Vxy.setX(Vxy.getX() + acc);
+    }
+
+    if (this->Vxy.getY() > 0) {
+        this->Vxy.setY(Vxy.getY() - acc);
+    } else if (this->Vxy.getY() < 0) {
+        this->Vxy.setY(Vxy.getY() + acc);
+    }
+
+    if ( std::abs(this->Vxy.getX()) <= accuracy && std::abs(this->Vxy.getY()) <= accuracy ) {
+        this->Vxy = {0 ,0};
+    }
 }
 
 void Map::calcCoord() {
@@ -26,16 +51,12 @@ int Map::getWMap() const {
 	return this->wMap;
 }
 
-Vector2D Map::getMapOffsetCoord() const {
+Vector2D Map::getOffset() const {
 	return this->offset;
 }
 
 Vector2D Map::getXY() const {
     return this->xyRelative;
-}
-
-Vector2D Map::getVxy() const {
-    return this->Vxy;
 }
 
 void Map::setX(double x) {
@@ -70,10 +91,10 @@ void Map::drawBorder() {
     int hSprite, wSprite;
     this->window->getTextureManager()->getTextureSize("border", wSprite, hSprite);
 
-    int minXCoord = 0 - this->getMapOffsetCoord().getX() + this->xyRelative.getX();
-    int maxXCoord = this->getWMap() - this->getMapOffsetCoord().getX() + this->xyRelative.getX();
-    int minYCoord = 0 - this->getMapOffsetCoord().getY() + this->xyRelative.getY();
-    int maxYCoord = this->getHMap() - this->getMapOffsetCoord().getY() + this->xyRelative.getY();
+    int minXCoord = 0 - this->offset.getX() + this->xyRelative.getX();
+    int maxXCoord = this->wMap - this->offset.getX() + this->xyRelative.getX();
+    int minYCoord = 0 - this->offset.getY() + this->xyRelative.getY();
+    int maxYCoord = this->hMap - this->offset.getY() + this->xyRelative.getY();
 
     if (maxYCoord % hSprite != 0) {
         maxYCoord += hSprite;
@@ -101,58 +122,35 @@ void Map::render() {
     this->drawBorder();
 }
 
-void Map::mapInit() {
-    this->isNeedDeAcc = false;
-    int wScreen = this->window->getSize().width;
-    int hScreen = this->window->getSize().height;
-    this->offset.setX(this->wMap / 2 - wScreen / 2);
-    this->offset.setY(this->hMap / 2 - hScreen / 2);
-    this->xyRelative = {0,0};
-    this->Vxy = {0,0};
-}
-
 void Map::update() {
     if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_UP)) {
         this->Vxy.setY(1);
     } else {
-        this->isNeedDeAcc = true;
+        this->deAcc();
     }
     if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_DOWN)) {
         this->Vxy.setY(-1);
     } else {
-        this->isNeedDeAcc = true;
+        this->deAcc();
     }
     if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_LEFT)) {
         this->Vxy.setX(1);
     } else {
-        this->isNeedDeAcc = true;
+        this->deAcc();
     }
     if (this->window->getInputHadler()->isKeyDown(SDL_SCANCODE_RIGHT)) {
         this->Vxy.setX(-1);
     } else {
-        this->isNeedDeAcc = true;
+        this->deAcc();
     }
 
-    float acc = 0.003;
-    float accuracy = 0.001;
-
-    if (this->isNeedDeAcc) {
-        if (this->Vxy.getX() > 0) {
-            this->Vxy.setX(Vxy.getX() - acc);
-        } else if (this->Vxy.getX() < 0) {
-            this->Vxy.setX(Vxy.getX() + acc);
-        }
-
-        if (this->Vxy.getY() > 0) {
-            this->Vxy.setY(Vxy.getY() - acc);
-        } else if (this->Vxy.getY() < 0) {
-            this->Vxy.setY(Vxy.getY() + acc);
-        }
-
-        if ( std::abs(this->Vxy.getX()) <= accuracy && std::abs(this->Vxy.getY()) <= accuracy ) {
-            this->Vxy = {0 ,0};
-            this->isNeedDeAcc = false;
-        }
-    }
     this->calcCoord();
+}
+
+Vector2D Map::getMaxCoord() const {
+    return this->maxCoord;
+}
+
+Vector2D Map::getMinCoord() const {
+    return this->minCoord;
 }

@@ -11,27 +11,30 @@ struct Velocity {
 
 class Map {
 private:
+    GameWindow* window;
 	int hMap, wMap;
 	Vector2D xyRelative;
     Vector2D Vxy;
 	Vector2D offset;
-    GameWindow* window;
-    bool isNeedDeAcc;
+	Vector2D maxCoord;
+	Vector2D minCoord;
 
     void drawBackground();
     void drawBorder();
+    void calcCoord();
+    void deAcc();
 public:
 	Map(GameWindow* window);
 	~Map() = default;
-	void calcCoord();
+
 	int getHMap() const;
 	int getWMap() const;
-	Vector2D getMapOffsetCoord() const;
-    void mapInit();
+	Vector2D getMaxCoord() const;
+    Vector2D getMinCoord() const;
+	Vector2D getOffset() const;
 	void setX(double x);
 	void setY(double y);
 	Vector2D getXY() const;
-	Vector2D getVxy() const;
     void render();
     void update();
 

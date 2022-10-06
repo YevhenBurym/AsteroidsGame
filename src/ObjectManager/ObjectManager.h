@@ -3,7 +3,6 @@
 #include <ctime>
 #include <vector>
 #include "../GameWindow/GameWindow.h"
-#include "../Map/Map.h"
 #include "../GameObject/MovableGameObject/SpaceShip/SpaceShip.h"
 #include "../GameObject/MovableGameObject/SmallAsteroid/SmallAsteroid.h"
 #include "../GameObject/MovableGameObject/BigAsteroid/BigAsteroid.h"
@@ -17,16 +16,16 @@ private:
     int numAsteroids;
     std::vector<MovableGameObject*> gameObjects;
     Vector2D randomizeAppearCoord();
-    Velocity randomizeVelocity(int minVelocity, int maxVelocity, int angleRange);
+    Velocity randomizeVelocity();
     void createPlayer();
     void createAsteroids();
 public:
-    ObjectManager(GameWindow* window/*, Map* map*/);
+    ObjectManager(GameWindow* window);
     ~ObjectManager();
-    std::vector<MovableGameObject*>& getObjects();
-    int getAmmoLimit() const;
-    int getNumAsteroids() const;
     void setNumAsteroids(int amount);
+    int getNumAsteroids() const;
+    int getAmmoLimit() const;
+    std::vector<MovableGameObject*>& getObjects();
     void render();
     void update();
 };

@@ -5,29 +5,25 @@
 #include "SpaceShip.h"
 
 void SpaceShip::limitateCoord() {
-    double minXCoord = 0 - this->map->getMapOffsetCoord().getX();
-    double maxXCoord = this->map->getWMap() - this->map->getMapOffsetCoord().getX();
-    double minYCoord = 0 - this->map->getMapOffsetCoord().getY();
-    double maxYCoord = this->map->getHMap() - this->map->getMapOffsetCoord().getY();
+
     double x = this->coord.getX() + this->xOf;
     double y = this->coord.getY() + this->yOf;
-    if (x >= maxXCoord) {
-        this->map->setX(minXCoord - this->map->getXY().getX());
-    }
-    else if (x < minXCoord) {
-        this->map->setX(maxXCoord + this->map->getXY().getX());
+
+    if (x >= this->map->getMaxCoord().getX()) {
+        this->map->setX(this->map->getMinCoord().getX() - this->map->getXY().getX());
+    } else if (x < this->map->getMinCoord().getX()) {
+        this->map->setX(this->map->getMaxCoord().getX() + this->map->getXY().getX());
     }
 
-    if (y >= maxYCoord) {
-        this->map->setY(minYCoord - this->map->getXY().getY());
-    }
-    else if (y < minYCoord) {
-        this->map->setY(maxYCoord + this->map->getXY().getY());
+    if (y >= this->map->getMaxCoord().getY()) {
+        this->map->setY(this->map->getMinCoord().getY() - this->map->getXY().getY());
+    } else if (y < this->map->getMinCoord().getY()) {
+        this->map->setY(this->map->getMaxCoord().getY() + this->map->getXY().getY());
     }
 }
 
 SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map, InputHandler* inputHandler, std::vector<MovableGameObject*>* objects) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
-    this->reticle = new Reticle("reticle", this->textureManager, map );
+    this->reticle = new Reticle("reticle", this->textureManager);
     this->angleShip = 0;
     this->ammoLimit = ammoLimit;
     this->numBullets = 0;
@@ -78,8 +74,6 @@ void SpaceShip::makeShoot(std::vector<MovableGameObject*>& objects) {
     if (this->numBullets < this->ammoLimit) {
         this->numBullets += 1;
         auto bullet = new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map);
-        bullet->setXof(this->map->getXY().getX());
-        bullet->setYof(this->map->getXY().getY());
         objects.push_back(bullet);
     } else {
         for (auto it = objects.begin(); it != objects.end(); ++it) {
@@ -87,8 +81,6 @@ void SpaceShip::makeShoot(std::vector<MovableGameObject*>& objects) {
                 delete (*it);
                 objects.erase(it);
                 auto bullet = new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map);
-                bullet->setXof(this->map->getXY().getX());
-                bullet->setYof(this->map->getXY().getY());
                 objects.push_back(bullet);
                 return;
             }
@@ -121,10 +113,13 @@ void SpaceShip::update() {
     this->reticle->setX(mousePos.getX());
     this->reticle->setY(mousePos.getY());
 
+    this->shipHeadAngle();
+
     if (this->inputHandler->getMouseButtonState(LEFT) && !this->buttonLeftPress) {
         this->buttonLeftPress = true;
         this->makeShoot(*this->gameObjects);
     } else if (!this->inputHandler->getMouseButtonState(LEFT)) {
         this->buttonLeftPress = false;
     }
+
 }
