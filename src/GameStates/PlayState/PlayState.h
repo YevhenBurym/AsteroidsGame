@@ -5,26 +5,24 @@
 #pragma once
 
 #include <vector>
-#include "GameState.h"
-#include "PauseState.h"
-#include "GameOverState.h"
-#include "../GameObject/Button/Button.h"
-#include "../Map/Map.h"
-#include "../ObjectManager/ObjectManager.h"
-#include "../Collisions/Collisions.h"
+#include "../GameState.h"
+#include "../PauseState/PauseState.h"
+#include "../GameOverState/GameOverState.h"
+#include "../../GameObject/Button/Button.h"
+#include "../../Map/Map.h"
+#include "../../ObjectManager/ObjectManager.h"
+#include "../../Collisions/Collisions.h"
 
 class PlayState : public GameState {
 private:
-    static const std::string playID;
-    std::vector<Button *> m_gameObjects;
-
     Collisions* collisions;
     Map* map;
     GameWindow* gameWindow;
     ObjectManager* objectManager;
-
+    static const std::string playID;
 public:
     PlayState(GameWindow* gameWindow);
+    ~PlayState();
     void update() override;
     void render() override;
     bool onEnter() override;

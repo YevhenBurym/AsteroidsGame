@@ -8,28 +8,27 @@ void Button::render() {
     this->textureManager->drawFrame(this->textureID, this->coord.getX(),this->coord.getY(),this->wSprite, this->hSprite,1, this->currentFrame);
 }
 
-Button::Button(Vector2D coord, std::string textureID, TextureManager *textureManager, InputComponent *inputComponent,
-               std::function<void()>& callback):GameObject(coord, textureID, textureManager) {
-    this->m_callback = callback;
+Button::Button(Vector2D coord, std::string textureID, TextureManager *textureManager, InputHandler *inputHandler,
+               std::function<void()>& callbackFunction):GameObject(coord, textureID, textureManager) {
+    this->callbackFunction = callbackFunction;
     this->wSprite /= 2;
-    this->inputComponent = inputComponent;
+    this->inputHandler = inputHandler;
     this->currentFrame = MOUSE_OUT;
-    this->m_bReleased = false;
+    this->isButtonReleased = false;
 }
 
 void Button::update() {
-    Vector2D mousePos = this->inputComponent->getMousePosition();
+    Vector2D mousePos = this->inputHandler->getMousePosition();
     if(mousePos.getX() < (this->coord.getX() + this->wSprite)
        && mousePos.getX() > this->coord.getX()
        && mousePos.getY() < (this->coord.getY() + this->hSprite)
        && mousePos.getY() > this->coord.getY())
     {
-        if(this->inputComponent->getMouseButtonState(LEFT) && this->m_bReleased) {
-            std::cout << "m_callback\n";
-            this->m_callback(); // call our callback function
-            this->m_bReleased = false;
-        } else if (!this->inputComponent->getMouseButtonState(LEFT)) {
-            this->m_bReleased = true;
+        if(this->inputHandler->getMouseButtonState(LEFT) && this->isButtonReleased) {
+            this->callbackFunction();
+            this->isButtonReleased = false;
+        } else if (!this->inputHandler->getMouseButtonState(LEFT)) {
+            this->isButtonReleased = true;
             this->currentFrame = MOUSE_OVER;
         }
     } else {

@@ -15,6 +15,6 @@ private:
     void fixCoord(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween);
     void calcVelocity(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween);
 public:
-    Collisions(ObjectManager* objectManager);
+    explicit Collisions(ObjectManager* objectManager);
     void update();
 };

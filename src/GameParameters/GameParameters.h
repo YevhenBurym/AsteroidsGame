@@ -4,7 +4,6 @@
 
 #pragma once
 
-
 class GameParameters {
 private:
     int wScreen, hScreen;
@@ -13,7 +12,8 @@ private:
     int ammoLimit;
     bool isFullScreen;
 public:
-    GameParameters(int wScreen, int hScreen, bool isFullscreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability);
+    GameParameters(int wScreen, int hScreen, bool isFullscreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit,
+                   double abilityProrability);
     int getHScreen() const;
     int getWScreen() const;
     int getHMap() const;

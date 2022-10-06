@@ -2,34 +2,29 @@
 // Created by Евгений on 07.07.2022.
 //
 
-#include "InputComponent.h"
+#include "InputHandler.h"
 
-InputComponent::InputComponent(/*ObjectManager *objectManager*/) {
+InputHandler::InputHandler() {
     this->initMouseButtons();
     this->keyStates = SDL_GetKeyboardState(nullptr);
-    //this->objectManager = objectManager;
-    //this->player = dynamic_cast<SpaceShip*>(this->objectManager->getObjects().front());
     this->quitGame = false;
 }
 
-void InputComponent::update() {
-    //Event handler
+void InputHandler::update() {
     SDL_Event event;
-
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
                 this->quitGame = true;
                 break;
             case SDL_MOUSEMOTION:
-                this->onMouseMove(event.motion.x, event.motion.y);
-                event.motion.state = SDL_RELEASED;      // если не ставить, то при движении мыши ставит event.button.state == SDL_RELEASED
+                this->onMouseMove(event);
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                this->onMouseButtonPressed(event.button.button);
+                this->onMouseButtonPressed(event);
                 break;
             case SDL_MOUSEBUTTONUP:
-                this->onMouseButtonReleased(event.button.button);
+                this->onMouseButtonReleased(event);
                 break;
             case SDL_KEYDOWN:
                 this->onKeyPressed();
@@ -45,16 +40,17 @@ void InputComponent::update() {
 
 }
 
-void InputComponent::onKeyPressed() {
+void InputHandler::onKeyPressed() {
     this->keyStates = SDL_GetKeyboardState(nullptr);
 }
 
-void InputComponent::onKeyReleased() {
+void InputHandler::onKeyReleased() {
     this->keyStates = SDL_GetKeyboardState(nullptr);
 }
 
-void InputComponent::onMouseButtonPressed(int MouseButton) {
-    switch (MouseButton) {
+void InputHandler::onMouseButtonPressed(SDL_Event& event) {
+    int mouseButton = event.button.button;
+    switch (mouseButton) {
         case SDL_BUTTON_LEFT:
                 this->mouseButtonStates[LEFT] = true;
             break;
@@ -69,8 +65,9 @@ void InputComponent::onMouseButtonPressed(int MouseButton) {
     }
 }
 
-void InputComponent::onMouseButtonReleased(int MouseButton) {
-    switch (MouseButton) {
+void InputHandler::onMouseButtonReleased(SDL_Event& event) {
+    int mouseButton = event.button.button;
+    switch (mouseButton) {
         case SDL_BUTTON_LEFT:
                 this->mouseButtonStates[LEFT] = false;
             break;
@@ -85,32 +82,32 @@ void InputComponent::onMouseButtonReleased(int MouseButton) {
     }
 }
 
-void InputComponent::onMouseMove(int x, int y) {
-    this->mousePosition.setX(x);
-    this->mousePosition.setY(y);
+void InputHandler::onMouseMove(SDL_Event& event) {
+    this->mousePosition.setX(event.motion.x);
+    this->mousePosition.setY(event.motion.y);
 }
 
-Vector2D InputComponent::getMousePosition() {
+Vector2D InputHandler::getMousePosition() {
     return this->mousePosition;
 }
 
-bool InputComponent::getMouseButtonState(int button) {
+bool InputHandler::getMouseButtonState(int button) {
     return this->mouseButtonStates[button];
 }
 
-void InputComponent::initMouseButtons() {
+void InputHandler::initMouseButtons() {
     for (int i = 0; i < 3; i++) {
         this->mouseButtonStates.push_back(false);
     }
 }
 
-bool InputComponent::isKeyDown(SDL_Scancode key) {
+bool InputHandler::isKeyDown(SDL_Scancode key) {
     if (this->keyStates != nullptr) {
         return this->keyStates[key] == 1;
     }
     return false;
 }
 
-bool InputComponent::getFlagQuitGame() const {
+bool InputHandler::getFlagQuitGame() const {
     return this->quitGame;
 }

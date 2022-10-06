@@ -24,7 +24,9 @@ void MovableGameObject::limitateCoord() {
 
 }
 
-MovableGameObject::MovableGameObject(Vector2D coord, double velocity, double theta, std::string textureID, TextureManager* textureManager, Map* map): GameObject(coord, textureID, textureManager) {
+MovableGameObject::MovableGameObject(Vector2D coord, double velocity, double theta,
+        std::string textureID, TextureManager* textureManager, Map* map): GameObject(coord, textureID, textureManager) {
+    double toRad = M_PI / 180;
     double d;
     this->hSprite = 0;
     this->wSprite = 0;
@@ -40,8 +42,8 @@ MovableGameObject::MovableGameObject(Vector2D coord, double velocity, double the
     this->map = map;
     this->radius = d / 2;
     this->coord = coord;
-    this->Vxy.setX(velocity * cos(theta * RAD));
-    this->Vxy.setY(-velocity * sin(theta * RAD));
+    this->Vxy.setX(velocity * cos(theta * toRad));
+    this->Vxy.setY(-velocity * sin(theta * toRad));
     this->mass = 1;
     this->V.v = velocity;
     this->V.theta = theta;
@@ -50,11 +52,10 @@ MovableGameObject::MovableGameObject(Vector2D coord, double velocity, double the
     this->acceleration = {0,0};
 }
 
-void MovableGameObject::calcCoord(Vector2D Vxy, double step) {
-    this->coord.setX(this->coord.getX() + Vxy.getX() * step);
-    this->coord.setY(this->coord.getY() + Vxy.getY() * step);
+void MovableGameObject::calcCoord() {
+    this->coord.setX(this->coord.getX() + this->Vxy.getX() * 0.001);
+    this->coord.setY(this->coord.getY() + this->Vxy.getY() * 0.001);
     this->limitateCoord();
-
 }
 
 void MovableGameObject::setXof(double x) {
@@ -96,5 +97,5 @@ void MovableGameObject::render() const {
 }
 
 void MovableGameObject::update() {
-
+    this->calcCoord();
 }

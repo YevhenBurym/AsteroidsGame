@@ -5,7 +5,7 @@
 #pragma once
 
 #include <vector>
-#include "GameState.h"
+#include "../GameStates/GameState.h"
 
 class GameStateMachine {
 private:

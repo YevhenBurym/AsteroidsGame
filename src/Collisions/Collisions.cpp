@@ -4,6 +4,10 @@
 
 #include "Collisions.h"
 
+Collisions::Collisions(ObjectManager *asteroidsManager) {
+    this->objectManager = asteroidsManager;
+}
+
 void Collisions::fixCoord(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween) {
     double alpha = 0;
     Vector2D xyOffset = {0, 0 };
@@ -162,9 +166,7 @@ void Collisions::update() {
                     break;
                 }
                 else if (dynamic_cast<SpaceShip*>(*it1) && !dynamic_cast<Bullet*>(*it2)) {
-                    //this->game->restart();
                     throw YouDied();
-                    return;
                 }
                 else if (dynamic_cast<Bullet*>(*it1) && dynamic_cast<SmallAsteroid*>(*it2) ||
                          dynamic_cast<Bullet*>(*it2) && dynamic_cast<SmallAsteroid*>(*it1)) {
@@ -195,8 +197,8 @@ void Collisions::update() {
                     }
                     MovableGameObject* temp1 = (*it1);
                     MovableGameObject* temp2 = (*it2);
-                    auto iter1 = it1-1;
-                    auto iter2 = it2-1;
+                    auto iter1 = it1 - 1;
+                    auto iter2 = it2 - 1;
                     it2 = this->objectManager->getObjects().erase(it2);
                     it1 = this->objectManager->getObjects().erase(it1);
                     it1 = iter1;
@@ -221,8 +223,4 @@ void Collisions::update() {
             }
         }
     }
-}
-
-Collisions::Collisions(ObjectManager *asteroidsManager) {
-    this->objectManager = asteroidsManager;
 }

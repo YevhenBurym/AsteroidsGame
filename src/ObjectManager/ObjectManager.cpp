@@ -11,14 +11,25 @@ void ObjectManager::createPlayer() {
                           this->map, this->window->getInputHadler(), &this->gameObjects));
 }
 
-ObjectManager::ObjectManager(GameWindow *window, Map *map) {
+ObjectManager::ObjectManager(GameWindow *window/*, Map *map*/) {
     srand(time(NULL));
-    this->map = map;
+    this->map = new Map(window);
+    //this->map = map;
     this->window = window;
     this->numAsteroids = 0;
     this->ammoLimit = window->getParameters()->getAmmoLimit();
     this->asteroidsLimit = window->getParameters()->getAsteroidsLimit();
     this->createPlayer();
+}
+
+ObjectManager::~ObjectManager() {
+    delete this->map;
+
+    for (auto it = this->gameObjects.begin(); it != this->gameObjects.end();) {
+        delete (*it++);
+    }
+    this->gameObjects.clear();
+    this->gameObjects.shrink_to_fit();
 }
 
 void ObjectManager::createAsteroids() {
@@ -38,14 +49,14 @@ void ObjectManager::createAsteroids() {
     if (randomAsteroid > 80) {
         auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
                                            "big_asteroid", this->window->getTextureManager(), this->map);
-        bigAsteroid->setXof(this->map->getX());
-        bigAsteroid->setYof(this->map->getY());
+        bigAsteroid->setXof(this->map->getXY().getX());
+        bigAsteroid->setYof(this->map->getXY().getY());
         this->getObjects().push_back(bigAsteroid);
     } else {
         auto smallAsteroid = new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
                                                "small_asteroid", this->window->getTextureManager() , this->map);
-        smallAsteroid->setXof(this->map->getX());
-        smallAsteroid->setYof(this->map->getY());
+        smallAsteroid->setXof(this->map->getXY().getX());
+        smallAsteroid->setYof(this->map->getXY().getY());
         this->getObjects().push_back(smallAsteroid);
     }
 }
@@ -96,33 +107,28 @@ void ObjectManager::setNumAsteroids(int amount) {
     this->numAsteroids = amount;
 }
 
-ObjectManager::~ObjectManager() {
-    for (auto it = this->gameObjects.begin(); it != this->gameObjects.end();) {
-        delete (*it++);
-    }
-    this->gameObjects.clear();
-    this->gameObjects.shrink_to_fit();
-}
-
 void ObjectManager::render() {
+    this->map->render();
+
     for (auto &object : this->gameObjects) {
-        object->calcCoord(object->getVxy(), 0.001);
         object->render();
     }
     dynamic_cast<SpaceShip*>(this->gameObjects.front())->getReticle()->render();
 }
 
 void ObjectManager::update() {
-    this->createAsteroids();
-    this->gameObjects[0]->update();
-    this->map->calcCoord(this->map->getVx(), this->map->getVy(), 0.5);
 
-    if (this->map->getVx() != 0 || this->map->getVy() != 0) {
+    this->createAsteroids();
+    for (int i = 0; i < this->gameObjects.size(); ++i) {
+        this->gameObjects[i]->update();
+    }
+    this->map->update();
+
+    if (this->map->getVxy().getX() != 0 || this->map->getVxy().getY() != 0) {
         for (auto &gameObject : this->gameObjects) {
-            gameObject->setXof(this->map->getX());
-            gameObject->setYof(this->map->getY());
+            gameObject->setXof(this->map->getXY().getX());
+            gameObject->setYof(this->map->getXY().getY());
         }
     }
-
     dynamic_cast<SpaceShip*>(gameObjects.front())->shipHeadAngle();
 }

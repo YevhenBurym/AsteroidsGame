@@ -17,7 +17,8 @@ void GameStateMachine::pushState(GameState *pState) {
 void GameStateMachine::popState() {
     if (!this->gameStates.empty()) {
         if (this->gameStates.back()->onExit()) {
-            delete this->gameStates.back();
+            this->needToDelete = this->gameStates.back();
+            this->isChange = true;
             this->gameStates.pop_back();
         }
     }

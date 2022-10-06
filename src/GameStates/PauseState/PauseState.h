@@ -4,17 +4,17 @@
 
 #pragma once
 
-#include "GameState.h"
-#include "../GameWindow/GameWindow.h"
-#include "../InputComponent/InputComponent.h"
-#include "../GameObject/Button/Button.h"
-#include "MenuState.h"
+
+#include "../../GameWindow/GameWindow.h"
+#include "../../GameObject/Button/Button.h"
+#include "../MenuState/MenuState.h"
+#include "../GameState.h"
 
 class PauseState : public GameState {
 private:
     GameWindow* gameWindow;
-    static const std::string pauseID;
     std::vector<Button *> menuButtons;
+    static const std::string pauseID;
 public:
     PauseState(GameWindow* gameWindow);
     ~PauseState() override;

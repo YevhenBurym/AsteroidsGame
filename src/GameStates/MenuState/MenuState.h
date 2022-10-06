@@ -5,16 +5,15 @@
 #pragma once
 
 #include <vector>
-
-#include "PlayState.h"
-#include "../GameObject/Button/Button.h"
-#include "../GameWindow/GameWindow.h"
+#include "../PlayState/PlayState.h"
+#include "../../GameObject/Button/Button.h"
+#include "../../GameWindow/GameWindow.h"
 
 class MenuState : public GameState {
 private:
     GameWindow* gameWindow;
-    static const std::string menuID;
     std::vector<Button*> menuButtons;
+    static const std::string menuID;
 public:
     MenuState(GameWindow* gameWindow);
     ~MenuState() override;

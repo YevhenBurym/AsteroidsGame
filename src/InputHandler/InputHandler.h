@@ -7,7 +7,6 @@
 #include "SDL.h"
 #include "../Vector2D/Vector2D.h"
 #include <vector>
-//#include "../ObjectManager/ObjectManager.h"
 
 enum MouseButtons {
     LEFT = 0,
@@ -15,21 +14,20 @@ enum MouseButtons {
     RIGHT = 2
 };
 
-class InputComponent {
-    //SpaceShip* player;
-    //ObjectManager* objectManager;
+class InputHandler {
     bool quitGame;
     Vector2D mousePosition;
     std::vector<bool> mouseButtonStates;
     const Uint8* keyStates;
-public:
-    InputComponent(/*ObjectManager* objectManager*/);
-    void update();
-    void onMouseMove(int x, int y);
+
+    void onMouseMove(SDL_Event& event);
+    void onMouseButtonPressed(SDL_Event& event);
+    void onMouseButtonReleased(SDL_Event& event);
     void onKeyPressed();
     void onKeyReleased();
-    void onMouseButtonPressed(int MouseButton);
-    void onMouseButtonReleased(int MouseButton);
+public:
+    InputHandler();
+    void update();
     Vector2D getMousePosition();
     bool getMouseButtonState(int button);
     void initMouseButtons();

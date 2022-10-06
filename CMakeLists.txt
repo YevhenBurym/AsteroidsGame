@@ -9,21 +9,24 @@ add_executable(Asteroids main.cpp
         src/ObjectManager/ObjectManager.cpp
         src/Game/Game.cpp
         src/GameWindow/GameWindow.cpp
-        src/InputComponent/InputComponent.cpp
+        src/InputHandler/InputHandler.cpp
         src/Collisions/Collisions.cpp
-        src/GameObject/MovableGameObject/SpaceShip.cpp
-        src/GameObject/MovableGameObject/Asteroid.cpp
+        src/GameObject/MovableGameObject/SpaceShip/SpaceShip.cpp
+        src/GameObject/MovableGameObject/SmallAsteroid/SmallAsteroid.cpp
         src/Vector2D/Vector2D.cpp
         src/TextureManager/TextureManager.cpp
         src/GameObject/MovableGameObject/MovableGameObject.cpp
         src/GameObject/Button/Button.cpp
-        src/GameStates/GameStateMachine.cpp
-        src/GameStates/PlayState.cpp
-        src/GameStates/PauseState.cpp
-        src/GameStates/MenuState.cpp
-        src/GameStates/GameOverState.cpp
+        src/StateMachine/GameStateMachine.cpp
+        src/GameStates/PlayState/PlayState.cpp
+        src/GameStates/PauseState/PauseState.cpp
+        src/GameStates/MenuState/MenuState.cpp
+        src/GameStates/GameOverState/GameOverState.cpp
         src/GameObject/GameOverMessage/GameOverMessage.cpp
-        src/GameParameters/GameParameters.cpp)
+        src/GameParameters/GameParameters.cpp
+        src/GameObject/MovableGameObject/Bullet/Bullet.cpp
+        src/GameObject/MovableGameObject/Reticle/Reticle.cpp
+        src/GameObject/MovableGameObject/BigAsteroid/BigAsteroid.cpp)
 
 
 include_directories(${CMAKE_SOURCE_DIR}/SDL2/include/SDl2)

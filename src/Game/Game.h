@@ -4,16 +4,16 @@
 
 #pragma once
 
-#include "../GameStates/MenuState.h"
+#include "../GameStates/MenuState/MenuState.h"
 
 class Game {
 private:
     GameWindow* gameWindow;
-    bool init();
+    void init();
     void update();
     void render();
 public:
-    Game(GameParameters* parameters);
+    explicit Game(GameParameters* parameters);
     ~Game();
     void run();
 };

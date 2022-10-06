@@ -1,15 +1,11 @@
 //
-// Created by Евгений on 16.07.2022.
+// Created by Евгений on 06.10.2022.
 //
 
 #pragma once
 
-#include "MovableGameObject.h"
-
-class SmallAsteroid : public MovableGameObject {
-public:
-    SmallAsteroid (Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
-};
+#include "../MovableGameObject.h"
+#include "../SmallAsteroid/SmallAsteroid.h"
 
 class BigAsteroid : public MovableGameObject {
 public:

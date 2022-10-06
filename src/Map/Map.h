@@ -13,7 +13,7 @@ class Map {
 private:
 	int hMap, wMap;
 	Vector2D xyRelative;
-	float Vx,Vy;
+    Vector2D Vxy;
 	Vector2D offset;
     GameWindow* window;
     bool isNeedDeAcc;
@@ -23,20 +23,15 @@ private:
 public:
 	Map(GameWindow* window);
 	~Map() = default;
-	void calcCoord(double Vx, double Vy, double step);
+	void calcCoord();
 	int getHMap() const;
 	int getWMap() const;
 	Vector2D getMapOffsetCoord() const;
     void mapInit();
 	void setX(double x);
 	void setY(double y);
-    void setVx(double vx);
-    void setVy(double vy);
-	double getX() const;
-	double getY() const;
-	double getVx() const;
-	double getVy() const;
-    void setIsNeededDeAcc(bool state);
+	Vector2D getXY() const;
+	Vector2D getVxy() const;
     void render();
     void update();
 

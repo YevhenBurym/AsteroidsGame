@@ -4,17 +4,16 @@
 
 #pragma once
 
-#include "../GameObject/GameOverMessage/GameOverMessage.h"
-#include "../InputComponent/InputComponent.h"
-#include "../GameObject/Button/Button.h"
-#include "PlayState.h"
-#include "MenuState.h"
+#include "../../GameObject/GameOverMessage/GameOverMessage.h"
+#include "../../GameObject/Button/Button.h"
+#include "../MenuState/MenuState.h"
+#include "../PlayState/PlayState.h"
 
 class GameOverState : public GameState {
 private:
     GameWindow* gameWindow;
-    static const std::string gameOverID;
     std::vector<GameObject *> gameOverObjects;
+    static const std::string gameOverID;
 public:
     GameOverState(GameWindow* gameWindow);
     ~GameOverState() override;

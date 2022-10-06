@@ -8,8 +8,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "../TextureManager/TextureManager.h"
-#include "../GameStates/GameStateMachine.h"
-#include "../InputComponent/InputComponent.h"
+#include "../StateMachine/GameStateMachine.h"
+#include "../InputHandler/InputHandler.h"
 #include "../GameParameters/GameParameters.h"
 
 struct WindowSize {
@@ -20,7 +20,7 @@ struct WindowSize {
 class GameWindow {
 private:
     GameParameters* parameters;
-    InputComponent* inputHandler;
+    InputHandler* inputHandler;
     TextureManager* textureManager;
     GameStateMachine* gameStateMachine;
     SDL_Window* window;
@@ -36,7 +36,7 @@ public:
     TextureManager* getTextureManager() const;
     WindowSize getSize() const;
     GameStateMachine* getGameStateMachine() const;
-    InputComponent* getInputHadler() const;
+    InputHandler* getInputHadler() const;
     GameParameters* getParameters() const;
     bool getFlagQuitGame() const;
     void setFlagQuitGame(bool status);

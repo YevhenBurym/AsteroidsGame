@@ -6,20 +6,21 @@
 
 #include <functional>
 #include "../GameObject.h"
-#include "../../InputComponent/InputComponent.h"
+#include "../../InputHandler/InputHandler.h"
 
 class Button: public GameObject {
 private:
-    InputComponent* inputComponent;
+    InputHandler* inputHandler;
     enum ButtonState {
         MOUSE_OUT = 0,
         MOUSE_OVER = 1
     };
-    std::function<void()> m_callback;
-    bool m_bReleased;
+    std::function<void()> callbackFunction;
+    bool isButtonReleased;
     int currentFrame;
 public:
-    Button(Vector2D coord, std::string textureID, TextureManager* textureManager, InputComponent *inputComponent, std::function<void()>& callback);
+    Button(Vector2D coord, std::string textureID, TextureManager* textureManager,
+            InputHandler *inputComponent, std::function<void()>& callbackFunction);
     void render() override;
     void update() override;
 };

@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Vector2D coord, std::string textureID, TextureManager* textureManager) {
+GameObject::GameObject(Vector2D coord, std::string& textureID, TextureManager* textureManager) {
     this->hSprite = 0;
     this->wSprite = 0;
     this->textureManager = textureManager;

@@ -3,7 +3,7 @@
 //
 
 #include "GameWindow.h"
-#include "../GameStates/MenuState.h"
+#include "../GameStates/MenuState/MenuState.h"
 
 void GameWindow::loadSprites() {
     this->textureManager->load("assets\\back.png", "background");
@@ -21,7 +21,7 @@ void GameWindow::loadSprites() {
     this->textureManager->load("assets\\gameOver.png", "game_over");
 }
 
-GameWindow::GameWindow(GameParameters* parameters) {
+GameWindow::GameWindow(GameParameters *parameters) {
     this->parameters = parameters;
     const char *gameName = "Asteroids";
     this->quitGame = false;
@@ -30,11 +30,9 @@ GameWindow::GameWindow(GameParameters* parameters) {
     this->size.width = 0;
     this->size.height = 0;
 
-    //Initialize SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         std::cout << "SDL could not initialize! SDL Error: %s" << SDL_GetError() << std::endl;
     } else {
-        //Set texture filtering to linear
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
             std::cout << "Warning: Linear texture filtering not enabled!" << std::endl;
         }
@@ -43,31 +41,26 @@ GameWindow::GameWindow(GameParameters* parameters) {
         if (this->parameters->getIsFullScreen()) {
             windowFlags = windowFlags | SDL_WINDOW_FULLSCREEN_DESKTOP;
         }
+
         this->window = SDL_CreateWindow(gameName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                this->parameters->getWScreen(), this->parameters->getHScreen(), windowFlags);
+                                        this->parameters->getWScreen(), this->parameters->getHScreen(), windowFlags);
         if (this->window == nullptr) {
             std::cout << "Window could not be created! SDL Error: %s\n" << SDL_GetError();
         } else {
-            //windowSize
             SDL_GetWindowSize(this->window, &this->size.width, &this->size.height);
-            //Create vsynced renderer for window
             this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
             if (this->renderer == nullptr) {
                 std::cout << "Renderer could not be created! SDL Error: %s\n" << SDL_GetError();
             } else {
-                //Initialize renderer color
-                //SDL_SetRenderDrawColor(this->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-                SDL_SetRenderDrawColor(this->renderer,0,0,0,255);
-
-                //Initialize PNG loading
+                SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
                 int imgFlags = IMG_INIT_PNG;
                 if (!(IMG_Init(imgFlags) & imgFlags)) {
                     std::cout << "SDL_image could not initialize! SDL_image Error: %s\n" << IMG_GetError();
-                } else {
                 }
             }
         }
-        this->inputHandler = new InputComponent();
+
+        this->inputHandler = new InputHandler();
         this->textureManager = new TextureManager(this->renderer);
         this->loadSprites();
         this->gameStateMachine = new GameStateMachine();
@@ -81,9 +74,6 @@ GameWindow::~GameWindow() {
     delete this->gameStateMachine;
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
-    this->renderer = nullptr;
-    this->window = nullptr;
-    //Quit SDL subsystems
     IMG_Quit();
     SDL_Quit();
 }
@@ -104,11 +94,11 @@ GameStateMachine *GameWindow::getGameStateMachine() const {
     return this->gameStateMachine;
 }
 
-InputComponent* GameWindow::getInputHadler() const {
+InputHandler *GameWindow::getInputHadler() const {
     return this->inputHandler;
 }
 
-GameParameters* GameWindow::getParameters() const {
+GameParameters *GameWindow::getParameters() const {
     return this->parameters;
 }
 

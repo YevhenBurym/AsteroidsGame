@@ -8,10 +8,12 @@ Game::Game(GameParameters* parameters) {
     this->gameWindow = new GameWindow(parameters);
 }
 
-bool Game::init() {
-    //this->gameWindow->getGameStateMachine()->changeState(new PlayState(this->gameWindow));
+Game::~Game() {
+    delete this->gameWindow;
+}
+
+void Game::init() {
     this->gameWindow->getGameStateMachine()->changeState(new MenuState(this->gameWindow));
-    return true;
 }
 
 void Game::update() {
@@ -35,7 +37,6 @@ void Game::run() {
 
     this->init();
 
-    //While application is running
     while (!this->gameWindow->getFlagQuitGame() &&
     !this->gameWindow->getInputHadler()->getFlagQuitGame()) {
         startTime = SDL_GetTicks();
@@ -51,10 +52,6 @@ void Game::run() {
 //        }
         SDL_Delay(1);
     }
-}
-
-Game::~Game() {
-    delete this->gameWindow;
 }
 
 

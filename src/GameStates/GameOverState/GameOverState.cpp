@@ -4,14 +4,14 @@
 
 #include "GameOverState.h"
 
-GameOverState::GameOverState(GameWindow* gameWindow) {
+GameOverState::GameOverState(GameWindow *gameWindow) {
     this->gameWindow = gameWindow;
 }
 
 const std::string GameOverState::gameOverID = "GAME_OVER";
 
 void GameOverState::update() {
-    for(auto & gameOverObject : this->gameOverObjects) {
+    for (auto &gameOverObject : this->gameOverObjects) {
         gameOverObject->update();
         if (this->gameWindow->getGameStateMachine()->needToErasePrevState()) {
             return;
@@ -20,31 +20,28 @@ void GameOverState::update() {
 }
 
 void GameOverState::render() {
-    for(auto & gameOverObject : this->gameOverObjects) {
+    for (auto &gameOverObject : this->gameOverObjects) {
         gameOverObject->render();
     }
 }
 
-
 bool GameOverState::onEnter() {
-    std::cout << "entering GameOverState\n";
     SDL_ShowCursor(SDL_ENABLE);
-
     std::function<void()> toMain{
             [this]() {
                 this->gameWindow->getGameStateMachine()->changeState(new MenuState(this->gameWindow));
             }
     };
-
     std::function<void()> toRestart{
             [this]() {
                 this->gameWindow->getGameStateMachine()->changeState(new PlayState(this->gameWindow));
             }
     };
-
-    auto gameOverText = new GameOverMessage({220,150},"game_over",this->gameWindow->getTextureManager(),2);
-    auto button1 = new Button({280,250},"menu_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),toMain/* [this]() {s_gameOverToMain();}*/);
-    auto button2 = new Button({280,350},"restart_button",this->gameWindow->getTextureManager(),this->gameWindow->getInputHadler(),toRestart /*[this]() {s_restartPlay();}*/);
+    auto gameOverText = new GameOverMessage({220, 150}, "game_over", this->gameWindow->getTextureManager(), 2);
+    auto button1 = new Button({280, 250}, "menu_button", this->gameWindow->getTextureManager(),
+                              this->gameWindow->getInputHadler(), toMain);
+    auto button2 = new Button({280, 350}, "restart_button", this->gameWindow->getTextureManager(),
+                              this->gameWindow->getInputHadler(), toRestart);
     this->gameOverObjects.push_back(gameOverText);
     this->gameOverObjects.push_back(button1);
     this->gameOverObjects.push_back(button2);
@@ -52,9 +49,7 @@ bool GameOverState::onEnter() {
     return true;
 }
 
-bool GameOverState::onExit()
-{
-    std::cout << "exiting GameOverState\n";
+bool GameOverState::onExit() {
     return true;
 }
 
@@ -63,7 +58,7 @@ std::string GameOverState::getStateID() const {
 }
 
 GameOverState::~GameOverState() {
-    for(auto & gameObject : this->gameOverObjects) {
+    for (auto &gameObject : this->gameOverObjects) {
         delete gameObject;
     }
     this->gameOverObjects.clear();

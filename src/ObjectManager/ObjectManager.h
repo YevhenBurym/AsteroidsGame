@@ -4,8 +4,9 @@
 #include <vector>
 #include "../GameWindow/GameWindow.h"
 #include "../Map/Map.h"
-#include "../GameObject/MovableGameObject/SpaceShip.h"
-#include "../GameObject/MovableGameObject/Asteroid.h"
+#include "../GameObject/MovableGameObject/SpaceShip/SpaceShip.h"
+#include "../GameObject/MovableGameObject/SmallAsteroid/SmallAsteroid.h"
+#include "../GameObject/MovableGameObject/BigAsteroid/BigAsteroid.h"
 
 class ObjectManager {
 private:
@@ -20,7 +21,7 @@ private:
     void createPlayer();
     void createAsteroids();
 public:
-    ObjectManager(GameWindow* window, Map* map);
+    ObjectManager(GameWindow* window/*, Map* map*/);
     ~ObjectManager();
     std::vector<MovableGameObject*>& getObjects();
     int getAmmoLimit() const;
