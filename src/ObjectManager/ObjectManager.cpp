@@ -36,7 +36,7 @@ void ObjectManager::createAsteroids() {
 
     Vector2D asteroidCoord = this->randomizeAppearCoord();
     Velocity asteroidVelocity = this->randomizeVelocity();
-    uint8_t randomAsteroid = 100 * ((double)rand() / RAND_MAX);
+    uint8_t randomAsteroid = 100 * ((double) rand() / RAND_MAX);
 
     if (randomAsteroid > 80) {
         auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
@@ -50,7 +50,7 @@ void ObjectManager::createAsteroids() {
 }
 
 Vector2D ObjectManager::randomizeAppearCoord() {
-    double randomNum_0_1 = (double)rand() / RAND_MAX;
+    double randomNum_0_1 = (double) rand() / RAND_MAX;
     uint8_t randomSide = 3 * randomNum_0_1;
     Vector2D randomXY = {0, 0};
 
@@ -77,12 +77,14 @@ Vector2D ObjectManager::randomizeAppearCoord() {
                           this->window->getSize().height -
                           this->map->getOffset().getY());
             break;
+        default:
+            break;
     }
     return randomXY;
 }
 
 Velocity ObjectManager::randomizeVelocity() {
-    double randomNum_0_1 = (double)rand() / RAND_MAX;
+    double randomNum_0_1 = (double) rand() / RAND_MAX;
     int minVLimit = 800;
     int maxVLimit = 1600;
     int angleRange = 180;

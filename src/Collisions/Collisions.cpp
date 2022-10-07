@@ -155,8 +155,8 @@ void Collisions::update() {
 
         for (auto it2 = it1 + 1; it2 != this->objectManager->getObjects().end(); ++it2) {
 
-            Vector2D xyCentr1 = {(*it1)->getXrel() + (*it1)->getRadius(), (*it1)->getYrel() + (*it1)->getRadius() };
-            Vector2D xyCentr2 = {(*it2)->getXrel() + (*it2)->getRadius(), (*it2)->getYrel() + (*it2)->getRadius() };
+            Vector2D xyCentr1 = {(*it1)->getXrel(), (*it1)->getYrel()};
+            Vector2D xyCentr2 = {(*it2)->getXrel(), (*it2)->getYrel()};
             Vector2D xyCentrVector = {xyCentr1.getX() - xyCentr2.getX(), xyCentr1.getY() - xyCentr2.getY() };
             int minDist = (*it1)->getRadius() + (*it2)->getRadius();
 
