@@ -12,6 +12,7 @@ class YouDied {};
 class Collisions {
 private:
     ObjectManager* objectManager;
+    double findVecAngleInRad(Vector2D vector);
     void fixCoord(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween);
     void calcVelocity(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween);
 public:

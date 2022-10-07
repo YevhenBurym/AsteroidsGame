@@ -101,9 +101,8 @@ Vector2D Vector2D::operator*(double scalar) const {
 }
 
 void Vector2D::normalize() {
-    double l = this->len();
-    if ( l > 0) {
-        (*this) *= (1 / l);
+    if ( this->len() > 0) {
+        (*this) *= (1 / this->len());
     }
 }
 
