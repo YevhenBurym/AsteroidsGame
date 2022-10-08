@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../../GameObject.h"
+#include "../GameObject.h"
 
 class Reticle : public GameObject {
 public:

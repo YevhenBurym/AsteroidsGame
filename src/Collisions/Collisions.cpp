@@ -24,8 +24,6 @@ double Collisions::findVecAngleInRad(Vector2D vector) {
 
 void Collisions::fixCoord(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween) {
     Vector2D xyOffset = {0, 0 };
-    Vector2D currXY1 = {unit1->getX(), unit1->getY()};
-    Vector2D currXY2 = {unit2->getX(), unit2->getY()};
     Vector2D newXY1, newXY2;
 
     double alpha = this->findVecAngleInRad(vectorBetween);
@@ -37,43 +35,41 @@ void Collisions::fixCoord(MovableGameObject* unit1, MovableGameObject* unit2, Ve
     xyOffset.setY(std::abs(segmentDist * sin(alpha)));
 
     if ((vectorBetween.getX() > 0) && (vectorBetween.getY() > 0)) {
-        newXY1 = currXY1 + xyOffset;
-        newXY2 = currXY2 - xyOffset;
+        newXY1 = unit1->getXY() + xyOffset;
+        newXY2 = unit2->getXY() - xyOffset;
     }
     else if ((vectorBetween.getX() < 0) && (vectorBetween.getY() > 0)) {
-        newXY1.setX(currXY1.getX() - xyOffset.getX());
-        newXY1.setY(currXY1.getY() + xyOffset.getY());
-        newXY2.setX(currXY2.getX() + xyOffset.getX());
-        newXY2.setY(currXY2.getY() - xyOffset.getY());
+        newXY1.setX(unit1->getXY().getX() - xyOffset.getX());
+        newXY1.setY(unit1->getXY().getY() + xyOffset.getY());
+        newXY2.setX(unit2->getXY().getX() + xyOffset.getX());
+        newXY2.setY(unit2->getXY().getY() - xyOffset.getY());
     }
     else if ((vectorBetween.getX() > 0) && (vectorBetween.getY() < 0)) {
-        newXY1.setX(currXY1.getX() + xyOffset.getX());
-        newXY1.setY(currXY1.getY() - xyOffset.getY());
-        newXY2.setX(currXY2.getX() - xyOffset.getX());
-        newXY2.setY(currXY2.getY() + xyOffset.getY());
+        newXY1.setX(unit1->getXY().getX() + xyOffset.getX());
+        newXY1.setY(unit1->getXY().getY() - xyOffset.getY());
+        newXY2.setX(unit2->getXY().getX() - xyOffset.getX());
+        newXY2.setY(unit2->getXY().getY() + xyOffset.getY());
     }
     else if ((vectorBetween.getX()  < 0) && (vectorBetween.getY() < 0)) {
-        newXY1 = currXY1 - xyOffset;
-        newXY2 = currXY2 + xyOffset;
+        newXY1 = unit1->getXY() - xyOffset;
+        newXY2 = unit2->getXY() + xyOffset;
     }
     else if ((vectorBetween.getX() == 0) && (vectorBetween.getY() > 0) ||
                 (vectorBetween.getX() == 0) && (vectorBetween.getY() < 0)) {
-        newXY1.setX(currXY1.getX());
-        newXY1.setY(currXY1.getY() + xyOffset.getY());
-        newXY2.setX(currXY2.getX());
-        newXY2.setY(currXY2.getY() - xyOffset.getY());
+        newXY1.setX(unit1->getXY().getX());
+        newXY1.setY(unit1->getXY().getY() + xyOffset.getY());
+        newXY2.setX(unit2->getXY().getX());
+        newXY2.setY(unit2->getXY().getY() - xyOffset.getY());
     }
     else if ((vectorBetween.getX()  < 0) && (vectorBetween.getY() == 0) ||
                 (vectorBetween.getX()  > 0) && (vectorBetween.getY() == 0)) {
-        newXY1.setX(currXY1.getX() - xyOffset.getX());
-        newXY1.setY(currXY1.getY());
-        newXY2.setX(currXY2.getX() + xyOffset.getX());
-        newXY2.setY(currXY2.getY());
+        newXY1.setX(unit1->getXY().getX() - xyOffset.getX());
+        newXY1.setY(unit1->getXY().getY());
+        newXY2.setX(unit2->getXY().getX() + xyOffset.getX());
+        newXY2.setY(unit2->getXY().getY());
     }
-    unit1->setX(newXY1.getX());
-    unit1->setY(newXY1.getY());
-    unit2->setX(newXY2.getX());
-    unit2->setY(newXY2.getY());
+    unit1->setXY(newXY1);
+    unit2->setXY(newXY2);
 }
 
 void Collisions::calcVelocity(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween) {
@@ -109,17 +105,21 @@ void Collisions::calcVelocity(MovableGameObject* unit1, MovableGameObject* unit2
 }
 
 void Collisions::update() {
-    for (auto it1 = this->objectManager->getObjects().begin(); it1 != this->objectManager->getObjects().end(); ++it1) {
-        auto player = dynamic_cast<SpaceShip*>(this->objectManager->getObjects().front());
+    auto player = this->objectManager->getPlayer();
+    Vector2D xyCentrPlayer = player->getXYrel();
 
-        for (auto it2 = it1 + 1; it2 != this->objectManager->getObjects().end(); ++it2) {
+    for (auto it1 = this->objectManager->getAsteroids().begin(); it1 != this->objectManager->getAsteroids().end(); ++it1) {
 
-            Vector2D xyCentr1 = {(*it1)->getXrel(), (*it1)->getYrel()};
-            Vector2D xyCentr2 = {(*it2)->getXrel(), (*it2)->getYrel()};
-            Vector2D xyCentrVector = xyCentr1 - xyCentr2;
+        Vector2D xyCentrAsteroid = (*it1)->getXYrel();
+        Vector2D xyCentrVec = xyCentrPlayer - xyCentrAsteroid;
+        double minDistance = player->getRadius() + (*it1)->getRadius();
+
+        for (auto it2 = it1 + 1; it2 != this->objectManager->getAsteroids().end(); ++it2) {
+
+            Vector2D dirVector = (*it1)->getXYrel() - (*it2)->getXYrel();
             double minDist = (*it1)->getRadius() + (*it2)->getRadius();
 
-            if (xyCentrVector.len() < minDist && xyCentrVector.len() > minDist / 2) {
+            if (dirVector.len() < minDist && dirVector.len() > minDist / 2) {
                 if (dynamic_cast<SpaceShip*>(*it1) && dynamic_cast<Bullet*>(*it2) ||
                     dynamic_cast<Bullet*>(*it1) && dynamic_cast<Bullet*>(*it2)) {
                     break;
@@ -131,9 +131,9 @@ void Collisions::update() {
                          dynamic_cast<Bullet*>(*it2) && dynamic_cast<SmallAsteroid*>(*it1)) {
                     MovableGameObject* temp1 = (*it1);
                     MovableGameObject* temp2 = (*it2);
-                    it2 = this->objectManager->getObjects().erase(it2);
+                    it2 = this->objectManager->getAsteroids().erase(it2);
                     it2--;
-                    it1 = this->objectManager->getObjects().erase(it1);
+                    it1 = this->objectManager->getAsteroids().erase(it1);
                     it1--;
                     delete temp1;
                     delete temp2;
@@ -157,12 +157,12 @@ void Collisions::update() {
                     MovableGameObject* temp2 = (*it2);
                     auto iter1 = it1 - 1;
                     auto iter2 = it2 - 1;
-                    it2 = this->objectManager->getObjects().erase(it2);
-                    it1 = this->objectManager->getObjects().erase(it1);
+                    it2 = this->objectManager->getAsteroids().erase(it2);
+                    it1 = this->objectManager->getAsteroids().erase(it1);
                     it1 = iter1;
                     it2 = iter2;
 
-                    bigAster->divide(this->objectManager->getObjects());
+                    bigAster->divide(this->objectManager->getAsteroids());
 
                     int newAsteroidsAmount = this->objectManager->getNumAsteroids() + 1;
                     int newBulletsAmount = player->getNumBullets() - 1;
@@ -174,8 +174,8 @@ void Collisions::update() {
                     break;
                 }
                 else {
-                    fixCoord((*it1), (*it2), xyCentrVector);
-                    calcVelocity((*it1), (*it2), xyCentrVector);
+                    fixCoord((*it1), (*it2), dirVector);
+                    calcVelocity((*it1), (*it2), dirVector);
                 }
             }
         }

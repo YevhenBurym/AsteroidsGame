@@ -6,9 +6,8 @@
 
 void SpaceShip::limitateCoord() {
 
-    double x = this->coord.getX() + this->xOf;
-    double y = this->coord.getY() + this->yOf;
-
+    double x = this->coord.getX() + this->map->getXY().getX();
+    double y = this->coord.getY() + this->map->getXY().getY();
     if (x >= this->map->getMaxCoord().getX()) {
         this->map->setX(this->map->getMinCoord().getX() - this->map->getXY().getX());
     } else if (x < this->map->getMinCoord().getX()) {
@@ -22,13 +21,15 @@ void SpaceShip::limitateCoord() {
     }
 }
 
-SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, int ammoLimit, Map* map, InputHandler* inputHandler, std::vector<MovableGameObject*>* objects) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
+SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager,
+                     int ammoLimit, Map *map, InputHandler *inputHandler, std::vector<MovableGameObject *> *bullets)
+        : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
     this->reticle = new Reticle("reticle", this->textureManager);
     this->angleShip = 0;
     this->ammoLimit = ammoLimit;
     this->numBullets = 0;
     this->inputHandler = inputHandler;
-    this->gameObjects = objects;
+    this->bullets = bullets;
     this->buttonLeftPress = false;
 }
 
@@ -36,59 +37,42 @@ SpaceShip::~SpaceShip() {
     delete this->reticle;
 }
 
-double SpaceShip::getXrel() const {
-    return this->coord.getX();
-}
-
-double SpaceShip::getYrel() const {
-    return this->coord.getY();
+Vector2D SpaceShip::getXYrel() const {
+    return this->coord;
 }
 
 void SpaceShip::shipHeadAngle() {
-    Vector2D avatarCoord{this->coord.getX(), this->coord.getY()};
-    Vector2D reticleCoord{this->reticle->getX(), this->reticle->getY()};
-    avatarCoord.setX(avatarCoord.getX() - this->map->getXY().getX());
-    avatarCoord.setY(avatarCoord.getY() - this->map->getXY().getY());
-    reticleCoord.setX(reticleCoord.getX() - this->map->getXY().getX());
-    reticleCoord.setY(reticleCoord.getY() - this->map->getXY().getY());
+    double toDegrees = 180 / M_PI;
+    Vector2D avatarXY = this->coord - this->map->getXY();
+    Vector2D reticleXY = this->reticle->getXY() - this->map->getXY();
+    Vector2D dirVector = avatarXY - reticleXY;
 
-    double alpha = 0;
-    Vector2D xyDirVector = {avatarCoord.getX() - reticleCoord.getX(), avatarCoord.getY() - reticleCoord.getY()};
-
-    if ((xyDirVector.getX() == 0) && (xyDirVector.getY() < 0)) {
-        alpha = -M_PI / 2;
-    } else if ((xyDirVector.getX() == 0) && (xyDirVector.getY() > 0)) {
-        alpha = M_PI / 2;
+    if ((dirVector.getX() == 0) && (dirVector.getY() < 0)) {
+        this->angleShip = -M_PI / 2;
+    } else if ((dirVector.getX() == 0) && (dirVector.getY() > 0)) {
+        this->angleShip = M_PI / 2;
     } else {
-        alpha = M_PI - atan2(xyDirVector.getY(), xyDirVector.getX());
+        this->angleShip = M_PI - atan2(dirVector.getY(), dirVector.getX());
     }
-    alpha = alpha * 180 / M_PI;
-    this->angleShip = alpha; // для розрахунку направлення корабля
+    this->angleShip *= toDegrees;
 }
 
-void SpaceShip::makeShoot(std::vector<MovableGameObject*>& objects) {
+void SpaceShip::makeShoot(std::vector<MovableGameObject *> &bulletsVec) {
     Vector2D avatarCoord{this->coord.getX(), this->coord.getY()};
     avatarCoord.setX(avatarCoord.getX() - this->map->getXY().getX());
     avatarCoord.setY(avatarCoord.getY() - this->map->getXY().getY());
     this->shipHeadAngle();
     if (this->numBullets < this->ammoLimit) {
         this->numBullets += 1;
-        auto bullet = new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map);
-        objects.push_back(bullet);
+        bulletsVec.push_back(new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map));
     } else {
-        for (auto it = objects.begin(); it != objects.end(); ++it) {
-            if (dynamic_cast<Bullet*>(*it)) {
-                delete (*it);
-                objects.erase(it);
-                auto bullet = new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map);
-                objects.push_back(bullet);
-                return;
-            }
-        }
+        delete *bulletsVec.begin();
+        bulletsVec.erase(bulletsVec.begin());
+        bulletsVec.push_back(new Bullet(avatarCoord, 3500, this->angleShip, "bullet", this->textureManager, this->map));
     }
 }
 
-Reticle* SpaceShip::getReticle() const {
+Reticle *SpaceShip::getReticle() const {
     return this->reticle;
 }
 
@@ -96,7 +80,7 @@ void SpaceShip::render() const {
     int x = this->coord.getX() - this->radius;
     int y = this->coord.getY() - this->radius;
 
-    this->textureManager->draw(this->textureID,x,y,this->wSprite,this->hSprite,90 - this->angleShip);
+    this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite, 90 - this->angleShip);
 }
 
 int SpaceShip::getNumBullets() const {
@@ -109,15 +93,12 @@ void SpaceShip::setNumBullets(int amount) {
 
 void SpaceShip::update() {
     this->calcCoord();
-    Vector2D mousePos = this->inputHandler->getMousePosition();
-    this->reticle->setX(mousePos.getX());
-    this->reticle->setY(mousePos.getY());
-
+    this->reticle->setXY(this->inputHandler->getMousePosition());
     this->shipHeadAngle();
 
     if (this->inputHandler->getMouseButtonState(LEFT) && !this->buttonLeftPress) {
         this->buttonLeftPress = true;
-        this->makeShoot(*this->gameObjects);
+        this->makeShoot(*this->bullets);
     } else if (!this->inputHandler->getMouseButtonState(LEFT)) {
         this->buttonLeftPress = false;
     }

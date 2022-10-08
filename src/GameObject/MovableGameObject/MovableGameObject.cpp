@@ -56,11 +56,8 @@ void MovableGameObject::setVxy(Vector2D vxy) {
     this->Vxy = vxy;
 }
 
-double MovableGameObject::getXrel() const {
-    return this->coord.getX() + this->xOf;
-}
-double MovableGameObject::getYrel() const {
-    return this->coord.getY() + this->yOf;
+Vector2D MovableGameObject::getXYrel() const {
+    return Vector2D{this->coord.getX() + this->xOf, this->coord.getY() + this->yOf};
 }
 
 Vector2D MovableGameObject::getVxy() const {

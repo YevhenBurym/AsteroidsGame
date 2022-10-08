@@ -23,8 +23,7 @@ public:
             std::string textureID, TextureManager* textureManager, Map* map);
     ~MovableGameObject() override = default;
     virtual void setVxy(Vector2D vxy);
-    virtual double getXrel() const;
-    virtual double getYrel() const;
+    virtual Vector2D getXYrel() const;
     virtual Vector2D getVxy() const;
     virtual double getMass() const;
     virtual double getRadius() const;

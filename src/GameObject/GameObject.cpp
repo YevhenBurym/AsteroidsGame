@@ -9,19 +9,12 @@ GameObject::GameObject(Vector2D coord, std::string& textureID, TextureManager* t
     this->coord = coord;
 }
 
-void GameObject::setX(double x) {
-    this->coord.setX(x);
-}
-void GameObject::setY(double y) {
-    this->coord.setY(y);
+void GameObject::setXY(Vector2D newXY) {
+   this->coord = newXY;
 }
 
-double GameObject::getX() const {
-    return this->coord.getX();
-}
-
-double GameObject::getY() const {
-    return this->coord.getY();
+Vector2D GameObject::getXY() const {
+   return this->coord;
 }
 
 void GameObject::render() {

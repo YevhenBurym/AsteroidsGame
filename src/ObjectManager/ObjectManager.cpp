@@ -12,21 +12,26 @@ ObjectManager::ObjectManager(GameWindow *window) {
 
 ObjectManager::~ObjectManager() {
     delete this->map;
+    delete this->player;
 
-    for (auto it = this->gameObjects.begin(); it != this->gameObjects.end();) {
+    for (auto it = this->asteroids.begin(); it != this->asteroids.end();) {
         delete (*it++);
     }
-    this->gameObjects.clear();
-    this->gameObjects.shrink_to_fit();
+    this->asteroids.clear();
+    this->asteroids.shrink_to_fit();
+    for (auto it = this->bullets.begin(); it != this->bullets.end();) {
+        delete (*it++);
+    }
+    this->bullets.clear();
+    this->bullets.shrink_to_fit();
 }
 
 void ObjectManager::createPlayer() {
     Vector2D avatarCoord{0, 0};
     avatarCoord.setX(this->map->getWMap() / 2 - this->map->getOffset().getX());
     avatarCoord.setY(this->map->getHMap() / 2 - this->map->getOffset().getY());
-    this->gameObjects.push_back(
-            new SpaceShip(avatarCoord, 0, 0, "spaceship", this->window->getTextureManager(), this->getAmmoLimit(),
-                          this->map, this->window->getInputHadler(), &this->gameObjects));
+    this->player = new SpaceShip(avatarCoord, 0, 0, "spaceship", this->window->getTextureManager(), this->getAmmoLimit(),
+                                 this->map, this->window->getInputHadler(), &this->bullets);
 }
 
 void ObjectManager::createAsteroids() {
@@ -41,11 +46,11 @@ void ObjectManager::createAsteroids() {
     if (randomAsteroid > 80) {
         auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
                                            "big_asteroid", this->window->getTextureManager(), this->map);
-        this->getObjects().push_back(bigAsteroid);
+        this->asteroids.push_back(bigAsteroid);
     } else {
         auto smallAsteroid = new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
                                                "small_asteroid", this->window->getTextureManager(), this->map);
-        this->getObjects().push_back(smallAsteroid);
+        this->asteroids.push_back(smallAsteroid);
     }
 }
 
@@ -96,8 +101,15 @@ Velocity ObjectManager::randomizeVelocity() {
     return randomV;
 }
 
-std::vector<MovableGameObject *> &ObjectManager::getObjects() {
-    return this->gameObjects;
+std::vector<MovableGameObject *> &ObjectManager::getAsteroids() {
+    return this->asteroids;
+}
+std::vector<MovableGameObject *> &ObjectManager::getBullets() {
+    return this->bullets;
+}
+
+SpaceShip* ObjectManager::getPlayer() {
+    return this->player;
 }
 
 int ObjectManager::getAmmoLimit() const {
@@ -114,19 +126,29 @@ void ObjectManager::setNumAsteroids(int amount) {
 
 void ObjectManager::render() {
     this->map->render();
+    this->player->render();
 
-    for (auto &object : this->gameObjects) {
-        object->render();
+    for (auto &bullet : this->bullets) {
+        bullet->render();
     }
-    dynamic_cast<SpaceShip *>(this->gameObjects.front())->getReticle()->render();
+
+    for (auto &asteroid : this->asteroids) {
+        asteroid->render();
+    }
+
+    this->player->getReticle()->render();
 }
 
 void ObjectManager::update() {
+    this->map->update();
+    this->player->update();
 
-    this->createAsteroids();
-    for (int i = 0; i < this->gameObjects.size(); ++i) {
-        this->gameObjects[i]->update();
+    for (auto & bullet : this->bullets) {
+        bullet->update();
     }
 
-    this->map->update();
+    this->createAsteroids();
+    for (auto & asteroid : this->asteroids) {
+        asteroid->update();
+    }
 }

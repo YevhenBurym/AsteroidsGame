@@ -25,7 +25,7 @@ add_executable(Asteroids main.cpp
         src/GameObject/GameOverMessage/GameOverMessage.cpp
         src/GameParameters/GameParameters.cpp
         src/GameObject/MovableGameObject/Bullet/Bullet.cpp
-        src/GameObject/MovableGameObject/Reticle/Reticle.cpp
+        src/GameObject/Reticle/Reticle.cpp
         src/GameObject/MovableGameObject/BigAsteroid/BigAsteroid.cpp)
 
 

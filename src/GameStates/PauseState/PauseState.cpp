@@ -58,6 +58,7 @@ std::string PauseState::getStateID() const {
 }
 
 PauseState::~PauseState() {
+    SDL_ShowCursor(SDL_DISABLE);
     for (auto &button : this->menuButtons) {
         delete button;
     }
