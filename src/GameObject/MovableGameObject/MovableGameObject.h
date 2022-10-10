@@ -21,7 +21,7 @@ protected:
 public:
     MovableGameObject(Vector2D coord, double velocity, double theta,
             std::string textureID, TextureManager* textureManager, Map* map);
-    ~MovableGameObject() override = default;
+    ~MovableGameObject() override = 0;
     virtual void setVxy(Vector2D vxy);
     virtual Vector2D getXYrel() const;
     virtual Vector2D getVxy() const;

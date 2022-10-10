@@ -46,6 +46,8 @@ MovableGameObject::MovableGameObject(Vector2D coord, double velocity, double the
     this->acceleration = {0,0};
 }
 
+MovableGameObject::~MovableGameObject() = default;
+
 void MovableGameObject::calcCoord() {
     this->coord.setX(this->coord.getX() + this->Vxy.getX() * 0.001);
     this->coord.setY(this->coord.getY() + this->Vxy.getY() * 0.001);

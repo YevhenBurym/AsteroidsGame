@@ -144,6 +144,9 @@ void Collisions::update() {
                     break;
                 }
 
+                auto smallAster = dynamic_cast<SmallAsteroid *>(*asterIter);
+                smallAster->createAbility(this->objectManager->getBuffs());
+
                 MovableGameObject *temp1 = (*bulletIter);
                 MovableGameObject *temp2 = (*asterIter);
                 asterIter = this->objectManager->getAsteroids().erase(asterIter);

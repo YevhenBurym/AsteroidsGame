@@ -19,6 +19,9 @@ void GameWindow::loadSprites() {
     this->textureManager->load("assets\\menuButton.png", "menu_button");
     this->textureManager->load("assets\\restartButton.png", "restart_button");
     this->textureManager->load("assets\\gameOver.png", "game_over");
+    this->textureManager->load("assets\\shieldAbility.png", "shield_ability");
+    this->textureManager->load("assets\\missileAbility.png", "missile_ability");
+    this->textureManager->load("assets\\autoshootAbility.png", "autoshoot_ability");
 }
 
 GameWindow::GameWindow(GameParameters *parameters) {

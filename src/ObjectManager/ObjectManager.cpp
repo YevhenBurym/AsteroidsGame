@@ -1,13 +1,13 @@
 #include "ObjectManager.h"
 
 ObjectManager::ObjectManager(GameWindow *window) {
-    srand(time(NULL));
     this->map = new Map(window);
     this->window = window;
     this->numAsteroids = 0;
     this->ammoLimit = window->getParameters()->getAmmoLimit();
     this->asteroidsLimit = window->getParameters()->getAsteroidsLimit();
     this->createPlayer();
+    this->randGenerator = RandGenerator();
 }
 
 ObjectManager::~ObjectManager() {
@@ -41,9 +41,8 @@ void ObjectManager::createAsteroids() {
 
     Vector2D asteroidCoord = this->randomizeAppearCoord();
     Velocity asteroidVelocity = this->randomizeVelocity();
-    uint8_t randomAsteroid = 100 * ((double) rand() / RAND_MAX);
 
-    if (randomAsteroid > 80) {
+    if (this->randGenerator.getRandNumber() > 0.8) {
         auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
                                            "big_asteroid", this->window->getTextureManager(), this->map);
         this->asteroids.push_back(bigAsteroid);
@@ -55,30 +54,29 @@ void ObjectManager::createAsteroids() {
 }
 
 Vector2D ObjectManager::randomizeAppearCoord() {
-    double randomNum_0_1 = (double) rand() / RAND_MAX;
-    uint8_t randomSide = 3 * randomNum_0_1;
+    uint8_t randomSide = 3 * this->randGenerator.getRandNumber();
     Vector2D randomXY = {0, 0};
 
     switch (randomSide) {
         case 0:
-            randomXY.setY(randomNum_0_1 * this->map->getHMap() - this->map->getOffset().getY());
-            randomXY.setX(randomNum_0_1 * (this->map->getWMap() - this->window->getSize().width) / 2 -
+            randomXY.setY(this->randGenerator.getRandNumber() * this->map->getHMap() - this->map->getOffset().getY());
+            randomXY.setX(this->randGenerator.getRandNumber() * (this->map->getWMap() - this->window->getSize().width) / 2 -
                           this->map->getOffset().getX());
             break;
         case 1:
-            randomXY.setX(randomNum_0_1 * this->map->getWMap() - this->map->getOffset().getX());
-            randomXY.setY(randomNum_0_1 * (this->map->getHMap() - this->window->getSize().height) / 2 -
+            randomXY.setX(this->randGenerator.getRandNumber() * this->map->getWMap() - this->map->getOffset().getX());
+            randomXY.setY(this->randGenerator.getRandNumber() * (this->map->getHMap() - this->window->getSize().height) / 2 -
                           this->map->getOffset().getY());
             break;
         case 2:
-            randomXY.setY(randomNum_0_1 * this->map->getHMap() - this->map->getOffset().getY());
-            randomXY.setX(randomNum_0_1 * (this->map->getWMap() - this->window->getSize().width) +
+            randomXY.setY(this->randGenerator.getRandNumber() * this->map->getHMap() - this->map->getOffset().getY());
+            randomXY.setX(this->randGenerator.getRandNumber() * (this->map->getWMap() - this->window->getSize().width) +
                           this->window->getSize().width -
                           this->map->getOffset().getX());
             break;
         case 3:
-            randomXY.setX(randomNum_0_1 * this->map->getWMap() - this->map->getOffset().getX());
-            randomXY.setY(randomNum_0_1 * (this->map->getHMap() - this->window->getSize().height) +
+            randomXY.setX(this->randGenerator.getRandNumber() * this->map->getWMap() - this->map->getOffset().getX());
+            randomXY.setY(this->randGenerator.getRandNumber() * (this->map->getHMap() - this->window->getSize().height) +
                           this->window->getSize().height -
                           this->map->getOffset().getY());
             break;
@@ -89,14 +87,13 @@ Vector2D ObjectManager::randomizeAppearCoord() {
 }
 
 Velocity ObjectManager::randomizeVelocity() {
-    double randomNum_0_1 = (double) rand() / RAND_MAX;
     int minVLimit = 800;
     int maxVLimit = 1600;
     int angleRange = 180;
     Velocity randomV = {0, 0};
 
-    randomV.v = randomNum_0_1 * (maxVLimit - minVLimit) + minVLimit;
-    randomV.theta = 2 * (randomNum_0_1 - 0.5) * angleRange;
+    randomV.v = this->randGenerator.getRandNumber() * (maxVLimit - minVLimit) + minVLimit;
+    randomV.theta = 2 * (this->randGenerator.getRandNumber() - 0.5) * angleRange;
 
     return randomV;
 }
@@ -106,6 +103,10 @@ std::vector<MovableGameObject *> &ObjectManager::getAsteroids() {
 }
 std::vector<MovableGameObject *> &ObjectManager::getBullets() {
     return this->bullets;
+}
+
+std::vector<MovableGameObject *> &ObjectManager::getBuffs() {
+    return this->buffs;
 }
 
 SpaceShip* ObjectManager::getPlayer() {
@@ -118,6 +119,10 @@ int ObjectManager::getAmmoLimit() const {
 
 int ObjectManager::getNumAsteroids() const {
     return this->numAsteroids;
+}
+
+double ObjectManager::getAbilityProbability() const {
+    return this->window->getParameters()->getAbilityProbability();
 }
 
 void ObjectManager::setNumAsteroids(int amount) {
@@ -136,6 +141,10 @@ void ObjectManager::render() {
         asteroid->render();
     }
 
+    for (auto & buf : this->buffs) {
+        buf->render();
+    }
+
     this->player->getReticle()->render();
 }
 
@@ -150,5 +159,9 @@ void ObjectManager::update() {
     this->createAsteroids();
     for (auto & asteroid : this->asteroids) {
         asteroid->update();
+    }
+
+    for (auto & buf : this->buffs) {
+        buf->update();
     }
 }

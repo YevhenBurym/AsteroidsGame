@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include "../ObjectManager/ObjectManager.h"
+#include "../GameObject/MovableGameObject/Ability/ShieldObject/ShieldObject.h"
 
 class YouDied {};
 

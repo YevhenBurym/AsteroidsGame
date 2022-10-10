@@ -26,7 +26,11 @@ add_executable(Asteroids main.cpp
         src/GameParameters/GameParameters.cpp
         src/GameObject/MovableGameObject/Bullet/Bullet.cpp
         src/GameObject/Reticle/Reticle.cpp
-        src/GameObject/MovableGameObject/BigAsteroid/BigAsteroid.cpp)
+        src/GameObject/MovableGameObject/BigAsteroid/BigAsteroid.cpp
+        src/GameObject/MovableGameObject/Ability/ShieldObject/ShieldObject.cpp
+        src/GameObject/MovableGameObject/Ability/MissileObject/MissileObject.cpp
+        src/GameObject/MovableGameObject/Ability/AutoShootObject/AutoShootObject.cpp
+        src/RandomGenerator/RandomGenerator.cpp)
 
 
 include_directories(${CMAKE_SOURCE_DIR}/SDL2/include/SDl2)

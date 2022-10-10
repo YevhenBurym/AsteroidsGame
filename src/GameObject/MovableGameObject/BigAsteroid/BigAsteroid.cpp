@@ -22,3 +22,7 @@ void BigAsteroid::divide(std::vector<MovableGameObject *> &objects) {
     objects.push_back(
             new SmallAsteroid(xy2, this->V.v, this->V.theta + 45, "small_asteroid", this->textureManager, this->map));
 }
+
+void BigAsteroid::createAbility(std::vector<MovableGameObject*>& buffs) {
+    buffs.push_back(new ShieldObject(this->coord, "shield_ability", this->textureManager, this->map));
+}
