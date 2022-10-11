@@ -4,30 +4,32 @@
 
 #pragma once
 
-#include "../MovableGameObject.h"
+#include "../GameObject.h"
 #include "../Bullet/Bullet.h"
-#include "../../Reticle/Reticle.h"
+#include "../Reticle/Reticle.h"
 
-class SpaceShip : public MovableGameObject {
+class SpaceShip : public GameObject {
 private:
+    Map* map;
     InputHandler* inputHandler;
     Reticle* reticle;
-    std::vector<MovableGameObject*>* bullets;
+    std::vector<GameObject*>* bullets;
     double angleShip;
     int ammoLimit;
     int numBullets;
     bool buttonLeftPress;
-    void limitateCoord() override;
+    void limitateXY();
 public:
     SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager,
-              int ammoLimit, Map* map, InputHandler* inputHandler, std::vector<MovableGameObject*>* bullets);
+              int ammoLimit, Map* map, InputHandler* inputHandler, std::vector<GameObject*>* bullets);
     ~SpaceShip() override;
-    void render() const override;
+
     Vector2D getXYrel() const override;
     Reticle* getReticle() const;
     void shipHeadAngle();
-    void makeShoot(std::vector<MovableGameObject*>& objects);
+    void makeShoot(std::vector<GameObject*>& objects);
     int getNumBullets() const;
     void setNumBullets(int amount);
     void update() override;
+    void render() override;
 };

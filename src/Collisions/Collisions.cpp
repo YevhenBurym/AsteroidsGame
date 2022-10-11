@@ -20,7 +20,7 @@ double Collisions::findVecAngleInRad(Vector2D vector) {
     return angle;
 }
 
-void Collisions::fixCoord(MovableGameObject *unit1, MovableGameObject *unit2, Vector2D vectorBetween) {
+void Collisions::fixCoord(GameObject *unit1, GameObject *unit2, Vector2D vectorBetween) {
     Vector2D xyOffset = {0, 0};
     Vector2D newXY1, newXY2;
 
@@ -65,7 +65,7 @@ void Collisions::fixCoord(MovableGameObject *unit1, MovableGameObject *unit2, Ve
     unit2->setXY(newXY2);
 }
 
-void Collisions::calcVelocity(MovableGameObject *unit1, MovableGameObject *unit2, Vector2D vectorBetween) {
+void Collisions::calcVelocity(GameObject *unit1, GameObject *unit2, Vector2D vectorBetween) {
     Vector2D Vxy1{0, 0};
     Vector2D Vxy2{0, 0};
     double m1 = unit1->getMass();
@@ -123,8 +123,8 @@ void Collisions::update() {
             if ( distance < minDistance ) {
                 auto bigAster = dynamic_cast<BigAsteroid *>(*asterIter);
                 if (bigAster) {
-                    MovableGameObject *temp1 = (*bulletIter);
-                    MovableGameObject *temp2 = (*asterIter);
+                    GameObject *temp1 = (*bulletIter);
+                    GameObject *temp2 = (*asterIter);
                     auto iter1 = bulletIter - 1;
                     auto iter2 = asterIter - 1;
                     asterIter = this->objectManager->getAsteroids().erase(asterIter);
@@ -147,8 +147,8 @@ void Collisions::update() {
                 auto smallAster = dynamic_cast<SmallAsteroid *>(*asterIter);
                 smallAster->createAbility(this->objectManager->getBuffs());
 
-                MovableGameObject *temp1 = (*bulletIter);
-                MovableGameObject *temp2 = (*asterIter);
+                GameObject *temp1 = (*bulletIter);
+                GameObject *temp2 = (*asterIter);
                 asterIter = this->objectManager->getAsteroids().erase(asterIter);
                 asterIter--;
                 bulletIter = this->objectManager->getBullets().erase(bulletIter);

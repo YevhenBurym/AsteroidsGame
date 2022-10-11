@@ -5,8 +5,8 @@
 #pragma once
 
 #include <functional>
-#include "../GameObject.h"
 #include "../../InputHandler/InputHandler.h"
+#include "../GameObject.h"
 
 class Button: public GameObject {
 private:

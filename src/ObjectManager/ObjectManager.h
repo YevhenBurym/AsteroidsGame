@@ -2,9 +2,9 @@
 
 #include <vector>
 #include "../GameWindow/GameWindow.h"
-#include "../GameObject/MovableGameObject/SpaceShip/SpaceShip.h"
-#include "../GameObject/MovableGameObject/SmallAsteroid/SmallAsteroid.h"
-#include "../GameObject/MovableGameObject/BigAsteroid/BigAsteroid.h"
+#include "../GameObject/SpaceShip/SpaceShip.h"
+#include "../GameObject/SmallAsteroid/SmallAsteroid.h"
+#include "../GameObject/BigAsteroid/BigAsteroid.h"
 
 class ObjectManager {
 private:
@@ -14,9 +14,9 @@ private:
     int ammoLimit;
     int numAsteroids;
     SpaceShip* player;
-    std::vector<MovableGameObject*> asteroids;
-    std::vector<MovableGameObject*> bullets;
-    std::vector<MovableGameObject*> buffs;
+    std::vector<GameObject*> asteroids;
+    std::vector<GameObject*> bullets;
+    std::vector<GameObject*> buffs;
     RandGenerator randGenerator;
     Vector2D randomizeAppearCoord();
     Velocity randomizeVelocity();
@@ -29,9 +29,9 @@ public:
     int getNumAsteroids() const;
     int getAmmoLimit() const;
     double getAbilityProbability() const;
-    std::vector<MovableGameObject*>& getAsteroids();
-    std::vector<MovableGameObject*>& getBullets();
-    std::vector<MovableGameObject*>& getBuffs();
+    std::vector<GameObject*>& getAsteroids();
+    std::vector<GameObject*>& getBullets();
+    std::vector<GameObject*>& getBuffs();
     SpaceShip* getPlayer();
     void render();
     void update();

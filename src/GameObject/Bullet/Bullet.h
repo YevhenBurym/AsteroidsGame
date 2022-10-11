@@ -4,9 +4,13 @@
 
 #pragma once
 
-#include "../MovableGameObject.h"
+#include "../GameObject.h"
 
-class Bullet : public MovableGameObject {
+class Bullet : public GameObject {
+private:
+    Map* map;
+    LimitatorXY limitator;
 public:
     Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager, Map *map);
+    void update() override;
 };

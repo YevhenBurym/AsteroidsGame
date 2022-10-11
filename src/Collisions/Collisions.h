@@ -6,7 +6,7 @@
 
 #include <cmath>
 #include "../ObjectManager/ObjectManager.h"
-#include "../GameObject/MovableGameObject/Ability/ShieldObject/ShieldObject.h"
+#include "../GameObject/Ability/ShieldObject/ShieldObject.h"
 
 class YouDied {};
 
@@ -14,8 +14,8 @@ class Collisions {
 private:
     ObjectManager* objectManager;
     double findVecAngleInRad(Vector2D vector);
-    void fixCoord(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween);
-    void calcVelocity(MovableGameObject* unit1, MovableGameObject* unit2, Vector2D vectorBetween);
+    void fixCoord(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween);
+    void calcVelocity(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween);
 public:
     explicit Collisions(ObjectManager* objectManager);
     void update();

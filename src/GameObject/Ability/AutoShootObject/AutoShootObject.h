@@ -4,10 +4,13 @@
 
 #pragma once
 
-#include "../../MovableGameObject.h"
+#include "../../GameObject.h"
 
-class AutoShootObject: public MovableGameObject {
+class AutoShootObject: public GameObject {
+private:
+    Map* map;
 public:
     AutoShootObject(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
+    void update() override;
 };
 

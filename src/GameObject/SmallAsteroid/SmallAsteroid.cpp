@@ -4,12 +4,13 @@
 
 #include "SmallAsteroid.h"
 
-SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
+SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : limitator(map), GameObject(coord, velocity, theta, textureID, textureManager) {
+    this->map = map;
     this->mass = 1;
     this->randGenerator = RandGenerator();
 }
 
-void SmallAsteroid::createAbility(std::vector<MovableGameObject*>& buffs) {
+void SmallAsteroid::createAbility(std::vector<GameObject*>& buffs) {
     double randomAbility = this->randGenerator.getRandNumber();
 
     if (this->randGenerator.getRandNumber() <= 0.3) {
@@ -21,4 +22,11 @@ void SmallAsteroid::createAbility(std::vector<MovableGameObject*>& buffs) {
             buffs.push_back(new AutoShootObject(this->coord, "autoshoot_ability", this->textureManager, this->map));
         }
     }
+}
+
+void SmallAsteroid::update() {
+    this->xOf = this->map->getXY().getX();
+    this->yOf = this->map->getXY().getY();
+    GameObject::update();
+    this->limitator.limitateXY(this->coord);
 }

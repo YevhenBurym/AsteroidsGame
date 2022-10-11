@@ -4,9 +4,12 @@
 
 #pragma once
 
-#include "../../MovableGameObject.h"
+#include "../../GameObject.h"
 
-class MissileObject: public MovableGameObject {
+class MissileObject: public GameObject {
+private:
+    Map* map;
 public:
     MissileObject(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
+    void update() override;
 };

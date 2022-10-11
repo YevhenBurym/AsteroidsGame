@@ -1,0 +1,19 @@
+//
+// Created by Евгений on 06.10.2022.
+//
+
+#pragma once
+
+#include "../GameObject.h"
+#include "../SmallAsteroid/SmallAsteroid.h"
+
+class BigAsteroid : public GameObject {
+private:
+    Map* map;
+    LimitatorXY limitator;
+public:
+    BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
+    void divide(std::vector<GameObject*>& objects);
+    void createAbility(std::vector<GameObject*>& buffs);
+    void update() override;
+};

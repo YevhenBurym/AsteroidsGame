@@ -10,5 +10,4 @@ class Reticle : public GameObject {
 public:
     Reticle(std::string textureID, TextureManager* textureManager);
     void render() override;
-    void update() override;
 };

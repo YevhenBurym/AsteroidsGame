@@ -98,14 +98,14 @@ Velocity ObjectManager::randomizeVelocity() {
     return randomV;
 }
 
-std::vector<MovableGameObject *> &ObjectManager::getAsteroids() {
+std::vector<GameObject *> &ObjectManager::getAsteroids() {
     return this->asteroids;
 }
-std::vector<MovableGameObject *> &ObjectManager::getBullets() {
+std::vector<GameObject *> &ObjectManager::getBullets() {
     return this->bullets;
 }
 
-std::vector<MovableGameObject *> &ObjectManager::getBuffs() {
+std::vector<GameObject *> &ObjectManager::getBuffs() {
     return this->buffs;
 }
 

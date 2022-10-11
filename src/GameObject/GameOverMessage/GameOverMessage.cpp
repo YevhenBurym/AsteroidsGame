@@ -4,7 +4,7 @@
 
 #include "GameOverMessage.h"
 
-GameOverMessage::GameOverMessage(Vector2D coord, std::string textureID, TextureManager* textureManager, int animSpeed) : GameObject(coord,textureID, textureManager) {
+GameOverMessage::GameOverMessage(Vector2D coord, std::string textureID, TextureManager* textureManager, int animSpeed) : GameObject(coord, 0, 0, textureID, textureManager) {
     this->wSprite /= 2;
     this->animationSpeed = animSpeed;
     this->currentFrame = 1;

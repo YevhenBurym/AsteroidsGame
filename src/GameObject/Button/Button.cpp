@@ -9,7 +9,7 @@ void Button::render() {
 }
 
 Button::Button(Vector2D coord, std::string textureID, TextureManager *textureManager, InputHandler *inputHandler,
-               std::function<void()>& callbackFunction):GameObject(coord, textureID, textureManager) {
+               std::function<void()>& callbackFunction): GameObject(coord, 0, 0, textureID, textureManager) {
     this->callbackFunction = callbackFunction;
     this->wSprite /= 2;
     this->inputHandler = inputHandler;

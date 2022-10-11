@@ -4,7 +4,7 @@
 
 #include "SpaceShip.h"
 
-void SpaceShip::limitateCoord() {
+void SpaceShip::limitateXY() {
 
     double x = this->coord.getX() + this->map->getXY().getX();
     double y = this->coord.getY() + this->map->getXY().getY();
@@ -22,8 +22,9 @@ void SpaceShip::limitateCoord() {
 }
 
 SpaceShip::SpaceShip(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager,
-                     int ammoLimit, Map *map, InputHandler *inputHandler, std::vector<MovableGameObject *> *bullets)
-        : MovableGameObject(coord, velocity, theta, textureID, textureManager, map) {
+                     int ammoLimit, Map *map, InputHandler *inputHandler, std::vector<GameObject *> *bullets)
+        : GameObject(coord, velocity, theta, textureID, textureManager) {
+    this->map = map;
     this->reticle = new Reticle("reticle", this->textureManager);
     this->angleShip = 0;
     this->ammoLimit = ammoLimit;
@@ -57,7 +58,7 @@ void SpaceShip::shipHeadAngle() {
     this->angleShip *= toDegrees;
 }
 
-void SpaceShip::makeShoot(std::vector<MovableGameObject *> &bulletsVec) {
+void SpaceShip::makeShoot(std::vector<GameObject *> &bulletsVec) {
     Vector2D avatarCoord{this->coord.getX(), this->coord.getY()};
     avatarCoord.setX(avatarCoord.getX() - this->map->getXY().getX());
     avatarCoord.setY(avatarCoord.getY() - this->map->getXY().getY());
@@ -76,13 +77,6 @@ Reticle *SpaceShip::getReticle() const {
     return this->reticle;
 }
 
-void SpaceShip::render() const {
-    int x = this->coord.getX() - this->radius;
-    int y = this->coord.getY() - this->radius;
-
-    this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite, 90 - this->angleShip);
-}
-
 int SpaceShip::getNumBullets() const {
     return this->numBullets;
 }
@@ -92,7 +86,9 @@ void SpaceShip::setNumBullets(int amount) {
 }
 
 void SpaceShip::update() {
-    this->calcCoord();
+    GameObject::update();
+    limitateXY();
+
     this->reticle->setXY(this->inputHandler->getMousePosition());
     this->shipHeadAngle();
 
@@ -103,4 +99,11 @@ void SpaceShip::update() {
         this->buttonLeftPress = false;
     }
 
+}
+
+void SpaceShip::render() {
+    int x = this->coord.getX() - this->radius;
+    int y = this->coord.getY() - this->radius;
+
+    this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite, 90 - this->angleShip);
 }

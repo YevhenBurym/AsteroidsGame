@@ -4,9 +4,12 @@
 
 #pragma once
 
-#include "../../MovableGameObject.h"
+#include "../../GameObject.h"
 
-class ShieldObject: public MovableGameObject {
+class ShieldObject: public GameObject {
+private:
+    Map* map;
 public:
     ShieldObject(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
+    void update() override;
 };
