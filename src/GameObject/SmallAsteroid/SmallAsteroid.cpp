@@ -4,29 +4,22 @@
 
 #include "SmallAsteroid.h"
 
-SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map) : limitator(map), GameObject(coord, velocity, theta, textureID, textureManager) {
+SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, std::string textureID,
+                             TextureManager *textureManager, Map *map) : limitator(map),
+                                                                         abilityAppearance(textureManager, map),
+                                                                         GameObject(coord, velocity, theta, textureID,
+                                                                                    textureManager) {
     this->map = map;
+    this->xyOffset = map->getXY();
     this->mass = 1;
-    this->randGenerator = RandGenerator();
 }
 
-void SmallAsteroid::createAbility(std::vector<GameObject*>& buffs) {
-    double randomAbility = this->randGenerator.getRandNumber();
-
-    if (this->randGenerator.getRandNumber() <= 0.3) {
-        if (randomAbility <= 0.35) {
-            buffs.push_back(new ShieldObject(this->coord, "shield_ability", this->textureManager, this->map));
-        } else if (randomAbility <= 0.65) {
-            buffs.push_back(new MissileObject(this->coord, "missile_ability", this->textureManager, this->map));
-        } else {
-            buffs.push_back(new AutoShootObject(this->coord, "autoshoot_ability", this->textureManager, this->map));
-        }
-    }
+void SmallAsteroid::createAbility(std::vector<GameObject *> &buffs) {
+    this->abilityAppearance.createAbility(this->xy, buffs);
 }
 
 void SmallAsteroid::update() {
-    this->xOf = this->map->getXY().getX();
-    this->yOf = this->map->getXY().getY();
+    this->xyOffset = this->map->getXY();
     GameObject::update();
-    this->limitator.limitateXY(this->coord);
+    this->limitator.limitateXY(this->xy);
 }

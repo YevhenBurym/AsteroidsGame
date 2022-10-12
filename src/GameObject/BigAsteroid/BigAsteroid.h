@@ -6,10 +6,12 @@
 
 #include "../GameObject.h"
 #include "../SmallAsteroid/SmallAsteroid.h"
+#include "../../AbilityAppearance/AbilityAppearance.h"
 
 class BigAsteroid : public GameObject {
 private:
     Map* map;
+    AbilityAppearance abilityAppearance;
     LimitatorXY limitator;
 public:
     BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);

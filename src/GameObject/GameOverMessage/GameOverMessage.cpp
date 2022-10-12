@@ -15,5 +15,5 @@ void GameOverMessage::update() {
 }
 
 void GameOverMessage::render() {
-    this->textureManager->drawFrame(this->textureID, this->coord.getX(),this->coord.getY(),this->wSprite, this->hSprite,1, this->currentFrame);
+    this->textureManager->drawFrame(this->textureID, this->xy.getX(), this->xy.getY(), this->wSprite, this->hSprite, 1, this->currentFrame);
 }

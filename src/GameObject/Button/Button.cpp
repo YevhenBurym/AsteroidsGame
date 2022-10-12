@@ -5,7 +5,7 @@
 #include "Button.h"
 
 void Button::render() {
-    this->textureManager->drawFrame(this->textureID, this->coord.getX(),this->coord.getY(),this->wSprite, this->hSprite,1, this->currentFrame);
+    this->textureManager->drawFrame(this->textureID, this->xy.getX(), this->xy.getY(), this->wSprite, this->hSprite, 1, this->currentFrame);
 }
 
 Button::Button(Vector2D coord, std::string textureID, TextureManager *textureManager, InputHandler *inputHandler,
@@ -19,10 +19,10 @@ Button::Button(Vector2D coord, std::string textureID, TextureManager *textureMan
 
 void Button::update() {
     Vector2D mousePos = this->inputHandler->getMousePosition();
-    if(mousePos.getX() < (this->coord.getX() + this->wSprite)
-       && mousePos.getX() > this->coord.getX()
-       && mousePos.getY() < (this->coord.getY() + this->hSprite)
-       && mousePos.getY() > this->coord.getY())
+    if(mousePos.getX() < (this->xy.getX() + this->wSprite)
+       && mousePos.getX() > this->xy.getX()
+       && mousePos.getY() < (this->xy.getY() + this->hSprite)
+       && mousePos.getY() > this->xy.getY())
     {
         if(this->inputHandler->getMouseButtonState(LEFT) && this->isButtonReleased) {
             this->callbackFunction();

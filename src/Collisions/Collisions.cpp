@@ -132,6 +132,7 @@ void Collisions::update() {
                     bulletIter = iter1;
                     asterIter = iter2;
 
+                    bigAster->createAbility(this->objectManager->getBuffs());
                     bigAster->divide(this->objectManager->getAsteroids());
 
                     delete temp1;
@@ -163,4 +164,14 @@ void Collisions::update() {
             }
         }
     }
+
+    for (auto abilityObject : this->objectManager->getBuffs()) {
+        double distance = (this->objectManager->getPlayer()->getXYrel() - abilityObject->getXYrel()).len();
+        double minDistance = this->objectManager->getPlayer()->getRadius() + abilityObject->getRadius();
+        if ( distance < minDistance ) {
+            throw YouDied();
+        }
+
+    }
+
 }

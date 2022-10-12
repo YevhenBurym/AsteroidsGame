@@ -5,33 +5,33 @@
 #include "BigAsteroid.h"
 
 BigAsteroid::BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager,
-                         Map *map) : limitator(map), GameObject(coord, velocity, theta, textureID, textureManager) {
+                         Map *map) : limitator(map), abilityAppearance(textureManager, map),
+                                     GameObject(coord, velocity, theta, textureID, textureManager) {
     this->map = map;
+    this->xyOffset = map->getXY();
     this->mass = 2;
 }
 
 void BigAsteroid::divide(std::vector<GameObject *> &objects) {
     Vector2D xy1;
     Vector2D xy2;
-    xy1.setX(this->coord.getX() /*+ this->xOf*/ + this->radius);
-    xy1.setY(this->coord.getY() /*+ this->yOf*/ + this->radius);
-    xy2.setX(this->coord.getX() /*+ this->xOf*/ - this->radius);
-    xy2.setY(this->coord.getY() /*+ this->yOf*/ - this->radius);
+    xy1.setX(this->xy.getX() + this->radius);
+    xy1.setY(this->xy.getY() + this->radius);
+    xy2.setX(this->xy.getX() - this->radius);
+    xy2.setY(this->xy.getY() - this->radius);
 
-
-    objects.push_back(
-            new SmallAsteroid(xy1, this->V.v, this->V.theta - 45, "small_asteroid", this->textureManager, this->map));
-    objects.push_back(
-            new SmallAsteroid(xy2, this->V.v, this->V.theta + 45, "small_asteroid", this->textureManager, this->map));
+    auto smallAsteroid1 = new SmallAsteroid(xy1, this->V.v, this->V.theta - 45, "small_asteroid", this->textureManager, this->map);
+    auto smallAsteroid2 = new SmallAsteroid(xy2, this->V.v, this->V.theta + 45, "small_asteroid", this->textureManager, this->map);
+    objects.push_back(smallAsteroid1);
+    objects.push_back(smallAsteroid2);
 }
 
-void BigAsteroid::createAbility(std::vector<GameObject*>& buffs) {
-    buffs.push_back(new ShieldObject(this->coord, "shield_ability", this->textureManager, this->map));
+void BigAsteroid::createAbility(std::vector<GameObject *> &buffs) {
+    this->abilityAppearance.createAbility(this->xy, buffs);
 }
 
 void BigAsteroid::update() {
-    this->xOf = this->map->getXY().getX();
-    this->yOf = this->map->getXY().getY();
+    this->xyOffset = this->map->getXY();
     GameObject::update();
-    this->limitator.limitateXY(this->coord);
+    this->limitator.limitateXY(this->xy);
 }

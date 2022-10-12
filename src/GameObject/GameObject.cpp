@@ -19,32 +19,24 @@ GameObject::GameObject(Vector2D coord, double velocity, double theta,
     } else {
         d = this->wSprite - (this->wSprite % this->hSprite) / 2;
     }
-    //this->map = map;
     this->radius = d / 2;
-    this->coord = coord;
+    this->xy = coord;
     this->Vxy.setX(velocity * cos(theta * toRad));
     this->Vxy.setY(-velocity * sin(theta * toRad));
     this->mass = 1;
-    this->V.v = velocity;
-    this->V.theta = theta;
-    //this->xOf = this->map->getXY().getX();
-    //this->yOf = this->map->getXY().getY();
+    this->V = {velocity, theta};
+    this->xyOffset = {0,0};
     this->acceleration = {0,0};
 }
 
 GameObject::~GameObject() = default;
 
-void GameObject::calcCoord() {
-    this->coord.setX(this->coord.getX() + this->Vxy.getX() * 0.001);
-    this->coord.setY(this->coord.getY() + this->Vxy.getY() * 0.001);
-}
-
 void GameObject::setXY(Vector2D newXY) {
-    this->coord = newXY;
+    this->xy = newXY;
 }
 
 Vector2D GameObject::getXY() const {
-    return this->coord;
+    return this->xy;
 }
 
 void GameObject::setVxy(Vector2D vxy) {
@@ -52,7 +44,10 @@ void GameObject::setVxy(Vector2D vxy) {
 }
 
 Vector2D GameObject::getXYrel() const {
-    return Vector2D{this->coord.getX() + this->xOf, this->coord.getY() + this->yOf};
+    Vector2D currXY = this->xy;
+    Vector2D xyOf = this->xyOffset;
+
+    return currXY + xyOf;
 }
 
 Vector2D GameObject::getVxy() const {
@@ -68,16 +63,14 @@ double GameObject::getRadius() const {
 }
 
 void GameObject::render() {
-    int x = this->coord.getX() + this->xOf - this->radius;
-    int y = this->coord.getY() + this->yOf - this->radius;
+    int x = this->xy.getX() + this->xyOffset.getX() - this->radius;
+    int y = this->xy.getY() + this->xyOffset.getY() - this->radius;
 
-    this->textureManager->draw(this->textureID,x,y,this->wSprite,this->hSprite);
+    this->textureManager->draw(this->textureID, x, y,this->wSprite,this->hSprite);
 }
 
 void GameObject::update() {
-    this->calcCoord();
-    //this->xOf = this->map->getXY().getX();
-    //this->yOf = this->map->getXY().getY();
+    this->xy += this->Vxy * 0.001;
 }
 
 LimitatorXY::LimitatorXY(Map *map) {

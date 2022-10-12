@@ -8,7 +8,7 @@ Reticle::Reticle(std::string textureID, TextureManager *textureManager) : GameOb
                                                                                      textureManager) {}
 
 void Reticle::render() {
-    int x = this->coord.getX() - this->radius;
-    int y = this->coord.getY() - this->radius;
+    int x = this->xy.getX() - this->radius;
+    int y = this->xy.getY() - this->radius;
     this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite);
 }

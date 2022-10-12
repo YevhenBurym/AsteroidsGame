@@ -7,12 +7,12 @@
 Bullet::Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager, Map *map)
         : limitator(map), GameObject(coord, velocity, theta, textureID, textureManager) {
     this->map = map;
+    this->xyOffset = map->getXY();
 }
 
 
 void Bullet::update() {
-    this->xOf = this->map->getXY().getX();
-    this->yOf = this->map->getXY().getY();
+    this->xyOffset = this->map->getXY();
     GameObject::update();
-    this->limitator.limitateXY(this->coord);
+    this->limitator.limitateXY(this->xy);
 }

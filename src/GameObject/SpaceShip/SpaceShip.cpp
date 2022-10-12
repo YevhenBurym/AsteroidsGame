@@ -6,8 +6,8 @@
 
 void SpaceShip::limitateXY() {
 
-    double x = this->coord.getX() + this->map->getXY().getX();
-    double y = this->coord.getY() + this->map->getXY().getY();
+    double x = this->xy.getX() + this->map->getXY().getX();
+    double y = this->xy.getY() + this->map->getXY().getY();
     if (x >= this->map->getMaxCoord().getX()) {
         this->map->setX(this->map->getMinCoord().getX() - this->map->getXY().getX());
     } else if (x < this->map->getMinCoord().getX()) {
@@ -39,12 +39,12 @@ SpaceShip::~SpaceShip() {
 }
 
 Vector2D SpaceShip::getXYrel() const {
-    return this->coord;
+    return this->xy;
 }
 
 void SpaceShip::shipHeadAngle() {
     double toDegrees = 180 / M_PI;
-    Vector2D avatarXY = this->coord - this->map->getXY();
+    Vector2D avatarXY = this->xy - this->map->getXY();
     Vector2D reticleXY = this->reticle->getXY() - this->map->getXY();
     Vector2D dirVector = avatarXY - reticleXY;
 
@@ -59,7 +59,7 @@ void SpaceShip::shipHeadAngle() {
 }
 
 void SpaceShip::makeShoot(std::vector<GameObject *> &bulletsVec) {
-    Vector2D avatarCoord{this->coord.getX(), this->coord.getY()};
+    Vector2D avatarCoord{this->xy.getX(), this->xy.getY()};
     avatarCoord.setX(avatarCoord.getX() - this->map->getXY().getX());
     avatarCoord.setY(avatarCoord.getY() - this->map->getXY().getY());
     this->shipHeadAngle();
@@ -102,8 +102,8 @@ void SpaceShip::update() {
 }
 
 void SpaceShip::render() {
-    int x = this->coord.getX() - this->radius;
-    int y = this->coord.getY() - this->radius;
+    int x = this->xy.getX() - this->radius;
+    int y = this->xy.getY() - this->radius;
 
     this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite, 90 - this->angleShip);
 }

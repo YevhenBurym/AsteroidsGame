@@ -19,15 +19,14 @@ protected:
     TextureManager* textureManager;
     std::string textureID;
     int wSprite, hSprite;
-    Vector2D coord;
+    Vector2D xy;
     //Map* map;
     Velocity V;
     Vector2D Vxy;
     Vector2D acceleration;
-    double xOf, yOf;
+    Vector2D xyOffset;
     double mass;
     double radius;
-    virtual void calcCoord();
 public:
     GameObject(Vector2D coord, double velocity, double theta,
                std::string textureID, TextureManager* textureManager);

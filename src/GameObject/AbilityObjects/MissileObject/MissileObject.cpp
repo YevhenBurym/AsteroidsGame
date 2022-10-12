@@ -6,10 +6,10 @@
 
 MissileObject::MissileObject (Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map) : GameObject(coord, 0, 0, textureID, textureManager) {
     this->map = map;
+    this->xyOffset = map->getXY();
 }
 
 void MissileObject::update() {
-    this->xOf = this->map->getXY().getX();
-    this->yOf = this->map->getXY().getY();
+    this->xyOffset = this->map->getXY();
     GameObject::update();
 }
