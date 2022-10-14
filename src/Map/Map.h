@@ -9,7 +9,7 @@ private:
     GameWindow* window;
 	int hMap, wMap;
 	Vector2D xyRelative;
-    Vector2D Vxy
+    Vector2D Vxy;
 	Vector2D offset;
 	Vector2D maxCoord;
 	Vector2D minCoord;
