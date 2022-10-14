@@ -4,9 +4,7 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject(Vector2D coord, double velocity, double theta,
-                       std::string textureID, TextureManager* textureManager) {
-    double toRad = M_PI / 180;
+GameObject::GameObject(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager* textureManager) {
     double d;
     this->hSprite = 0;
     this->wSprite = 0;
@@ -21,10 +19,8 @@ GameObject::GameObject(Vector2D coord, double velocity, double theta,
     }
     this->radius = d / 2;
     this->xy = coord;
-    this->Vxy.setX(velocity * cos(theta * toRad));
-    this->Vxy.setY(-velocity * sin(theta * toRad));
+    this->Vxy = Vxy;
     this->mass = 1;
-    this->V = {velocity, theta};
     this->xyOffset = {0,0};
     this->acceleration = {0,0};
 }
@@ -70,7 +66,7 @@ void GameObject::render() {
 }
 
 void GameObject::update() {
-    this->xy += this->Vxy * 0.001;
+    this->xy += this->Vxy;
 }
 
 LimitatorXY::LimitatorXY(Map *map) {

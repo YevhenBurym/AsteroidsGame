@@ -3,9 +3,9 @@
 //
 
 #include "AbilityAppearance.h"
-#include "../GameObject/AbilityObjects/ShieldObject/ShieldObject.h"
-#include "../GameObject/AbilityObjects/MissileObject/MissileObject.h"
-#include "../GameObject/AbilityObjects/AutoShootObject/AutoShootObject.h"
+#include "../GameObject/AbilityIcons/ShieldIcon/ShieldIcon.h"
+#include "../GameObject/AbilityIcons/MissileIcon/MissileIcon.h"
+#include "../GameObject/AbilityIcons/AutoShootIcon/AutoShootIcon.h"
 
 AbilityAppearance::AbilityAppearance(TextureManager* textureManager, Map* map) {
     this->generator = RandGenerator();
@@ -18,11 +18,11 @@ void AbilityAppearance::createAbility(Vector2D XYAppear, std::vector<GameObject*
 
     if (this->generator.getRandNumber() <= 0.3) {
         if (randomAbility <= 0.35) {
-            buffs.push_back(new ShieldObject(XYAppear, "shield_ability", this->textureManager, this->map));
+            buffs.push_back(new ShieldIcon(XYAppear, "shield_ability", this->textureManager, this->map));
         } else if (randomAbility <= 0.65) {
-            buffs.push_back(new MissileObject(XYAppear, "missile_ability", this->textureManager, this->map));
+            buffs.push_back(new MissileIcon(XYAppear, "missile_ability", this->textureManager, this->map));
         } else {
-            buffs.push_back(new AutoShootObject(XYAppear, "autoshoot_ability", this->textureManager, this->map));
+            buffs.push_back(new AutoShootIcon(XYAppear, "autoshoot_ability", this->textureManager, this->map));
         }
     }
 }

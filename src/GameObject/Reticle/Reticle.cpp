@@ -4,7 +4,7 @@
 
 #include "Reticle.h"
 
-Reticle::Reticle(std::string textureID, TextureManager *textureManager) : GameObject(Vector2D{0, 0}, 0, 0, textureID,
+Reticle::Reticle(std::string textureID, TextureManager *textureManager) : GameObject({0, 0}, {0, 0}, textureID,
                                                                                      textureManager) {}
 
 void Reticle::render() {

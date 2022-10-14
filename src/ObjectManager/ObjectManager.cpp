@@ -30,7 +30,7 @@ void ObjectManager::createPlayer() {
     Vector2D avatarCoord{0, 0};
     avatarCoord.setX(this->map->getWMap() / 2 - this->map->getOffset().getX());
     avatarCoord.setY(this->map->getHMap() / 2 - this->map->getOffset().getY());
-    this->player = new SpaceShip(avatarCoord, 0, 0, "spaceship", this->window->getTextureManager(), this->getAmmoLimit(),
+    this->player = new SpaceShip(avatarCoord, {0,0}, "spaceship", this->window->getTextureManager(), this->getAmmoLimit(),
                                  this->map, this->window->getInputHadler(), &this->bullets);
 }
 
@@ -40,14 +40,14 @@ void ObjectManager::createAsteroids() {
     this->numAsteroids += 1;
 
     Vector2D asteroidCoord = this->randomizeAppearCoord();
-    Velocity asteroidVelocity = this->randomizeVelocity();
+    Vector2D asteroidVelocity = this->randomizeVelocity();
 
     if (this->randGenerator.getRandNumber() > 0.8) {
-        auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
+        auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity,
                                            "big_asteroid", this->window->getTextureManager(), this->map);
         this->asteroids.push_back(bigAsteroid);
     } else {
-        auto smallAsteroid = new SmallAsteroid(asteroidCoord, asteroidVelocity.v, asteroidVelocity.theta,
+        auto smallAsteroid = new SmallAsteroid(asteroidCoord, asteroidVelocity,
                                                "small_asteroid", this->window->getTextureManager(), this->map);
         this->asteroids.push_back(smallAsteroid);
     }
@@ -86,14 +86,13 @@ Vector2D ObjectManager::randomizeAppearCoord() {
     return randomXY;
 }
 
-Velocity ObjectManager::randomizeVelocity() {
-    int minVLimit = 800;
-    int maxVLimit = 1600;
-    int angleRange = 180;
-    Velocity randomV = {0, 0};
+Vector2D ObjectManager::randomizeVelocity() {
+    double minVLimit = 0.8;
+    double maxVLimit = 1.5;
+    Vector2D randomV = {0, 0};
 
-    randomV.v = this->randGenerator.getRandNumber() * (maxVLimit - minVLimit) + minVLimit;
-    randomV.theta = 2 * (this->randGenerator.getRandNumber() - 0.5) * angleRange;
+    randomV.setX(2 * (this->randGenerator.getRandNumber() - 0.5) * (maxVLimit - minVLimit) + minVLimit);
+    randomV.setY( 2 * (this->randGenerator.getRandNumber() - 0.5) * (maxVLimit - minVLimit) + minVLimit);
 
     return randomV;
 }

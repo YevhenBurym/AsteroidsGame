@@ -19,7 +19,7 @@ private:
     std::vector<GameObject*> buffs;
     RandGenerator randGenerator;
     Vector2D randomizeAppearCoord();
-    Velocity randomizeVelocity();
+    Vector2D randomizeVelocity();
     void createPlayer();
     void createAsteroids();
 public:

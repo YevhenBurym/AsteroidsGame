@@ -6,10 +6,10 @@
 
 #include "../../GameObject.h"
 
-class ShieldObject: public GameObject {
+class ShieldIcon: public GameObject {
 private:
     Map* map;
 public:
-    ShieldObject(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
+    ShieldIcon(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
     void update() override;
 };

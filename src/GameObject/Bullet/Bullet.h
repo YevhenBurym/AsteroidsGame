@@ -11,6 +11,6 @@ private:
     Map* map;
     LimitatorXY limitator;
 public:
-    Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager, Map *map);
+    Bullet(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager, Map *map);
     void update() override;
 };

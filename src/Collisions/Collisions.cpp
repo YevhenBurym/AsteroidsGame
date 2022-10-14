@@ -31,7 +31,9 @@ void Collisions::fixCoord(GameObject *unit1, GameObject *unit2, Vector2D vectorB
 
     xyOffset.setX(std::abs(segmentDist * cos(alpha)));
     xyOffset.setY(std::abs(segmentDist * sin(alpha)));
-
+    if (dynamic_cast<SpaceShip*>(unit2)) {
+        xyOffset *= -1;
+    }
     if ((vectorBetween.getX() > 0) && (vectorBetween.getY() > 0)) {
         newXY1 = unit1->getXY() + xyOffset;
         newXY2 = unit2->getXY() - xyOffset;
@@ -78,7 +80,6 @@ void Collisions::calcVelocity(GameObject *unit1, GameObject *unit2, Vector2D vec
 
     double newVcentr1 = (2 * m2 * Vcentr2 + (m1 - m2) * Vcentr1) / (m1 + m2);
     double newVcentr2 = (2 * m1 * Vcentr1 + (m2 - m1) * Vcentr2) / (m1 + m2);
-
     double Vtang1 = unit1->getVxy().getY() * cos(alpha) + unit1->getVxy().getX() * sin(alpha);
     double Vtang2 = unit2->getVxy().getY() * cos(alpha) + unit2->getVxy().getX() * sin(alpha);
 
@@ -93,21 +94,30 @@ void Collisions::calcVelocity(GameObject *unit1, GameObject *unit2, Vector2D vec
     Vxy2.setX(V2 * sin(phi2) * sin(alpha) - V2 * cos(phi2) * cos(alpha));
     Vxy2.setY(V2 * sin(phi2) * cos(alpha) + V2 * cos(phi2) * sin(alpha));
 
+
+    if (dynamic_cast<SpaceShip*>(unit2)) {
+        Vxy2 *= -1;
+        Vxy1 *= -1;
+    }
     unit1->setVxy(Vxy1);
     unit2->setVxy(Vxy2);
 }
 
 void Collisions::update() {
     for (auto asterIter = this->objectManager->getAsteroids().begin(); asterIter != this->objectManager->getAsteroids().end(); ++asterIter) {
-        double distance = (this->objectManager->getPlayer()->getXYrel() - (*asterIter)->getXYrel()).len();
+        Vector2D vectorBetween = this->objectManager->getPlayer()->getXYrel() - (*asterIter)->getXYrel();
         double minDistance = this->objectManager->getPlayer()->getRadius() + (*asterIter)->getRadius();
 
-        if ( distance < minDistance ) {
-            throw YouDied();
+        if ( vectorBetween.len() < minDistance && vectorBetween.len() > minDistance / 2 ) {
+            if (!this->objectManager->getPlayer()->getIsShieldOn()) {
+                throw YouDied();
+            }
+            fixCoord((*asterIter),this->objectManager->getPlayer(), vectorBetween);
+            calcVelocity((*asterIter),this->objectManager->getPlayer(), vectorBetween);
         }
 
         for (auto asterIter2 = asterIter + 1; asterIter2 != this->objectManager->getAsteroids().end(); ++asterIter2) {
-            Vector2D vectorBetween = (*asterIter)->getXYrel() - (*asterIter2)->getXYrel();
+            vectorBetween = (*asterIter)->getXYrel() - (*asterIter2)->getXYrel();
             minDistance = (*asterIter)->getRadius() + (*asterIter2)->getRadius();
 
             if ( vectorBetween.len() < minDistance ) {
@@ -117,7 +127,7 @@ void Collisions::update() {
         }
 
         for (auto bulletIter = this->objectManager->getBullets().begin(); bulletIter != this->objectManager->getBullets().end(); ++bulletIter) {
-            distance = ((*bulletIter)->getXYrel() - (*asterIter)->getXYrel()).len();
+            double distance = ((*bulletIter)->getXYrel() - (*asterIter)->getXYrel()).len();
             minDistance = (*bulletIter)->getRadius() + (*asterIter)->getRadius();
 
             if ( distance < minDistance ) {
@@ -164,14 +174,23 @@ void Collisions::update() {
             }
         }
     }
-
-    for (auto abilityObject : this->objectManager->getBuffs()) {
-        double distance = (this->objectManager->getPlayer()->getXYrel() - abilityObject->getXYrel()).len();
-        double minDistance = this->objectManager->getPlayer()->getRadius() + abilityObject->getRadius();
+    for (auto abilityIter = this->objectManager->getBuffs().begin(); abilityIter != this->objectManager->getBuffs().end(); ++abilityIter) {
+        double distance = (this->objectManager->getPlayer()->getXYrel() - (*abilityIter)->getXYrel()).len();
+        double minDistance = this->objectManager->getPlayer()->getRadius() + (*abilityIter)->getRadius();
         if ( distance < minDistance ) {
-            throw YouDied();
+
+            if (dynamic_cast<ShieldIcon*>(*abilityIter)) {
+                this->objectManager->getPlayer()->setAbility(SHIELD);
+            } else if (dynamic_cast<MissileIcon*>(*abilityIter)) {
+                this->objectManager->getPlayer()->setAbility(MISSILE);
+            } else if (dynamic_cast<AutoShootIcon*>(*abilityIter)) {
+                this->objectManager->getPlayer()->setAbility(AUTOSHOOT);
+            }
+
+            GameObject *temp = *abilityIter;
+            this->objectManager->getBuffs().erase(abilityIter);
+            abilityIter--;
+            delete temp;
         }
-
     }
-
 }

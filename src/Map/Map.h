@@ -4,24 +4,18 @@
 #include "../Vector2D/Vector2D.h"
 #include "../GameWindow/GameWindow.h"
 
-struct Velocity {
-	double v;
-	double theta;
-};
-
 class Map {
 private:
     GameWindow* window;
 	int hMap, wMap;
 	Vector2D xyRelative;
-    Vector2D Vxy;
+    Vector2D Vxy
 	Vector2D offset;
 	Vector2D maxCoord;
 	Vector2D minCoord;
 
     void drawBackground();
     void drawBorder();
-    void calcCoord();
     void deAcc();
 public:
 	Map(GameWindow* window);
@@ -34,6 +28,8 @@ public:
 	Vector2D getOffset() const;
 	void setX(double x);
 	void setY(double y);
+    void setVxy(Vector2D newVxy);
+    Vector2D getVxy() const;
 	Vector2D getXY() const;
     void render();
     void update();

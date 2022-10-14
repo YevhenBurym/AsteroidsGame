@@ -4,8 +4,8 @@
 
 #include "Bullet.h"
 
-Bullet::Bullet(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager, Map *map)
-        : limitator(map), GameObject(coord, velocity, theta, textureID, textureManager) {
+Bullet::Bullet(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager, Map *map)
+        : limitator(map), GameObject(coord, Vxy, textureID, textureManager) {
     this->map = map;
     this->xyOffset = map->getXY();
 }

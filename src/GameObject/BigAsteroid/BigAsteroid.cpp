@@ -4,9 +4,9 @@
 
 #include "BigAsteroid.h"
 
-BigAsteroid::BigAsteroid(Vector2D coord, int velocity, int theta, std::string textureID, TextureManager *textureManager,
+BigAsteroid::BigAsteroid(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager,
                          Map *map) : limitator(map), abilityAppearance(textureManager, map),
-                                     GameObject(coord, velocity, theta, textureID, textureManager) {
+                                     GameObject(coord, Vxy, textureID, textureManager) {
     this->map = map;
     this->xyOffset = map->getXY();
     this->mass = 2;
@@ -20,8 +20,8 @@ void BigAsteroid::divide(std::vector<GameObject *> &objects) {
     xy2.setX(this->xy.getX() - this->radius);
     xy2.setY(this->xy.getY() - this->radius);
 
-    auto smallAsteroid1 = new SmallAsteroid(xy1, this->V.v, this->V.theta - 45, "small_asteroid", this->textureManager, this->map);
-    auto smallAsteroid2 = new SmallAsteroid(xy2, this->V.v, this->V.theta + 45, "small_asteroid", this->textureManager, this->map);
+    auto smallAsteroid1 = new SmallAsteroid(xy1, {this->Vxy.getX(),-this->Vxy.getX()}, "small_asteroid", this->textureManager, this->map);
+    auto smallAsteroid2 = new SmallAsteroid(xy2, {-this->Vxy.getX(),this->Vxy.getX()}, "small_asteroid", this->textureManager, this->map);
     objects.push_back(smallAsteroid1);
     objects.push_back(smallAsteroid2);
 }

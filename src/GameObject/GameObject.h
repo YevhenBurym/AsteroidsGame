@@ -20,16 +20,13 @@ protected:
     std::string textureID;
     int wSprite, hSprite;
     Vector2D xy;
-    //Map* map;
-    Velocity V;
     Vector2D Vxy;
     Vector2D acceleration;
     Vector2D xyOffset;
     double mass;
     double radius;
 public:
-    GameObject(Vector2D coord, double velocity, double theta,
-               std::string textureID, TextureManager* textureManager);
+    GameObject(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager* textureManager);
     virtual ~GameObject();
     virtual void setXY(Vector2D newXY);
     virtual Vector2D getXY() const;

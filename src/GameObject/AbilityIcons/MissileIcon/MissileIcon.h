@@ -6,11 +6,10 @@
 
 #include "../../GameObject.h"
 
-class AutoShootObject: public GameObject {
+class MissileIcon: public GameObject {
 private:
     Map* map;
 public:
-    AutoShootObject(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
+    MissileIcon(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
     void update() override;
 };
-

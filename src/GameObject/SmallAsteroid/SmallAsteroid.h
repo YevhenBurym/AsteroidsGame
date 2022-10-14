@@ -13,7 +13,7 @@ private:
     AbilityAppearance abilityAppearance;
     LimitatorXY limitator;
 public:
-    SmallAsteroid (Vector2D coord, int velocity, int theta, std::string textureID, TextureManager* textureManager, Map* map);
+    SmallAsteroid (Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager* textureManager, Map* map);
     void createAbility(std::vector<GameObject*>& buffs);
     void update() override;
 };

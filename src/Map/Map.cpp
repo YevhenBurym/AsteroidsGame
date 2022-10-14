@@ -38,11 +38,6 @@ void Map::deAcc() {
     }
 }
 
-void Map::calcCoord() {
-    this->xyRelative.setX(this->xyRelative.getX() + this->Vxy.getX() * 2);
-    this->xyRelative.setY(this->xyRelative.getY() + this->Vxy.getY() * 2);
-}
-
 int Map::getHMap() const {
 	return this->hMap;
 }
@@ -64,6 +59,14 @@ void Map::setX(double x) {
 }
 void Map::setY(double y) {
 	this->xyRelative.setY(y);
+}
+
+void Map::setVxy(Vector2D newVxy) {
+    this->Vxy = newVxy;
+}
+
+Vector2D Map::getVxy() const {
+    return this->Vxy;
 }
 
 void Map::drawBackground() {
@@ -144,7 +147,7 @@ void Map::update() {
         this->deAcc();
     }
 
-    this->calcCoord();
+    this->xyRelative += this->Vxy * 2;
 }
 
 Vector2D Map::getMaxCoord() const {

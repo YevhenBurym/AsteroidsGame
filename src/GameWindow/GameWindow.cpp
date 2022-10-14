@@ -22,6 +22,7 @@ void GameWindow::loadSprites() {
     this->textureManager->load("assets\\shieldAbility.png", "shield_ability");
     this->textureManager->load("assets\\missileAbility.png", "missile_ability");
     this->textureManager->load("assets\\autoshootAbility.png", "autoshoot_ability");
+    this->textureManager->load("assets\\shield.png", "shield");
 }
 
 GameWindow::GameWindow(GameParameters *parameters) {

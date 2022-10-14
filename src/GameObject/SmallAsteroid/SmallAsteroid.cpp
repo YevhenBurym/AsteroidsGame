@@ -4,10 +4,10 @@
 
 #include "SmallAsteroid.h"
 
-SmallAsteroid::SmallAsteroid(Vector2D coord, int velocity, int theta, std::string textureID,
+SmallAsteroid::SmallAsteroid(Vector2D coord, Vector2D Vxy, std::string textureID,
                              TextureManager *textureManager, Map *map) : limitator(map),
                                                                          abilityAppearance(textureManager, map),
-                                                                         GameObject(coord, velocity, theta, textureID,
+                                                                         GameObject(coord, Vxy, textureID,
                                                                                     textureManager) {
     this->map = map;
     this->xyOffset = map->getXY();
