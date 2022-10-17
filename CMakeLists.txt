@@ -30,7 +30,8 @@ add_executable(Asteroids main.cpp
         src/GameObject/AbilityIcons/MissileIcon/MissileIcon.cpp
         src/GameObject/AbilityIcons/AutoShootIcon/AutoShootIcon.cpp
         src/RandomGenerator/RandomGenerator.cpp
-        src/AbilityAppearance/AbilityAppearance.cpp)
+        src/AbilityAppearance/AbilityAppearance.cpp
+        src/GameObject/Missile/Missile.cpp)
 
 
 include_directories(${CMAKE_SOURCE_DIR}/SDL2/include/SDl2)

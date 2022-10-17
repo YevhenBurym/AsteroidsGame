@@ -35,8 +35,13 @@ SpaceShip::SpaceShip(Vector2D coord, Vector2D Vxy, std::string textureID, Textur
     this->buttonLeftPress = false;
     this->buttonRightPress = false;
 
-    this->ability = SHIELD;
+    this->ability = MISSILE;
+
     this->isShieldON = false;
+    this->isAutoShootON = false;
+    this->isMissileON = false;
+    this->abilityDuration = 100;
+    this->target = nullptr;
     this->textureManager->getTextureSize("shield",this->widthShield, this->heightShield);
     this->widthShield *= 1.2;
     this->heightShield *= 1.2;
@@ -45,6 +50,7 @@ SpaceShip::SpaceShip(Vector2D coord, Vector2D Vxy, std::string textureID, Textur
     } else {
         this->shieldRadius = (this->widthShield - (this->widthShield % this->heightShield) / 2) / 2;
     }
+    this->autoShootRadius = this->radius * 5;
 }
 
 SpaceShip::~SpaceShip() {
@@ -76,7 +82,7 @@ void SpaceShip::makeShoot() {
     avatarCoord.setX(avatarCoord.getX() - this->map->getXY().getX());
     avatarCoord.setY(avatarCoord.getY() - this->map->getXY().getY());
     this->shipHeadAngle();
-    double vel = 3.5;
+    double vel = 5;
     if (this->numBullets < this->ammoLimit) {
         this->numBullets += 1;
         this->bullets->push_back(new Bullet(avatarCoord, { vel * cos(this->angleShip * M_PI/ 180),-vel * sin(this->angleShip * M_PI/ 180)}, "bullet", this->textureManager, this->map));
@@ -84,6 +90,68 @@ void SpaceShip::makeShoot() {
         delete *this->bullets->begin();
         this->bullets->erase(this->bullets->begin());
         this->bullets->push_back(new Bullet(avatarCoord, { vel * cos(this->angleShip * M_PI/ 180),-vel * sin(this->angleShip * M_PI/ 180)}, "bullet", this->textureManager, this->map));
+    }
+}
+
+void SpaceShip::makeShoot(GameObject* inTarget) {
+    if (!isAutoShootON && !isMissileON) return;
+    if (!inTarget) return;
+
+    this->endAbilityTimer = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
+    if (duration.count() >= this->abilityDuration) {
+        this->isAutoShootON = false;
+        this->isMissileON = false;
+    }
+
+    double velocity = 3;
+
+    double toDegrees = 180 / M_PI;
+    double toRad = 1 / toDegrees;
+    Vector2D avatarXY = this->xy - this->map->getXY();
+    Vector2D targetXY = target->getXY();
+    Vector2D dirVector = avatarXY - targetXY;
+    double angle;
+    if ((dirVector.getX() == 0) && (dirVector.getY() < 0)) {
+        angle = -M_PI / 2;
+    } else if ((dirVector.getX() == 0) && (dirVector.getY() > 0)) {
+        angle = M_PI / 2;
+    } else {
+        angle = M_PI - atan2(dirVector.getY(), dirVector.getX());
+    }
+    angle *= toDegrees;
+
+    if (isAutoShootON) {
+        std::chrono::duration<double> rechargeDuration = this->endRechargeTimer - this->startRechargeTimer;
+        if (rechargeDuration.count() < 0.5) return;
+        this->startRechargeTimer = std::chrono::high_resolution_clock::now();
+
+        if (this->numBullets < this->ammoLimit) {
+            this->numBullets += 1;
+            this->bullets->push_back(
+                    new Bullet(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "bullet",
+                               this->textureManager, this->map));
+        } else {
+            delete *this->bullets->begin();
+            this->bullets->erase(this->bullets->begin());
+            this->bullets->push_back(
+                    new Bullet(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "bullet",
+                               this->textureManager, this->map));
+        }
+    } else {
+        if (this->numBullets < this->ammoLimit) {
+            this->numBullets += 1;
+            this->bullets->push_back(
+                    new Missile(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "missile",
+                               this->textureManager, this->map, inTarget));
+        } else {
+            delete *this->bullets->begin();
+            this->bullets->erase(this->bullets->begin());
+            this->bullets->push_back(
+                    new Missile(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "missile",
+                               this->textureManager, this->map, inTarget));
+        }
+        this->target = nullptr;
     }
 }
 
@@ -120,30 +188,33 @@ void SpaceShip::update() {
 
     if (this->inputHandler->getMouseButtonState(LEFT) && !this->buttonLeftPress) {
         this->buttonLeftPress = true;
-        this->makeShoot();
+        if (this->isMissileON && this->target) {
+            this->makeShoot(this->target);
+        } else {
+            //this->makeShoot();
+        }
     } else if (!this->inputHandler->getMouseButtonState(LEFT)) {
         this->buttonLeftPress = false;
     }
 
-    if (this->inputHandler->getMouseButtonState(RIGHT) && !this->buttonLeftPress) {
+    if (this->inputHandler->getMouseButtonState(RIGHT) && !this->buttonRightPress) {
         this->buttonRightPress = true;
         this->useAbility();
     } else if (!this->inputHandler->getMouseButtonState(RIGHT)) {
         this->buttonRightPress = false;
     }
-
+    this->endRechargeTimer = std::chrono::high_resolution_clock::now();
 }
 
 void SpaceShip::render() {
 
     if (this->isShieldON) {
-        int shieldTime = 10;
         int x1 = this->xy.getX() - this->shieldRadius;
         int y1 = this->xy.getY() - this->shieldRadius;
         this->textureManager->draw("shield", x1, y1, this->widthShield, heightShield, 0);
-        this->endTimer = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> duration = this->endTimer - this->startTimer;
-        if (duration.count() >= shieldTime) {
+        this->endAbilityTimer = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
+        if (duration.count() >= this->abilityDuration) {
             this->isShieldON = false;
         }
     }
@@ -157,11 +228,16 @@ void SpaceShip::useAbility() {
     switch (this->ability) {
         case SHIELD:
             this->isShieldON = true;
-            this->startTimer = std::chrono::high_resolution_clock::now();
+            this->startAbilityTimer = std::chrono::high_resolution_clock::now();
             break;
         case MISSILE:
+            this->isMissileON = true;
+            this->startAbilityTimer = std::chrono::high_resolution_clock::now();
             break;
         case AUTOSHOOT:
+            this->isAutoShootON = true;
+            this->startAbilityTimer = std::chrono::high_resolution_clock::now();
+            this->startRechargeTimer = std::chrono::high_resolution_clock::now();
             break;
         case NONE:
             break;
@@ -178,4 +254,22 @@ double SpaceShip::getRadius() const {
 
 bool SpaceShip::getIsShieldOn() const {
     return this->isShieldON;
+}
+
+bool SpaceShip::getIsAutoShootOn() const {
+    return this->isAutoShootON;
+}
+
+bool SpaceShip::getIsMissileOn() const {
+    return this->isMissileON;
+}
+
+double SpaceShip::getAutoShootRadius() const {
+    return this->autoShootRadius;
+}
+
+void SpaceShip::setTarget(GameObject* definedTarget) {
+    if (this->isMissileON) {
+        this->target = definedTarget;
+    }
 }

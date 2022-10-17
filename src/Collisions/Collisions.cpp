@@ -96,8 +96,8 @@ void Collisions::calcVelocity(GameObject *unit1, GameObject *unit2, Vector2D vec
 
 
     if (dynamic_cast<SpaceShip*>(unit2)) {
-        Vxy2 *= -1;
         Vxy1 *= -1;
+        Vxy2 *= -1;
     }
     unit1->setVxy(Vxy1);
     unit2->setVxy(Vxy2);
@@ -108,12 +108,29 @@ void Collisions::update() {
         Vector2D vectorBetween = this->objectManager->getPlayer()->getXYrel() - (*asterIter)->getXYrel();
         double minDistance = this->objectManager->getPlayer()->getRadius() + (*asterIter)->getRadius();
 
-        if ( vectorBetween.len() < minDistance && vectorBetween.len() > minDistance / 2 ) {
+        if (this->objectManager->getPlayer()->getIsAutoShootOn()) {
+            double minDistanceAutoShoot = this->objectManager->getPlayer()->getAutoShootRadius() + (*asterIter)->getRadius();
+            if (vectorBetween.len() < minDistanceAutoShoot) {
+                this->objectManager->getPlayer()->makeShoot(*asterIter);
+            }
+        }
+
+
+        if ( vectorBetween.len() < minDistance ) {
             if (!this->objectManager->getPlayer()->getIsShieldOn()) {
                 throw YouDied();
             }
-            fixCoord((*asterIter),this->objectManager->getPlayer(), vectorBetween);
-            calcVelocity((*asterIter),this->objectManager->getPlayer(), vectorBetween);
+            fixCoord((*asterIter), this->objectManager->getPlayer(), vectorBetween);
+            calcVelocity((*asterIter), this->objectManager->getPlayer(), vectorBetween);
+        }
+
+
+        if (this->objectManager->getPlayer()->getIsMissileOn()) {
+            Vector2D vector = this->objectManager->getPlayer()->getReticle()->getXYrel() - (*asterIter)->getXYrel();
+            double minDistForDefinition = this->objectManager->getPlayer()->getReticle()->getRadius() + (*asterIter)->getRadius();
+            if (vector.len() < minDistForDefinition) {
+                this->objectManager->getPlayer()->setTarget((*asterIter));
+            }
         }
 
         for (auto asterIter2 = asterIter + 1; asterIter2 != this->objectManager->getAsteroids().end(); ++asterIter2) {

@@ -7,6 +7,7 @@
 #include <chrono>
 #include "../GameObject.h"
 #include "../Bullet/Bullet.h"
+#include "../Missile/Missile.h"
 #include "../Reticle/Reticle.h"
 
 enum Ability {
@@ -26,13 +27,15 @@ private:
     int ammoLimit;
     int numBullets;
     bool buttonLeftPress, buttonRightPress;
+
     Ability ability;
-
-    bool isShieldON;
+    int abilityDuration;
+    bool isShieldON,isAutoShootON,isMissileON;
     int widthShield, heightShield;
-    double shieldRadius;
-    std::chrono::high_resolution_clock::time_point startTimer, endTimer;
-
+    double shieldRadius,autoShootRadius;
+    GameObject* target;
+    std::chrono::high_resolution_clock::time_point startAbilityTimer, endAbilityTimer;
+    std::chrono::high_resolution_clock::time_point startRechargeTimer, endRechargeTimer;
     void useAbility();
     void limitateXY();
 public:
@@ -42,15 +45,20 @@ public:
 
     Vector2D getXYrel() const override;
     double getRadius() const override;
+    double getAutoShootRadius() const;
     void setVxy(Vector2D vxy) override;
     Vector2D getVxy() const override;
     Reticle* getReticle() const;
     void shipHeadAngle();
     void makeShoot();
+    void makeShoot(GameObject* inTarget);
     int getNumBullets() const;
     void setNumBullets(int amount);
     void setAbility(Ability newAbility);
+    void setTarget(GameObject* definedTarget);
     bool getIsShieldOn() const;
+    bool getIsAutoShootOn() const;
+    bool getIsMissileOn() const;
     void update() override;
     void render() override;
 };

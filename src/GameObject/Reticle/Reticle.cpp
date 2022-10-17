@@ -12,3 +12,7 @@ void Reticle::render() {
     int y = this->xy.getY() - this->radius;
     this->textureManager->draw(this->textureID, x, y, this->wSprite, this->hSprite);
 }
+
+Vector2D Reticle::getXYrel() const {
+    return this->xy;
+}
