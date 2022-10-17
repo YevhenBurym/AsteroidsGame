@@ -109,7 +109,7 @@ void SpaceShip::makeShoot(GameObject* inTarget) {
     double toDegrees = 180 / M_PI;
     double toRad = 1 / toDegrees;
     Vector2D avatarXY = this->xy - this->map->getXY();
-    Vector2D targetXY = target->getXY();
+    Vector2D targetXY = inTarget->getXY();
     Vector2D dirVector = avatarXY - targetXY;
     double angle;
     if ((dirVector.getX() == 0) && (dirVector.getY() < 0)) {
@@ -269,7 +269,5 @@ double SpaceShip::getAutoShootRadius() const {
 }
 
 void SpaceShip::setTarget(GameObject* definedTarget) {
-    if (this->isMissileON) {
-        this->target = definedTarget;
-    }
+    this->target = definedTarget;
 }

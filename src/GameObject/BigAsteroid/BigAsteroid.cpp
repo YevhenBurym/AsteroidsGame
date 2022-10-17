@@ -10,6 +10,12 @@ BigAsteroid::BigAsteroid(Vector2D coord, Vector2D Vxy, std::string textureID, Te
     this->map = map;
     this->xyOffset = map->getXY();
     this->mass = 2;
+    this->observers = new std::set<Missile*>();
+}
+
+BigAsteroid::~BigAsteroid() {
+    this->notExistNotify();
+    delete this->observers;
 }
 
 void BigAsteroid::divide(std::vector<GameObject *> &objects) {
@@ -35,3 +41,14 @@ void BigAsteroid::update() {
     GameObject::update();
     this->limitator.limitateXY(this->xy);
 }
+
+void BigAsteroid::attachObservers(Missile* obs) {
+    this->observers->insert(obs);
+}
+
+void BigAsteroid::notExistNotify() {
+    for (auto observer : *this->observers) {
+       observer->targetIsDestroyedAlready(this);
+    }
+}
+
