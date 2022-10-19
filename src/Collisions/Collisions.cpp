@@ -104,17 +104,21 @@ void Collisions::calcVelocity(GameObject *unit1, GameObject *unit2, Vector2D vec
 }
 
 void Collisions::update() {
-    for (auto asterIter = this->objectManager->getAsteroids().begin(); asterIter != this->objectManager->getAsteroids().end(); ++asterIter) {
+    this->asteroidsCollisions();
+    this->abilitiesCollisions();
+}
+
+void Collisions::asteroidsCollisions() {
+    for (auto asterIter = this->objectManager->getAsteroids().begin(); asterIter != this->objectManager->getAsteroids().end(); ) {
         Vector2D vectorBetween = this->objectManager->getPlayer()->getXYrel() - (*asterIter)->getXYrel();
         double minDistance = this->objectManager->getPlayer()->getRadius() + (*asterIter)->getRadius();
 
         if (this->objectManager->getPlayer()->getIsAutoShootOn()) {
             double minDistanceAutoShoot = this->objectManager->getPlayer()->getAutoShootRadius() + (*asterIter)->getRadius();
             if (vectorBetween.len() < minDistanceAutoShoot) {
-                this->objectManager->getPlayer()->makeShoot(*asterIter);
+                this->objectManager->getPlayer()->autoShoot(*asterIter);
             }
         }
-
 
         if ( vectorBetween.len() < minDistance ) {
             if (!this->objectManager->getPlayer()->getIsShieldOn()) {
@@ -123,7 +127,6 @@ void Collisions::update() {
             fixCoord((*asterIter), this->objectManager->getPlayer(), vectorBetween);
             calcVelocity((*asterIter), this->objectManager->getPlayer(), vectorBetween);
         }
-
 
         if (this->objectManager->getPlayer()->getIsMissileOn()) {
             Vector2D vector = this->objectManager->getPlayer()->getReticle()->getXYrel() - (*asterIter)->getXYrel();
@@ -143,55 +146,44 @@ void Collisions::update() {
             }
         }
 
-        for (auto bulletIter = this->objectManager->getBullets().begin(); bulletIter != this->objectManager->getBullets().end(); ++bulletIter) {
+        for (auto bulletIter = this->objectManager->getBullets().begin(); bulletIter != this->objectManager->getBullets().end(); ) {
             double distance = ((*bulletIter)->getXYrel() - (*asterIter)->getXYrel()).len();
             minDistance = (*bulletIter)->getRadius() + (*asterIter)->getRadius();
 
             if ( distance < minDistance ) {
+                int newAsteroidsAmount;
                 auto bigAster = dynamic_cast<BigAsteroid *>(*asterIter);
                 if (bigAster) {
-                    GameObject *temp1 = (*bulletIter);
-                    GameObject *temp2 = (*asterIter);
-                    auto iter1 = bulletIter - 1;
-                    auto iter2 = asterIter - 1;
-                    asterIter = this->objectManager->getAsteroids().erase(asterIter);
-                    bulletIter = this->objectManager->getBullets().erase(bulletIter);
-                    bulletIter = iter1;
-                    asterIter = iter2;
-
                     bigAster->createAbility(this->objectManager->getBuffs());
                     bigAster->divide(this->objectManager->getAsteroids());
-
-                    delete temp1;
-                    delete temp2;
-
-                    int newAsteroidsAmount = this->objectManager->getNumAsteroids() + 1;
-                    int newBulletsAmount = this->objectManager->getPlayer()->getNumBullets() - 1;
-                    this->objectManager->setNumAsteroids(newAsteroidsAmount);
-                    this->objectManager->getPlayer()->setNumBullets(newBulletsAmount);
-                    break;
+                    newAsteroidsAmount = this->objectManager->getNumAsteroids() + 1;
+                } else {
+                    auto smallAster = dynamic_cast<SmallAsteroid *>(*asterIter);
+                    smallAster->createAbility(this->objectManager->getBuffs());
+                    newAsteroidsAmount = this->objectManager->getNumAsteroids() - 1;
                 }
 
-                auto smallAster = dynamic_cast<SmallAsteroid *>(*asterIter);
-                smallAster->createAbility(this->objectManager->getBuffs());
-
-                GameObject *temp1 = (*bulletIter);
-                GameObject *temp2 = (*asterIter);
-                asterIter = this->objectManager->getAsteroids().erase(asterIter);
-                asterIter--;
-                bulletIter = this->objectManager->getBullets().erase(bulletIter);
-                bulletIter--;
-                delete temp1;
-                delete temp2;
-                int newAsteroidsAmount = this->objectManager->getNumAsteroids() - 1;
                 int newBulletsAmount = this->objectManager->getPlayer()->getNumBullets() - 1;
                 this->objectManager->setNumAsteroids(newAsteroidsAmount);
                 this->objectManager->getPlayer()->setNumBullets(newBulletsAmount);
+
+                delete *asterIter;
+                delete *bulletIter;
+                bulletIter = this->objectManager->getBullets().erase(bulletIter);
+                asterIter = this->objectManager->getAsteroids().erase(asterIter);
                 break;
             }
+            ++bulletIter;
+        }
+
+        if (asterIter!=this->objectManager->getAsteroids().end()) {
+            ++asterIter;
         }
     }
-    for (auto abilityIter = this->objectManager->getBuffs().begin(); abilityIter != this->objectManager->getBuffs().end(); ++abilityIter) {
+}
+
+void Collisions::abilitiesCollisions() {
+    for (auto abilityIter = this->objectManager->getBuffs().begin(); abilityIter < this->objectManager->getBuffs().end(); ++abilityIter) {
         double distance = (this->objectManager->getPlayer()->getXYrel() - (*abilityIter)->getXYrel()).len();
         double minDistance = this->objectManager->getPlayer()->getRadius() + (*abilityIter)->getRadius();
         if ( distance < minDistance ) {
@@ -204,10 +196,8 @@ void Collisions::update() {
                 this->objectManager->getPlayer()->setAbility(AUTOSHOOT);
             }
 
-            GameObject *temp = *abilityIter;
-            this->objectManager->getBuffs().erase(abilityIter);
-            abilityIter--;
-            delete temp;
+            delete *abilityIter;
+            abilityIter = this->objectManager->getBuffs().erase(abilityIter);
         }
     }
 }

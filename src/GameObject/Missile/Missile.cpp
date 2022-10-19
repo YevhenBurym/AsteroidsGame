@@ -6,8 +6,9 @@
 #include "../SmallAsteroid/SmallAsteroid.h"
 #include "../BigAsteroid/BigAsteroid.h"
 
-Missile::Missile(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager, Map *map, GameObject* target)
+Missile::Missile(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager, Map *map, GameObject* target, SpaceShip* player)
         : limitator(map), GameObject(coord, Vxy, textureID, textureManager) {
+    this->player = player;
     this->target = target;
     if (dynamic_cast<SmallAsteroid*>(target)) {
         dynamic_cast<SmallAsteroid*>(this->target)->attachObservers(this);
@@ -46,6 +47,7 @@ void Missile::guidance() {
     this->Vxy = {this->velocity * cos(angle * toRad), -this->velocity * sin(angle * toRad)};
 }
 
-void Missile::targetIsDestroyedAlready(GameObject *item) {
+void Missile::targetIsDestroyedAlready() {
   this->lostTarget = true;
-};
+  this->player->setTarget(nullptr);
+}

@@ -48,7 +48,7 @@ void BigAsteroid::attachObservers(Missile* obs) {
 
 void BigAsteroid::notExistNotify() {
     for (auto observer : *this->observers) {
-       observer->targetIsDestroyedAlready(this);
+       observer->targetIsDestroyedAlready();
     }
 }
 

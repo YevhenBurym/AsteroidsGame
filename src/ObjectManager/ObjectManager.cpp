@@ -8,22 +8,26 @@ ObjectManager::ObjectManager(GameWindow *window) {
     this->asteroidsLimit = window->getParameters()->getAsteroidsLimit();
     this->createPlayer();
     this->randGenerator = RandGenerator();
+    this->asteroids.reserve(this->asteroidsLimit * 3);
 }
 
 ObjectManager::~ObjectManager() {
     delete this->map;
     delete this->player;
 
-    for (auto it = this->asteroids.begin(); it != this->asteroids.end();) {
-        delete (*it++);
+    for (auto & asteroid : this->asteroids) {
+        delete asteroid;
     }
     this->asteroids.clear();
-    this->asteroids.shrink_to_fit();
-    for (auto it = this->bullets.begin(); it != this->bullets.end();) {
-        delete (*it++);
+    for (auto & bullet : this->bullets) {
+        delete bullet;
     }
     this->bullets.clear();
-    this->bullets.shrink_to_fit();
+
+    for (auto & buff : this->buffs) {
+        delete buff;
+    }
+    this->buffs.clear();
 }
 
 void ObjectManager::createPlayer() {
@@ -42,7 +46,7 @@ void ObjectManager::createAsteroids() {
     Vector2D asteroidCoord = this->randomizeAppearCoord();
     Vector2D asteroidVelocity = this->randomizeVelocity();
 
-    if (this->randGenerator.getRandNumber() > 0.8) {
+    if (this->randGenerator.getRandNumber() > 0.9/*0.8*/) {
         auto bigAsteroid = new BigAsteroid(asteroidCoord, asteroidVelocity,
                                            "big_asteroid", this->window->getTextureManager(), this->map);
         this->asteroids.push_back(bigAsteroid);

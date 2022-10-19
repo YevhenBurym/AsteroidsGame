@@ -27,6 +27,7 @@ private:
     int ammoLimit;
     int numBullets;
     bool buttonLeftPress, buttonRightPress;
+    int bulletsVelocity;
 
     Ability ability;
     int abilityDuration;
@@ -49,9 +50,9 @@ public:
     void setVxy(Vector2D vxy) override;
     Vector2D getVxy() const override;
     Reticle* getReticle() const;
-    void shipHeadAngle();
+    double angleOnTarget(GameObject* inTarget);
     void makeShoot();
-    void makeShoot(GameObject* inTarget);
+    void autoShoot(GameObject* inTarget);
     int getNumBullets() const;
     void setNumBullets(int amount);
     void setAbility(Ability newAbility);

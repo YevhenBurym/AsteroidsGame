@@ -36,6 +36,6 @@ void SmallAsteroid::attachObservers(Missile* obs) {
 
 void SmallAsteroid::notExistNotify() {
     for (auto observer : *this->observers) {
-        observer->targetIsDestroyedAlready(this);
+        observer->targetIsDestroyedAlready();
     }
 }

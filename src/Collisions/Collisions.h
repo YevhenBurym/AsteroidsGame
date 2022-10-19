@@ -18,6 +18,8 @@ private:
     double findVecAngleInRad(Vector2D vector);
     void fixCoord(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween);
     void calcVelocity(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween);
+    void asteroidsCollisions();
+    void abilitiesCollisions();
 public:
     explicit Collisions(ObjectManager* objectManager);
     void update();

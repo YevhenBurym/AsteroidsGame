@@ -24,6 +24,7 @@ void SpaceShip::limitateXY() {
 SpaceShip::SpaceShip(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager,
                      int ammoLimit, Map *map, InputHandler *inputHandler, std::vector<GameObject *> *bullets)
         : GameObject(coord, Vxy, textureID, textureManager) {
+    this->bulletsVelocity = 5;
     this->mass = 3;
     this->map = map;
     this->reticle = new Reticle("reticle", this->textureManager);
@@ -35,12 +36,12 @@ SpaceShip::SpaceShip(Vector2D coord, Vector2D Vxy, std::string textureID, Textur
     this->buttonLeftPress = false;
     this->buttonRightPress = false;
 
-    this->ability = MISSILE;
+    this->ability = NONE;
 
     this->isShieldON = false;
     this->isAutoShootON = false;
     this->isMissileON = false;
-    this->abilityDuration = 100;
+    this->abilityDuration = 10;
     this->target = nullptr;
     this->textureManager->getTextureSize("shield",this->widthShield, this->heightShield);
     this->widthShield *= 1.2;
@@ -61,57 +62,18 @@ Vector2D SpaceShip::getXYrel() const {
     return this->xy;
 }
 
-void SpaceShip::shipHeadAngle() {
+double SpaceShip::angleOnTarget(GameObject* inTarget) {
     double toDegrees = 180 / M_PI;
-    Vector2D avatarXY = this->xy - this->map->getXY();
-    Vector2D reticleXY = this->reticle->getXY() - this->map->getXY();
-    Vector2D dirVector = avatarXY - reticleXY;
-
-    if ((dirVector.getX() == 0) && (dirVector.getY() < 0)) {
-        this->angleShip = -M_PI / 2;
-    } else if ((dirVector.getX() == 0) && (dirVector.getY() > 0)) {
-        this->angleShip = M_PI / 2;
-    } else {
-        this->angleShip = M_PI - atan2(dirVector.getY(), dirVector.getX());
-    }
-    this->angleShip *= toDegrees;
-}
-
-void SpaceShip::makeShoot() {
-    Vector2D avatarCoord{this->xy.getX(), this->xy.getY()};
-    avatarCoord.setX(avatarCoord.getX() - this->map->getXY().getX());
-    avatarCoord.setY(avatarCoord.getY() - this->map->getXY().getY());
-    this->shipHeadAngle();
-    double vel = 5;
-    if (this->numBullets < this->ammoLimit) {
-        this->numBullets += 1;
-        this->bullets->push_back(new Bullet(avatarCoord, { vel * cos(this->angleShip * M_PI/ 180),-vel * sin(this->angleShip * M_PI/ 180)}, "bullet", this->textureManager, this->map));
-    } else {
-        delete *this->bullets->begin();
-        this->bullets->erase(this->bullets->begin());
-        this->bullets->push_back(new Bullet(avatarCoord, { vel * cos(this->angleShip * M_PI/ 180),-vel * sin(this->angleShip * M_PI/ 180)}, "bullet", this->textureManager, this->map));
-    }
-}
-
-void SpaceShip::makeShoot(GameObject* inTarget) {
-    if (!isAutoShootON && !isMissileON) return;
-    if (!inTarget) return;
-
-    this->endAbilityTimer = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
-    if (duration.count() >= this->abilityDuration) {
-        this->isAutoShootON = false;
-        this->isMissileON = false;
-    }
-
-    double velocity = 3;
-
-    double toDegrees = 180 / M_PI;
-    double toRad = 1 / toDegrees;
-    Vector2D avatarXY = this->xy - this->map->getXY();
-    Vector2D targetXY = inTarget->getXY();
-    Vector2D dirVector = avatarXY - targetXY;
     double angle;
+    Vector2D avatarXY = this->xy - this->map->getXY();
+    Vector2D targetXY;
+    if (dynamic_cast<Reticle*>(inTarget)) {
+        targetXY = this->reticle->getXY() - this->map->getXY();
+    } else {
+        targetXY = inTarget->getXY();
+    }
+    Vector2D dirVector = avatarXY - targetXY;
+
     if ((dirVector.getX() == 0) && (dirVector.getY() < 0)) {
         angle = -M_PI / 2;
     } else if ((dirVector.getX() == 0) && (dirVector.getY() > 0)) {
@@ -121,38 +83,79 @@ void SpaceShip::makeShoot(GameObject* inTarget) {
     }
     angle *= toDegrees;
 
-    if (isAutoShootON) {
-        std::chrono::duration<double> rechargeDuration = this->endRechargeTimer - this->startRechargeTimer;
-        if (rechargeDuration.count() < 0.5) return;
-        this->startRechargeTimer = std::chrono::high_resolution_clock::now();
+    return angle;
+}
 
+void SpaceShip::makeShoot() {
+    Vector2D avatarXY = this->xy - this->map->getXY();
+
+    if (!this->target || !this->isMissileON) {
         if (this->numBullets < this->ammoLimit) {
             this->numBullets += 1;
-            this->bullets->push_back(
-                    new Bullet(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "bullet",
-                               this->textureManager, this->map));
+            this->bullets->push_back(new Bullet(avatarXY, { this->bulletsVelocity * cos(this->angleShip * M_PI/ 180),-this->bulletsVelocity * sin(this->angleShip * M_PI/ 180)}, "bullet", this->textureManager, this->map));
         } else {
             delete *this->bullets->begin();
             this->bullets->erase(this->bullets->begin());
-            this->bullets->push_back(
-                    new Bullet(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "bullet",
-                               this->textureManager, this->map));
+            this->bullets->push_back(new Bullet(avatarXY, { this->bulletsVelocity * cos(this->angleShip * M_PI/ 180),-this->bulletsVelocity * sin(this->angleShip * M_PI/ 180)}, "bullet", this->textureManager, this->map));
         }
-    } else {
-        if (this->numBullets < this->ammoLimit) {
-            this->numBullets += 1;
-            this->bullets->push_back(
-                    new Missile(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "missile",
-                               this->textureManager, this->map, inTarget));
-        } else {
-            delete *this->bullets->begin();
-            this->bullets->erase(this->bullets->begin());
-            this->bullets->push_back(
-                    new Missile(avatarXY, {velocity * cos(angle * toRad), -velocity * sin(angle * toRad)}, "missile",
-                               this->textureManager, this->map, inTarget));
-        }
-        this->target = nullptr;
+        return;
     }
+
+    double toRad = M_PI / 180;
+    double angle = this->angleOnTarget(this->target);;
+
+    this->endAbilityTimer = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
+    if (duration.count() >= this->abilityDuration) {
+        this->isMissileON = false;
+    }
+
+    if (this->numBullets < this->ammoLimit) {
+        this->numBullets += 1;
+        this->bullets->push_back(
+                new Missile(avatarXY, {this->bulletsVelocity * cos(angle * toRad),
+                                       -this->bulletsVelocity * sin(angle * toRad)}, "missile",
+                            this->textureManager, this->map, this->target, this));
+    } else {
+        delete *this->bullets->begin();
+        this->bullets->erase(this->bullets->begin());
+        this->bullets->push_back(
+                new Missile(avatarXY, {this->bulletsVelocity * cos(angle * toRad),
+                                       -this->bulletsVelocity * sin(angle * toRad)}, "missile",
+                            this->textureManager, this->map, this->target, this));
+    }
+}
+
+void SpaceShip::autoShoot(GameObject* inTarget) {
+    if (!isAutoShootON) return;
+    this->endAbilityTimer = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
+    if (duration.count() >= this->abilityDuration) {
+        this->isAutoShootON = false;
+        return;
+    }
+
+    double toRad = M_PI / 180;
+    Vector2D avatarXY = this->xy - this->map->getXY();
+    double angle = this->angleOnTarget(inTarget);;
+
+    std::chrono::duration<double> rechargeDuration = this->endRechargeTimer - this->startRechargeTimer;
+    if (rechargeDuration.count() < 0.5) return;
+    this->startRechargeTimer = std::chrono::high_resolution_clock::now();
+
+    if (this->numBullets < this->ammoLimit) {
+        this->numBullets += 1;
+        this->bullets->push_back(
+                new Bullet(avatarXY, {this->bulletsVelocity * cos(angle * toRad), -this->bulletsVelocity * sin(angle * toRad)}, "bullet",
+                           this->textureManager, this->map));
+    } else {
+        delete *this->bullets->begin();
+        this->bullets->erase(this->bullets->begin());
+        this->bullets->push_back(
+                new Bullet(avatarXY, {this->bulletsVelocity * cos(angle * toRad), -this->bulletsVelocity * sin(angle * toRad)}, "bullet",
+                           this->textureManager, this->map));
+    }
+
 }
 
 Reticle *SpaceShip::getReticle() const {
@@ -184,15 +187,11 @@ void SpaceShip::update() {
     limitateXY();
 
     this->reticle->setXY(this->inputHandler->getMousePosition());
-    this->shipHeadAngle();
+    this->angleShip = this->angleOnTarget(this->reticle);
 
     if (this->inputHandler->getMouseButtonState(LEFT) && !this->buttonLeftPress) {
         this->buttonLeftPress = true;
-        if (this->isMissileON && this->target) {
-            this->makeShoot(this->target);
-        } else {
-            //this->makeShoot();
-        }
+        this->makeShoot();
     } else if (!this->inputHandler->getMouseButtonState(LEFT)) {
         this->buttonLeftPress = false;
     }
@@ -269,5 +268,9 @@ double SpaceShip::getAutoShootRadius() const {
 }
 
 void SpaceShip::setTarget(GameObject* definedTarget) {
-    this->target = definedTarget;
+    if (!definedTarget) {
+        this->target = nullptr;
+    } else {
+        this->target = definedTarget;
+    }
 }
