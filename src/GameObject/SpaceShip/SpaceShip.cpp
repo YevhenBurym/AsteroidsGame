@@ -210,7 +210,7 @@ void SpaceShip::render() {
     if (this->isShieldON) {
         int x1 = this->xy.getX() - this->shieldRadius;
         int y1 = this->xy.getY() - this->shieldRadius;
-        this->textureManager->draw("shield", x1, y1, this->widthShield, heightShield, 0);
+        this->textureManager->draw("shield", x1, y1, this->widthShield, this->heightShield, 0);
         this->endAbilityTimer = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
         if (duration.count() >= this->abilityDuration) {

@@ -109,75 +109,24 @@ void Collisions::update() {
 }
 
 void Collisions::asteroidsCollisions() {
-    for (auto asterIter = this->objectManager->getAsteroids().begin(); asterIter != this->objectManager->getAsteroids().end(); ) {
-        Vector2D vectorBetween = this->objectManager->getPlayer()->getXYrel() - (*asterIter)->getXYrel();
-        double minDistance = this->objectManager->getPlayer()->getRadius() + (*asterIter)->getRadius();
+    for (auto firstAsteroidIterator = this->objectManager->getAsteroids().begin(); firstAsteroidIterator != this->objectManager->getAsteroids().end(); ) {
+        this->asteroidWithPlayerCollisions(*firstAsteroidIterator);
+        this->asteroidWithReticleCollisions(*firstAsteroidIterator);
 
-        if (this->objectManager->getPlayer()->getIsAutoShootOn()) {
-            double minDistanceAutoShoot = this->objectManager->getPlayer()->getAutoShootRadius() + (*asterIter)->getRadius();
-            if (vectorBetween.len() < minDistanceAutoShoot) {
-                this->objectManager->getPlayer()->autoShoot(*asterIter);
-            }
-        }
-
-        if ( vectorBetween.len() < minDistance ) {
-            if (!this->objectManager->getPlayer()->getIsShieldOn()) {
-                throw YouDied();
-            }
-            fixCoord((*asterIter), this->objectManager->getPlayer(), vectorBetween);
-            calcVelocity((*asterIter), this->objectManager->getPlayer(), vectorBetween);
-        }
-
-        if (this->objectManager->getPlayer()->getIsMissileOn()) {
-            Vector2D vector = this->objectManager->getPlayer()->getReticle()->getXYrel() - (*asterIter)->getXYrel();
-            double minDistForDefinition = this->objectManager->getPlayer()->getReticle()->getRadius() + (*asterIter)->getRadius();
-            if (vector.len() < minDistForDefinition) {
-                this->objectManager->getPlayer()->setTarget((*asterIter));
-            }
-        }
-
-        for (auto asterIter2 = asterIter + 1; asterIter2 != this->objectManager->getAsteroids().end(); ++asterIter2) {
-            vectorBetween = (*asterIter)->getXYrel() - (*asterIter2)->getXYrel();
-            minDistance = (*asterIter)->getRadius() + (*asterIter2)->getRadius();
+        for (auto secondAsteroidIterator = firstAsteroidIterator + 1; secondAsteroidIterator != this->objectManager->getAsteroids().end(); ++secondAsteroidIterator) {
+            Vector2D vectorBetween = (*firstAsteroidIterator)->getXYrel() - (*secondAsteroidIterator)->getXYrel();
+            double minDistance = (*firstAsteroidIterator)->getRadius() + (*secondAsteroidIterator)->getRadius();
 
             if ( vectorBetween.len() < minDistance ) {
-                fixCoord((*asterIter), (*asterIter2), vectorBetween);
-                calcVelocity((*asterIter), (*asterIter2), vectorBetween);
+                fixCoord((*firstAsteroidIterator), (*secondAsteroidIterator), vectorBetween);
+                calcVelocity((*firstAsteroidIterator), (*secondAsteroidIterator), vectorBetween);
             }
         }
 
-        for (auto bulletIter = this->objectManager->getBullets().begin(); bulletIter != this->objectManager->getBullets().end(); ) {
-            double distance = ((*bulletIter)->getXYrel() - (*asterIter)->getXYrel()).len();
-            minDistance = (*bulletIter)->getRadius() + (*asterIter)->getRadius();
+        this->asteroidWithBulletsCollisions(firstAsteroidIterator);
 
-            if ( distance < minDistance ) {
-                int newAsteroidsAmount;
-                auto bigAster = dynamic_cast<BigAsteroid *>(*asterIter);
-                if (bigAster) {
-                    bigAster->createAbility(this->objectManager->getBuffs());
-                    bigAster->divide(this->objectManager->getAsteroids());
-                    newAsteroidsAmount = this->objectManager->getNumAsteroids() + 1;
-                } else {
-                    auto smallAster = dynamic_cast<SmallAsteroid *>(*asterIter);
-                    smallAster->createAbility(this->objectManager->getBuffs());
-                    newAsteroidsAmount = this->objectManager->getNumAsteroids() - 1;
-                }
-
-                int newBulletsAmount = this->objectManager->getPlayer()->getNumBullets() - 1;
-                this->objectManager->setNumAsteroids(newAsteroidsAmount);
-                this->objectManager->getPlayer()->setNumBullets(newBulletsAmount);
-
-                delete *asterIter;
-                delete *bulletIter;
-                bulletIter = this->objectManager->getBullets().erase(bulletIter);
-                asterIter = this->objectManager->getAsteroids().erase(asterIter);
-                break;
-            }
-            ++bulletIter;
-        }
-
-        if (asterIter!=this->objectManager->getAsteroids().end()) {
-            ++asterIter;
+        if (firstAsteroidIterator != this->objectManager->getAsteroids().end()) {
+            ++firstAsteroidIterator;
         }
     }
 }
@@ -191,5 +140,67 @@ void Collisions::abilitiesCollisions() {
             delete *abilityIter;
             abilityIter = this->objectManager->getBuffs().erase(abilityIter);
         }
+    }
+}
+
+void Collisions::asteroidWithPlayerCollisions(Asteroid* asteroid) {
+    Vector2D vectorBetween = this->objectManager->getPlayer()->getXYrel() - asteroid->getXYrel();
+    double minDistance = this->objectManager->getPlayer()->getRadius() + asteroid->getRadius();
+
+    if (this->objectManager->getPlayer()->getIsAutoShootOn()) {
+        double minDistanceAutoShoot = this->objectManager->getPlayer()->getAutoShootRadius() + asteroid->getRadius();
+        if (vectorBetween.len() < minDistanceAutoShoot) {
+            this->objectManager->getPlayer()->autoShoot(asteroid);
+        }
+    }
+
+    if ( vectorBetween.len() < minDistance ) {
+        if (!this->objectManager->getPlayer()->getIsShieldOn()) {
+            throw YouDied();
+        }
+        fixCoord(asteroid, this->objectManager->getPlayer(), vectorBetween);
+        calcVelocity(asteroid, this->objectManager->getPlayer(), vectorBetween);
+    }
+}
+
+void Collisions::asteroidWithReticleCollisions(Asteroid *asteroid) {
+    if (this->objectManager->getPlayer()->getIsMissileOn()) {
+        Vector2D vector = this->objectManager->getPlayer()->getReticle()->getXYrel() - asteroid->getXYrel();
+        double minDistForDefinition = this->objectManager->getPlayer()->getReticle()->getRadius() + asteroid->getRadius();
+
+        if (vector.len() < minDistForDefinition) {
+            this->objectManager->getPlayer()->setTarget(asteroid);
+        }
+    }
+}
+
+void Collisions::asteroidWithBulletsCollisions(std::vector<Asteroid*>::iterator& asteroidIterator) {
+    for (auto bulletIter = this->objectManager->getBullets().begin(); bulletIter != this->objectManager->getBullets().end(); ) {
+        double distance = ((*bulletIter)->getXYrel() - (*asteroidIterator)->getXYrel()).len();
+        double minDistance = (*bulletIter)->getRadius() + (*asteroidIterator)->getRadius();
+
+        if ( distance < minDistance ) {
+            int newAsteroidsAmount;
+            auto bigAster = dynamic_cast<BigAsteroid *>(*asteroidIterator);
+            if (bigAster) {
+                bigAster->divide(this->objectManager->getAsteroids());
+                newAsteroidsAmount = this->objectManager->getNumAsteroids() + 1;
+            } else {
+                newAsteroidsAmount = this->objectManager->getNumAsteroids() - 1;
+            }
+
+            (*asteroidIterator)->createAbility(this->objectManager->getBuffs());
+
+            int newBulletsAmount = this->objectManager->getPlayer()->getNumBullets() - 1;
+            this->objectManager->setNumAsteroids(newAsteroidsAmount);
+            this->objectManager->getPlayer()->setNumBullets(newBulletsAmount);
+
+            delete *asteroidIterator;
+            delete *bulletIter;
+            bulletIter = this->objectManager->getBullets().erase(bulletIter);
+            asteroidIterator = this->objectManager->getAsteroids().erase(asteroidIterator);
+            break;
+        }
+        ++bulletIter;
     }
 }

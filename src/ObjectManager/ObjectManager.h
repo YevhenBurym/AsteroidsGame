@@ -15,7 +15,7 @@ private:
     int ammoLimit;
     int numAsteroids;
     SpaceShip* player;
-    std::vector<GameObject*> asteroids;
+    std::vector<Asteroid*> asteroids;
     std::vector<GameObject*> bullets;
     std::vector<AbilityIcon*> buffs;
     RandGenerator randGenerator;
@@ -30,7 +30,7 @@ public:
     int getNumAsteroids() const;
     int getAmmoLimit() const;
     double getAbilityProbability() const;
-    std::vector<GameObject*>& getAsteroids();
+    std::vector<Asteroid*>& getAsteroids();
     std::vector<GameObject*>& getBullets();
     std::vector<AbilityIcon*>& getBuffs();
     SpaceShip* getPlayer();

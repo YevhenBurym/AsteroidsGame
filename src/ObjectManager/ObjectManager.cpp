@@ -101,7 +101,7 @@ Vector2D ObjectManager::randomizeVelocity() {
     return randomV;
 }
 
-std::vector<GameObject *> &ObjectManager::getAsteroids() {
+std::vector<Asteroid *> &ObjectManager::getAsteroids() {
     return this->asteroids;
 }
 std::vector<GameObject *> &ObjectManager::getBullets() {
@@ -174,11 +174,4 @@ void ObjectManager::update() {
         }
 
     }
-//    for (auto & buf : this->buffs) {
-//        if (!buf->getIsExist()) {
-//            delete buf;
-//
-//        }
-//        buf->update();
-//    }
 }

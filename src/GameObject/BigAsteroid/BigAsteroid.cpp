@@ -5,20 +5,11 @@
 #include "BigAsteroid.h"
 
 BigAsteroid::BigAsteroid(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager,
-                         Map *map) : limitator(map), abilityAppearance(textureManager, map),
-                                     GameObject(coord, Vxy, textureID, textureManager) {
-    this->map = map;
-    this->xyOffset = map->getXY();
+                         Map *map) : Asteroid(coord, Vxy, textureID, textureManager, map) {
     this->mass = 2;
-    this->observers = new std::set<Missile*>();
 }
 
-BigAsteroid::~BigAsteroid() {
-    this->notExistNotify();
-    delete this->observers;
-}
-
-void BigAsteroid::divide(std::vector<GameObject *> &objects) {
+void BigAsteroid::divide(std::vector<Asteroid *> &objects) {
     Vector2D xy1;
     Vector2D xy2;
     xy1.setX(this->xy.getX() + this->radius);
@@ -31,24 +22,3 @@ void BigAsteroid::divide(std::vector<GameObject *> &objects) {
     objects.push_back(smallAsteroid1);
     objects.push_back(smallAsteroid2);
 }
-
-void BigAsteroid::createAbility(std::vector<AbilityIcon *> &buffs) {
-    this->abilityAppearance.createAbility(this->xy, buffs);
-}
-
-void BigAsteroid::update() {
-    this->xyOffset = this->map->getXY();
-    GameObject::update();
-    this->limitator.limitateXY(this->xy);
-}
-
-void BigAsteroid::attachObservers(Missile* obs) {
-    this->observers->insert(obs);
-}
-
-void BigAsteroid::notExistNotify() {
-    for (auto observer : *this->observers) {
-       observer->targetIsDestroyedAlready();
-    }
-}
-

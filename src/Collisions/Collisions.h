@@ -17,6 +17,9 @@ private:
     void calcVelocity(GameObject* unit1, GameObject* unit2, Vector2D vectorBetween);
     void asteroidsCollisions();
     void abilitiesCollisions();
+    void asteroidWithPlayerCollisions(Asteroid* asteroid);
+    void asteroidWithReticleCollisions(Asteroid* asteroid);
+    void asteroidWithBulletsCollisions(std::vector<Asteroid*>::iterator& asteroidIterator);
 public:
     explicit Collisions(ObjectManager* objectManager);
     void update();
