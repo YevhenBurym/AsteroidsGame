@@ -3,18 +3,13 @@
 //
 
 #include "Missile.h"
-#include "../SmallAsteroid/SmallAsteroid.h"
-#include "../BigAsteroid/BigAsteroid.h"
 
-Missile::Missile(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager, Map *map, GameObject* target, SpaceShip* player)
+Missile::Missile(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager *textureManager, Map *map, Asteroid* target, SpaceShip* player)
         : limitator(map), GameObject(coord, Vxy, textureID, textureManager) {
     this->player = player;
     this->target = target;
-    if (dynamic_cast<SmallAsteroid*>(target)) {
-        dynamic_cast<SmallAsteroid*>(this->target)->attachObservers(this);
-    }
-    if (dynamic_cast<BigAsteroid*>(target)) {
-        dynamic_cast<BigAsteroid*>(this->target)->attachObservers(this);
+    if (dynamic_cast<Asteroid*>(target)) {
+        dynamic_cast<Asteroid*>(this->target)->attachObservers(this);
     }
     this->map = map;
     this->xyOffset = map->getXY();

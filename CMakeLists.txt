@@ -11,7 +11,7 @@ add_executable(Asteroids main.cpp
         src/InputHandler/InputHandler.cpp
         src/Collisions/Collisions.cpp
         src/GameObject/SpaceShip/SpaceShip.cpp
-        src/GameObject/SmallAsteroid/SmallAsteroid.cpp
+        src/GameObject/Asteroid/SmallAsteroid/SmallAsteroid.cpp
         src/Vector2D/Vector2D.cpp
         src/TextureManager/TextureManager.cpp
         src/GameObject/GameObject.cpp
@@ -25,7 +25,7 @@ add_executable(Asteroids main.cpp
         src/GameParameters/GameParameters.cpp
         src/GameObject/Bullet/Bullet.cpp
         src/GameObject/Reticle/Reticle.cpp
-        src/GameObject/BigAsteroid/BigAsteroid.cpp
+        src/GameObject/Asteroid/BigAsteroid/BigAsteroid.cpp
         src/GameObject/AbilityIcon/ShieldIcon/ShieldIcon.cpp
         src/GameObject/AbilityIcon/MissileIcon/MissileIcon.cpp
         src/GameObject/AbilityIcon/AutoShootIcon/AutoShootIcon.cpp

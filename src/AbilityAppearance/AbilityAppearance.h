@@ -4,9 +4,10 @@
 
 #pragma once
 
-#include "../GameObject/GameObject.h"
 #include "../RandomGenerator/RandomGenerator.h"
-#include "../GameObject/AbilityIcon/AbilityIcon.h"
+#include "../GameObject/AbilityIcon/MissileIcon/MissileIcon.h"
+#include "../GameObject/AbilityIcon/AutoShootIcon/AutoShootIcon.h"
+#include "../GameObject/AbilityIcon/ShieldIcon/ShieldIcon.h"
 
 class AbilityAppearance {
 private:

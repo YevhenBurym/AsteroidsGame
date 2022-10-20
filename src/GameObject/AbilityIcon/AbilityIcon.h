@@ -6,7 +6,13 @@
 
 #include <chrono>
 #include "../GameObject.h"
-#include "../SpaceShip/SpaceShip.h"
+
+enum Ability {
+    SHIELD,
+    MISSILE,
+    AUTOSHOOT,
+    NONE
+};
 
 class AbilityIcon: public GameObject {
 protected:

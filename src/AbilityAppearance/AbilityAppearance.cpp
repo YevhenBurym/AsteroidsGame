@@ -3,9 +3,6 @@
 //
 
 #include "AbilityAppearance.h"
-#include "../GameObject/AbilityIcon/ShieldIcon/ShieldIcon.h"
-#include "../GameObject/AbilityIcon/MissileIcon/MissileIcon.h"
-#include "../GameObject/AbilityIcon/AutoShootIcon/AutoShootIcon.h"
 
 AbilityAppearance::AbilityAppearance(TextureManager* textureManager, Map* map) {
     this->generator = RandGenerator();

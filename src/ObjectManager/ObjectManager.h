@@ -3,8 +3,8 @@
 #include <vector>
 #include "../GameWindow/GameWindow.h"
 #include "../GameObject/SpaceShip/SpaceShip.h"
-#include "../GameObject/SmallAsteroid/SmallAsteroid.h"
-#include "../GameObject/BigAsteroid/BigAsteroid.h"
+#include "../GameObject/Asteroid/SmallAsteroid/SmallAsteroid.h"
+#include "../GameObject/Asteroid/BigAsteroid/BigAsteroid.h"
 #include "../GameObject/AbilityIcon/AbilityIcon.h"
 
 class ObjectManager {

@@ -9,6 +9,7 @@
 #include "../Missile/Missile.h"
 #include "../../AbilityAppearance/AbilityAppearance.h"
 
+class Missile;
 class Asteroid: public GameObject {
 protected:
     std::set<Missile*>* observers;

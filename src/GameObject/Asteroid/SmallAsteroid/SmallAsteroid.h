@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../Asteroid/Asteroid.h"
+#include "../Asteroid.h"
 
 class SmallAsteroid : public Asteroid {
 public:

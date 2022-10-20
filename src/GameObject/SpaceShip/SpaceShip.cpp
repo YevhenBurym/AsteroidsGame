@@ -43,6 +43,8 @@ SpaceShip::SpaceShip(Vector2D coord, Vector2D Vxy, std::string textureID, Textur
     this->isMissileON = false;
     this->abilityDuration = 10;
     this->target = nullptr;
+    this->widthShield = 0;
+    this->heightShield = 0;
     this->textureManager->getTextureSize("shield",this->widthShield, this->heightShield);
     this->widthShield *= 1.2;
     this->heightShield *= 1.2;
@@ -102,7 +104,7 @@ void SpaceShip::makeShoot() {
     }
 
     double toRad = M_PI / 180;
-    double angle = this->angleOnTarget(this->target);;
+    double angle = this->angleOnTarget(this->target);
 
     this->endAbilityTimer = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
@@ -126,7 +128,7 @@ void SpaceShip::makeShoot() {
     }
 }
 
-void SpaceShip::autoShoot(GameObject* inTarget) {
+void SpaceShip::autoShoot(Asteroid* inTarget) {
     if (!isAutoShootON) return;
     this->endAbilityTimer = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = this->endAbilityTimer - this->startAbilityTimer;
@@ -267,7 +269,7 @@ double SpaceShip::getAutoShootRadius() const {
     return this->autoShootRadius;
 }
 
-void SpaceShip::setTarget(GameObject* definedTarget) {
+void SpaceShip::setTarget(Asteroid* definedTarget) {
     if (!definedTarget) {
         this->target = nullptr;
     } else {

@@ -9,14 +9,16 @@
 #include "../Bullet/Bullet.h"
 #include "../Missile/Missile.h"
 #include "../Reticle/Reticle.h"
+#include "../AbilityIcon/AbilityIcon.h"
 
-enum Ability {
-    SHIELD,
-    MISSILE,
-    AUTOSHOOT,
-    NONE
-};
+//enum Ability {
+//    SHIELD,
+//    MISSILE,
+//    AUTOSHOOT,
+//    NONE
+//};
 
+class Asteroid;
 class SpaceShip : public GameObject {
 private:
     Map* map;
@@ -34,7 +36,7 @@ private:
     bool isShieldON,isAutoShootON,isMissileON;
     int widthShield, heightShield;
     double shieldRadius,autoShootRadius;
-    GameObject* target;
+    Asteroid* target;
     std::chrono::high_resolution_clock::time_point startAbilityTimer, endAbilityTimer;
     std::chrono::high_resolution_clock::time_point startRechargeTimer, endRechargeTimer;
     void useAbility();
@@ -52,11 +54,11 @@ public:
     Reticle* getReticle() const;
     double angleOnTarget(GameObject* inTarget);
     void makeShoot();
-    void autoShoot(GameObject* inTarget);
+    void autoShoot(Asteroid* inTarget);
     int getNumBullets() const;
     void setNumBullets(int amount);
     void setAbility(Ability newAbility);
-    void setTarget(GameObject* definedTarget);
+    void setTarget(Asteroid* definedTarget);
     bool getIsShieldOn() const;
     bool getIsAutoShootOn() const;
     bool getIsMissileOn() const;
