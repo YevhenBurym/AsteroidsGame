@@ -32,7 +32,7 @@ void BigAsteroid::divide(std::vector<GameObject *> &objects) {
     objects.push_back(smallAsteroid2);
 }
 
-void BigAsteroid::createAbility(std::vector<GameObject *> &buffs) {
+void BigAsteroid::createAbility(std::vector<AbilityIcon *> &buffs) {
     this->abilityAppearance.createAbility(this->xy, buffs);
 }
 

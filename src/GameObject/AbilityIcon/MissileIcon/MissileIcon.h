@@ -4,12 +4,10 @@
 
 #pragma once
 
-#include "../../GameObject.h"
+#include "../AbilityIcon.h"
 
-class MissileIcon: public GameObject {
-private:
-    Map* map;
+class MissileIcon: public AbilityIcon {
 public:
     MissileIcon(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
-    void update() override;
+    Ability getAbility() const override;
 };

@@ -6,9 +6,6 @@
 
 #include <cmath>
 #include "../ObjectManager/ObjectManager.h"
-#include "../GameObject/AbilityIcons/ShieldIcon/ShieldIcon.h"
-#include "../GameObject/AbilityIcons/MissileIcon/MissileIcon.h"
-#include "../GameObject/AbilityIcons/AutoShootIcon/AutoShootIcon.h"
 
 class YouDied {};
 

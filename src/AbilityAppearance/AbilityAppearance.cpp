@@ -3,9 +3,9 @@
 //
 
 #include "AbilityAppearance.h"
-#include "../GameObject/AbilityIcons/ShieldIcon/ShieldIcon.h"
-#include "../GameObject/AbilityIcons/MissileIcon/MissileIcon.h"
-#include "../GameObject/AbilityIcons/AutoShootIcon/AutoShootIcon.h"
+#include "../GameObject/AbilityIcon/ShieldIcon/ShieldIcon.h"
+#include "../GameObject/AbilityIcon/MissileIcon/MissileIcon.h"
+#include "../GameObject/AbilityIcon/AutoShootIcon/AutoShootIcon.h"
 
 AbilityAppearance::AbilityAppearance(TextureManager* textureManager, Map* map) {
     this->generator = RandGenerator();
@@ -13,7 +13,7 @@ AbilityAppearance::AbilityAppearance(TextureManager* textureManager, Map* map) {
     this->map = map;
 }
 
-void AbilityAppearance::createAbility(Vector2D XYAppear, std::vector<GameObject*>& buffs) {
+void AbilityAppearance::createAbility(Vector2D XYAppear, std::vector<AbilityIcon*>& buffs) {
     double randomAbility = this->generator.getRandNumber();
 
     if (this->generator.getRandNumber() <= 0.3) {

@@ -6,6 +6,7 @@
 
 #include "../GameObject/GameObject.h"
 #include "../RandomGenerator/RandomGenerator.h"
+#include "../GameObject/AbilityIcon/AbilityIcon.h"
 
 class AbilityAppearance {
 private:
@@ -14,6 +15,6 @@ private:
     RandGenerator generator;
 public:
     AbilityAppearance(TextureManager* textureManager, Map* map);
-    void createAbility(Vector2D XYAppear, std::vector<GameObject*>& buffs);
+    void createAbility(Vector2D XYAppear, std::vector<AbilityIcon*>& buffs);
 };
 

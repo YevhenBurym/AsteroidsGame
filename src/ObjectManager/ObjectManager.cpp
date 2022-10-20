@@ -108,7 +108,7 @@ std::vector<GameObject *> &ObjectManager::getBullets() {
     return this->bullets;
 }
 
-std::vector<GameObject *> &ObjectManager::getBuffs() {
+std::vector<AbilityIcon *> &ObjectManager::getBuffs() {
     return this->buffs;
 }
 
@@ -160,11 +160,25 @@ void ObjectManager::update() {
     }
 
     this->createAsteroids();
-    for (auto & asteroid : this->asteroids) {
+    for (auto * asteroid : this->asteroids) {
         asteroid->update();
     }
 
-    for (auto & buf : this->buffs) {
-        buf->update();
+    for (auto buffIter = this->buffs.begin(); buffIter != this->buffs.end(); ) {
+        (*buffIter)->update();
+        if (!(*buffIter)->getIsExist()) {
+            delete (*buffIter);
+            buffIter = this->buffs.erase(buffIter);
+        } else {
+            ++buffIter;
+        }
+
     }
+//    for (auto & buf : this->buffs) {
+//        if (!buf->getIsExist()) {
+//            delete buf;
+//
+//        }
+//        buf->update();
+//    }
 }

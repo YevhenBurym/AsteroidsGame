@@ -4,13 +4,11 @@
 
 #pragma once
 
-#include "../../GameObject.h"
+#include "../AbilityIcon.h"
 
-class AutoShootIcon: public GameObject {
-private:
-    Map* map;
+class AutoShootIcon: public AbilityIcon {
 public:
     AutoShootIcon(Vector2D coord, std::string textureID, TextureManager* textureManager, Map* map);
-    void update() override;
+    Ability getAbility() const override;
 };
 

@@ -5,6 +5,7 @@
 #include "../GameObject/SpaceShip/SpaceShip.h"
 #include "../GameObject/SmallAsteroid/SmallAsteroid.h"
 #include "../GameObject/BigAsteroid/BigAsteroid.h"
+#include "../GameObject/AbilityIcon/AbilityIcon.h"
 
 class ObjectManager {
 private:
@@ -16,7 +17,7 @@ private:
     SpaceShip* player;
     std::vector<GameObject*> asteroids;
     std::vector<GameObject*> bullets;
-    std::vector<GameObject*> buffs;
+    std::vector<AbilityIcon*> buffs;
     RandGenerator randGenerator;
     Vector2D randomizeAppearCoord();
     Vector2D randomizeVelocity();
@@ -31,7 +32,7 @@ public:
     double getAbilityProbability() const;
     std::vector<GameObject*>& getAsteroids();
     std::vector<GameObject*>& getBullets();
-    std::vector<GameObject*>& getBuffs();
+    std::vector<AbilityIcon*>& getBuffs();
     SpaceShip* getPlayer();
     void render();
     void update();

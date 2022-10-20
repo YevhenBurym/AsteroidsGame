@@ -20,7 +20,7 @@ SmallAsteroid::~SmallAsteroid() {
     delete this->observers;
 }
 
-void SmallAsteroid::createAbility(std::vector<GameObject *> &buffs) {
+void SmallAsteroid::createAbility(std::vector<AbilityIcon *> &buffs) {
     this->abilityAppearance.createAbility(this->xy, buffs);
 }
 

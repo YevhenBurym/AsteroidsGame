@@ -8,6 +8,7 @@
 #include "../GameObject.h"
 #include "../../AbilityAppearance/AbilityAppearance.h"
 #include "../Missile/Missile.h"
+#include "../AbilityIcon/AbilityIcon.h"
 
 class SmallAsteroid : public GameObject {
 private:
@@ -18,7 +19,7 @@ private:
 public:
     SmallAsteroid (Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager* textureManager, Map* map);
     ~SmallAsteroid() override;
-    void createAbility(std::vector<GameObject*>& buffs);
+    void createAbility(std::vector<AbilityIcon*>& buffs);
     void attachObservers(Missile* obs);
     void notExistNotify();
     void update() override;

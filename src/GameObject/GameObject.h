@@ -27,7 +27,7 @@ protected:
     double radius;
 public:
     GameObject(Vector2D coord, Vector2D Vxy, std::string textureID, TextureManager* textureManager);
-    virtual ~GameObject();
+    virtual ~GameObject() = 0;
     virtual void setXY(Vector2D newXY);
     virtual Vector2D getXY() const;
     virtual void setVxy(Vector2D vxy);
@@ -38,5 +38,4 @@ public:
     virtual void render();
     virtual void update();
 };
-
 

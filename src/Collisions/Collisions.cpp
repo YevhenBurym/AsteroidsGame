@@ -187,15 +187,7 @@ void Collisions::abilitiesCollisions() {
         double distance = (this->objectManager->getPlayer()->getXYrel() - (*abilityIter)->getXYrel()).len();
         double minDistance = this->objectManager->getPlayer()->getRadius() + (*abilityIter)->getRadius();
         if ( distance < minDistance ) {
-
-            if (dynamic_cast<ShieldIcon*>(*abilityIter)) {
-                this->objectManager->getPlayer()->setAbility(SHIELD);
-            } else if (dynamic_cast<MissileIcon*>(*abilityIter)) {
-                this->objectManager->getPlayer()->setAbility(MISSILE);
-            } else if (dynamic_cast<AutoShootIcon*>(*abilityIter)) {
-                this->objectManager->getPlayer()->setAbility(AUTOSHOOT);
-            }
-
+            this->objectManager->getPlayer()->setAbility((*abilityIter)->getAbility());
             delete *abilityIter;
             abilityIter = this->objectManager->getBuffs().erase(abilityIter);
         }
