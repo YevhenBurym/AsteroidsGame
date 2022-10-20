@@ -31,7 +31,7 @@
  *  \li Make sure you declare your function pointers with the same calling
  *      convention as the actual library function.  Your code will crash
  *      mysteriously if you do not do this.
- *  \li Avoid namespace collisions.  If you load a symbol from the library,
+ *  \li Avoid namespace collisions.  If you loadTexture a symbol from the library,
  *      it is not defined whether or not it goes into the global symbol
  *      namespace for the application.  If it does and it conflicts with
  *      symbols in your code or other shared libraries, you will not get
@@ -51,7 +51,7 @@ extern "C" {
 #endif
 
 /**
- * Dynamically load a shared object.
+ * Dynamically loadTexture a shared object.
  *
  * \param sofile a system-dependent name of the object file
  * \returns an opaque pointer to the object handle or NULL if there was an

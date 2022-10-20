@@ -7,6 +7,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 #include "../TextureManager/TextureManager.h"
 #include "../StateMachine/StateMachine.h"
 #include "../InputHandler/InputHandler.h"

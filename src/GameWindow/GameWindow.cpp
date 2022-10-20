@@ -6,24 +6,28 @@
 #include "../GameStates/MenuState/MenuState.h"
 
 void GameWindow::loadSprites() {
-    this->textureManager->load("assets\\back.png", "background");
-    this->textureManager->load("assets\\border.png", "border");
-    this->textureManager->load("assets\\ship.png", "spaceship");
-    this->textureManager->load("assets\\small.png", "small_asteroid");
-    this->textureManager->load("assets\\big.png", "big_asteroid");
-    this->textureManager->load("assets\\reticle.png", "reticle");
-    this->textureManager->load("assets\\bullet.png", "bullet");
-    this->textureManager->load("assets\\startButton.png", "start_button");
-    this->textureManager->load("assets\\exitButton.png", "exit_button");
-    this->textureManager->load("assets\\resumeButton.png", "resume_button");
-    this->textureManager->load("assets\\menuButton.png", "menu_button");
-    this->textureManager->load("assets\\restartButton.png", "restart_button");
-    this->textureManager->load("assets\\gameOver.png", "game_over");
-    this->textureManager->load("assets\\shieldAbility.png", "shield_ability");
-    this->textureManager->load("assets\\missileAbility.png", "missile_ability");
-    this->textureManager->load("assets\\autoshootAbility.png", "autoshoot_ability");
-    this->textureManager->load("assets\\shield.png", "shield");
-    this->textureManager->load("assets\\missile.png", "missile");
+    this->textureManager->loadTexture("assets\\back.png", "background");
+    this->textureManager->loadTexture("assets\\border.png", "border");
+    this->textureManager->loadTexture("assets\\ship.png", "spaceship");
+    this->textureManager->loadTexture("assets\\small.png", "small_asteroid");
+    this->textureManager->loadTexture("assets\\big.png", "big_asteroid");
+    this->textureManager->loadTexture("assets\\reticle.png", "reticle");
+    this->textureManager->loadTexture("assets\\bullet.png", "bullet");
+    this->textureManager->loadTexture("assets\\startButton.png", "start_button");
+    this->textureManager->loadTexture("assets\\exitButton.png", "exit_button");
+    this->textureManager->loadTexture("assets\\resumeButton.png", "resume_button");
+    this->textureManager->loadTexture("assets\\menuButton.png", "menu_button");
+    this->textureManager->loadTexture("assets\\restartButton.png", "restart_button");
+    this->textureManager->loadTexture("assets\\gameOver.png", "game_over");
+    this->textureManager->loadTexture("assets\\shieldAbility.png", "shield_ability");
+    this->textureManager->loadTexture("assets\\missileAbility.png", "missile_ability");
+    this->textureManager->loadTexture("assets\\autoshootAbility.png", "autoshoot_ability");
+    this->textureManager->loadTexture("assets\\shield.png", "shield");
+    this->textureManager->loadTexture("assets\\missile.png", "missile");
+    this->textureManager->loadFont("assets\\RAVIE.ttf", "ravie", 20);
+    this->textureManager->createTextureFromText(this->textureManager->getFontMap()["ravie"],"DESTROYED ASTEROIDS: ", "result_title");
+    this->textureManager->createTextureFromText(this->textureManager->getFontMap()["ravie"],"Big: ", "big_amount");
+    this->textureManager->createTextureFromText(this->textureManager->getFontMap()["ravie"],"small: ", "small_amount");
 }
 
 GameWindow::GameWindow(GameParameters *parameters) {
@@ -32,8 +36,7 @@ GameWindow::GameWindow(GameParameters *parameters) {
     this->quitGame = false;
     this->window = nullptr;
     this->renderer = nullptr;
-    this->size.width = 0;
-    this->size.height = 0;
+    this->size = {0,0};
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         std::cout << "SDL could not initialize! SDL Error: %s" << SDL_GetError() << std::endl;
@@ -60,7 +63,10 @@ GameWindow::GameWindow(GameParameters *parameters) {
                 SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
                 int imgFlags = IMG_INIT_PNG;
                 if (!(IMG_Init(imgFlags) & imgFlags)) {
-                    std::cout << "SDL_image could not initialize! SDL_image Error: %s\n" << IMG_GetError();
+                    std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+                }
+                if( TTF_Init() == -1 ) {
+                    std::cout << "SDL_ttf could not initialize! SDL_ttf Error: "<< TTF_GetError() << std::endl;
                 }
             }
         }

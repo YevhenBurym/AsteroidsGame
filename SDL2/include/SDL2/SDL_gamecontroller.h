@@ -45,7 +45,7 @@ extern "C" {
  *
  *  In order to use these functions, SDL_Init() must have been called
  *  with the ::SDL_INIT_GAMECONTROLLER flag.  This causes SDL to scan the system
- *  for game controllers, and load appropriate drivers.
+ *  for game controllers, and loadTexture appropriate drivers.
  *
  *  If you would like to receive controller updates while the application
  *  is in the background, you should set the following hint before calling
@@ -133,7 +133,7 @@ typedef struct SDL_GameControllerButtonBind
 /**
  * Load a set of Game Controller mappings from a seekable SDL data stream.
  *
- * You can call this function several times, if needed, to load different
+ * You can call this function several times, if needed, to loadTexture different
  * database files.
  *
  * If a new mapping is loaded for an already known controller GUID, the later
@@ -143,7 +143,7 @@ typedef struct SDL_GameControllerButtonBind
  * specified will be ignored (i.e. mappings for Linux will be ignored in
  * Windows, etc).
  *
- * This function will load the text database entirely in memory before
+ * This function will loadTexture the text database entirely in memory before
  * processing it, so take this into consideration if you are in a memory
  * constrained environment.
  *

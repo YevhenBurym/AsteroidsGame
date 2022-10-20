@@ -37,7 +37,6 @@ add_executable(Asteroids main.cpp
 
 
 include_directories(${CMAKE_SOURCE_DIR}/SDL2/include/SDl2)
-include_directories(${CMAKE_SOURCE_DIR}/SDL2/bin)
 include_directories(${CMAKE_SOURCE_DIR}/SDL2/lib)
 
 target_link_libraries(Asteroids
@@ -45,4 +44,5 @@ target_link_libraries(Asteroids
         -lmingw32
         -lSDL2main
         -lSDL2
-        -lSDL2_image)
+        -lSDL2_image
+        -lSDL2_ttf)
