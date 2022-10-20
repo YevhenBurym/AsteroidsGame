@@ -4,7 +4,7 @@
 
 #include "GameParameters.h"
 
-GameParameters::GameParameters(int wScreen, int hScreen, bool isFullscreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit, double abilityProrability) {
+GameParameters::GameParameters(int wScreen, int hScreen, bool isFullscreen, int wMap, int hMap, int asteroidsLimit, int ammoLimit) {
     if (wScreen < 640) {
         wScreen = 640;
     }
@@ -23,7 +23,6 @@ GameParameters::GameParameters(int wScreen, int hScreen, bool isFullscreen, int 
     this->wMap = wMap;
     this->asteroidsLimit = asteroidsLimit;
     this->ammoLimit = ammoLimit;
-    this->abilityProbability = abilityProrability;
     this->isFullScreen = isFullscreen;
 }
 
@@ -53,8 +52,4 @@ int GameParameters::getAmmoLimit() const {
 
 bool GameParameters::getIsFullScreen() const {
     return this->isFullScreen;
-}
-
-double GameParameters::getAbilityProbability() const {
-    return this->abilityProbability;
 }

@@ -124,10 +124,6 @@ int ObjectManager::getNumAsteroids() const {
     return this->numAsteroids;
 }
 
-double ObjectManager::getAbilityProbability() const {
-    return this->window->getParameters()->getAbilityProbability();
-}
-
 void ObjectManager::setNumAsteroids(int amount) {
     this->numAsteroids = amount;
 }

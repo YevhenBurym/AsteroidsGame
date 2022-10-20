@@ -29,7 +29,6 @@ public:
     void setNumAsteroids(int amount);
     int getNumAsteroids() const;
     int getAmmoLimit() const;
-    double getAbilityProbability() const;
     std::vector<Asteroid*>& getAsteroids();
     std::vector<GameObject*>& getBullets();
     std::vector<AbilityIcon*>& getBuffs();

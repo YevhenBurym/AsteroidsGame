@@ -2,14 +2,12 @@
 #include <sstream>
 
 int main(int argc, char* argv[]) {
-	//-window 800x600 - map 1000x1000 - num_asteroids 10 - num_ammo 3 - ability_probability 0.3
 	int wScreen = 800;
 	int hScreen = 600;
-	int wMap = 500;
-	int hMap = 500;
-	int asteroidsLimit = 10;
+	int wMap = 1000;
+	int hMap = 1000;
+	int asteroidsLimit = 30;
 	int ammoLimit = 5;
-	double abilityProrability = 0.3;
 
 	for (int i = 1; i < argc; ++i) {
 		std::string str = argv[i-1];
@@ -43,21 +41,15 @@ int main(int argc, char* argv[]) {
 		if (str == "-num_asteroids") {
 			std::stringstream value(str1);
 			asteroidsLimit = atol(str1.c_str());
-			if (asteroidsLimit == 0) asteroidsLimit = 10;
+			if (asteroidsLimit == 0) asteroidsLimit = 25;
 		}
 		if (str == "-num_ammo") {
 			std::stringstream value(str1);
 			ammoLimit = atol(str1.c_str());
-			if (ammoLimit == 0) asteroidsLimit = 3;
+			if (ammoLimit == 0) ammoLimit = 5;
 		}
-		if (str == "-ability_probability") {
-			std::stringstream value(str1);
-			abilityProrability = atof(str1.c_str());
-			if (abilityProrability == 0) abilityProrability = 0.3;
-		}
-
 	}
-    Game* game = new Game(new GameParameters(wScreen, hScreen, false, wMap, hMap, asteroidsLimit, ammoLimit, abilityProrability));
+    Game* game = new Game(new GameParameters(wScreen, hScreen, false, wMap, hMap, asteroidsLimit, ammoLimit));
 	game->run();
 
 	return 0;
