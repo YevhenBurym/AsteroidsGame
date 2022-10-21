@@ -185,8 +185,12 @@ void Collisions::asteroidWithBulletsCollisions(std::vector<Asteroid*>::iterator&
             if (bigAster) {
                 bigAster->divide(this->objectManager->getAsteroids());
                 newAsteroidsAmount = this->objectManager->getNumAsteroids() + 1;
+                int newDestroyedBigAsteroidsAmount = this->objectManager->getDestroyedBigAsteroidsAmount() + 1;
+                this->objectManager->setDestroyedBigAsteroidsAmount(newDestroyedBigAsteroidsAmount);
             } else {
                 newAsteroidsAmount = this->objectManager->getNumAsteroids() - 1;
+                int newDestroyedSmallAsteroidsAmount = this->objectManager->getDestroyedSmallAsteroidsAmount() + 1;
+                this->objectManager->setDestroyedSmallAsteroidsAmount(newDestroyedSmallAsteroidsAmount);
             }
 
             (*asteroidIterator)->createAbility(this->objectManager->getBuffs());

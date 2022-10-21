@@ -23,12 +23,18 @@ private:
     Vector2D randomizeVelocity();
     void createPlayer();
     void createAsteroids();
+    int destroyedBigAsteroidAmount;
+    int destroyedSmallAsteroidAmount;
 public:
     explicit ObjectManager(GameWindow* window);
     ~ObjectManager();
     void setNumAsteroids(int amount);
+    void setDestroyedSmallAsteroidsAmount(int amount);
+    void setDestroyedBigAsteroidsAmount(int amount);
     int getNumAsteroids() const;
     int getAmmoLimit() const;
+    int getDestroyedSmallAsteroidsAmount() const;
+    int getDestroyedBigAsteroidsAmount() const;
     std::vector<Asteroid*>& getAsteroids();
     std::vector<GameObject*>& getBullets();
     std::vector<AbilityIcon*>& getBuffs();

@@ -54,9 +54,9 @@ void TextureManager::getTextureSize(std::string textureID, int &width, int &heig
     SDL_QueryTexture(this->textureMap[textureID], nullptr, nullptr, &width, &height);
 }
 
-void TextureManager::createTextureFromText(TTF_Font* font, std::string text, std::string textureID) {
+void TextureManager::createTextureFromText(std::string fontID, std::string text, std::string textureID) {
     SDL_Color textColor = {0xFF, 0xFF, 0xFF};
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+    SDL_Surface* textSurface = TTF_RenderText_Solid(this->fontMap[fontID], text.c_str(), textColor);
     if (textSurface == nullptr) {
         std::cout << "Unable to render text surface! SDL_ttf Error: " << TTF_GetError() << std::endl;
     } else {

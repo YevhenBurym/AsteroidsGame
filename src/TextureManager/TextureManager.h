@@ -21,7 +21,7 @@ public:
     explicit TextureManager(SDL_Renderer* renderer);
     void loadTexture(const char* pathToTexture, std::string textureID);
     void loadFont(const char* pathToFont, std::string fontID, int fontSize);
-    void createTextureFromText(TTF_Font* font, std::string text, std::string textureID);
+    void createTextureFromText(std::string fontID, std::string text, std::string textureID);
     void draw(std::string textureID, int x, int y, int width, int height, double angle = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);
     void drawFrame(std::string textureID, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_RendererFlip flip = SDL_FLIP_NONE);
     void clearFromTextureMap(std::string textureID);

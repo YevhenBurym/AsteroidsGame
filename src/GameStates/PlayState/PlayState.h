@@ -11,9 +11,11 @@
 #include "../../GameObject/Button/Button.h"
 #include "../../ObjectManager/ObjectManager.h"
 #include "../../Collisions/Collisions.h"
+#include "../../ResultMessage/ResultMessage.h"
 
 class PlayState : public GameState {
 private:
+    ResultMessage* message;
     Collisions* collisions;
     Map* map;
     GameWindow* gameWindow;

@@ -9,6 +9,8 @@ ObjectManager::ObjectManager(GameWindow *window) {
     this->createPlayer();
     this->randGenerator = RandGenerator();
     this->asteroids.reserve(this->asteroidsLimit * 3);
+    this->destroyedBigAsteroidAmount  = 0;
+    this->destroyedSmallAsteroidAmount = 0;
 }
 
 ObjectManager::~ObjectManager() {
@@ -124,8 +126,23 @@ int ObjectManager::getNumAsteroids() const {
     return this->numAsteroids;
 }
 
+int ObjectManager::getDestroyedSmallAsteroidsAmount() const {
+    return this->destroyedSmallAsteroidAmount;
+}
+
+int ObjectManager::getDestroyedBigAsteroidsAmount() const {
+    return this->destroyedBigAsteroidAmount;
+}
+
 void ObjectManager::setNumAsteroids(int amount) {
     this->numAsteroids = amount;
+}
+
+void ObjectManager::setDestroyedSmallAsteroidsAmount(int amount) {
+    this->destroyedSmallAsteroidAmount = amount;
+}
+void ObjectManager::setDestroyedBigAsteroidsAmount(int amount) {
+    this->destroyedBigAsteroidAmount = amount;
 }
 
 void ObjectManager::render() {

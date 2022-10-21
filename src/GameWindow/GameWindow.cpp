@@ -24,10 +24,10 @@ void GameWindow::loadSprites() {
     this->textureManager->loadTexture("assets\\autoshootAbility.png", "autoshoot_ability");
     this->textureManager->loadTexture("assets\\shield.png", "shield");
     this->textureManager->loadTexture("assets\\missile.png", "missile");
-    this->textureManager->loadFont("assets\\RAVIE.ttf", "ravie", 20);
-    this->textureManager->createTextureFromText(this->textureManager->getFontMap()["ravie"],"DESTROYED ASTEROIDS: ", "result_title");
-    this->textureManager->createTextureFromText(this->textureManager->getFontMap()["ravie"],"Big: ", "big_amount");
-    this->textureManager->createTextureFromText(this->textureManager->getFontMap()["ravie"],"small: ", "small_amount");
+    this->textureManager->loadFont("assets\\Inkfree.ttf", "inkfree", 18);
+    //this->textureManager->createTextureFromText("inkfree","DESTROYED ASTEROIDS: ", "result_title");
+    //this->textureManager->createTextureFromText("inkfree","Big: ", "big_amount");
+    //this->textureManager->createTextureFromText("inkfree","small: ", "small_amount");
 }
 
 GameWindow::GameWindow(GameParameters *parameters) {
