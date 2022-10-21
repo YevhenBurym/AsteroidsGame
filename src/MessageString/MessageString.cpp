@@ -4,8 +4,8 @@
 
 #include "MessageString.h"
 
-MessageString::MessageString(Vector2D coord, std::string fontID, std::string text, std::string textureID, TextureManager *textureManager) {
-    this->xy = coord;
+MessageString::MessageString(std::string fontID, std::string text, std::string textureID, TextureManager *textureManager) {
+    this->xy = {0,0};
     this->textureID = textureID;
     this->hSprite = 0;
     this->wSprite = 0;

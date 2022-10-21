@@ -14,7 +14,7 @@ private:
     int wSprite, hSprite;
     Vector2D xy;
 public:
-    MessageString(Vector2D coord, std::string fontID, std::string text, std::string textureID, TextureManager* textureManager);
+    MessageString(std::string fontID, std::string text, std::string textureID, TextureManager* textureManager);
     void setXY(Vector2D newXY);
     Vector2D getXY() const;
     void render();

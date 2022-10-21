@@ -25,9 +25,7 @@ void GameWindow::loadSprites() {
     this->textureManager->loadTexture("assets\\shield.png", "shield");
     this->textureManager->loadTexture("assets\\missile.png", "missile");
     this->textureManager->loadFont("assets\\Inkfree.ttf", "inkfree", 18);
-    //this->textureManager->createTextureFromText("inkfree","DESTROYED ASTEROIDS: ", "result_title");
-    //this->textureManager->createTextureFromText("inkfree","Big: ", "big_amount");
-    //this->textureManager->createTextureFromText("inkfree","small: ", "small_amount");
+    this->textureManager->loadFont("assets\\STENCIL.ttf", "stencil", 40);
 }
 
 GameWindow::GameWindow(GameParameters *parameters) {

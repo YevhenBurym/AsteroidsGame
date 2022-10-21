@@ -8,11 +8,16 @@ ResultMessage::ResultMessage(TextureManager *textureManager) {
     this->textureManager = textureManager;
     this->bigAmount = 0;
     this->smallAmount = 0;
-    this->title = new MessageString({5,5}, "inkfree", "DESTROYED ASTEROIDS", "result_title", this->textureManager);
-    this->bigAsteroidsTitle = new MessageString({5,25}, "inkfree", "Big:    ", "big_title", this->textureManager);
-    this->smallAsteroidsTitle = new MessageString({5,50}, "inkfree", "Small:  ", "small_title", this->textureManager);
-    this->bigAsteroidsAmount = new MessageString({55,25}, "inkfree", "0", "big_amount", this->textureManager);
-    this->smallAsteroidsAmount = new MessageString({55,50}, "inkfree", "0", "small_amount", this->textureManager);
+    this->title = new MessageString("inkfree", "DESTROYED ASTEROIDS", "result_title", this->textureManager);
+    this->bigAsteroidsTitle = new MessageString("inkfree", "Big:    ", "big_title", this->textureManager);
+    this->smallAsteroidsTitle = new MessageString("inkfree", "Small:  ", "small_title", this->textureManager);
+    this->bigAsteroidsAmount = new MessageString("inkfree", "0", "big_amount", this->textureManager);
+    this->smallAsteroidsAmount = new MessageString("inkfree", "0", "small_amount", this->textureManager);
+    this->title->setXY({5,5});
+    this->bigAsteroidsTitle->setXY({5,25});
+    this->smallAsteroidsTitle->setXY({5,50});
+    this->bigAsteroidsAmount->setXY({55,25});
+    this->smallAsteroidsAmount->setXY({55,50});
 }
 
 ResultMessage::~ResultMessage() {
@@ -33,18 +38,22 @@ void ResultMessage::render() {
 
 void ResultMessage::setBigAsteroidsAmount(int amount) {
     if (amount == this->bigAmount) return;
+    auto textAmount = std::to_string(amount);
     this->bigAmount = amount;
     this->textureManager->clearFromTextureMap("big_amount");
-    auto temp = this->smallAsteroidsAmount;
-    this->bigAsteroidsAmount = new MessageString({55,25}, "inkfree", std::to_string(amount), "big_amount", this->textureManager);
+    auto temp = this->bigAsteroidsAmount;
+    this->bigAsteroidsAmount = new MessageString("inkfree", textAmount, "big_amount", this->textureManager);
+    this->bigAsteroidsAmount->setXY({55,25});
     delete temp;
 }
 
 void ResultMessage::setSmallAsteroidsAmount(int amount) {
     if (amount == this->smallAmount) return;
+    auto textAmount = std::to_string(amount);
     this->smallAmount = amount;
     this->textureManager->clearFromTextureMap("small_amount");
     auto temp = this->smallAsteroidsAmount;
-    this->smallAsteroidsAmount = new MessageString({55,50}, "inkfree", std::to_string(amount), "small_amount", this->textureManager);
+    this->smallAsteroidsAmount = new MessageString("inkfree", textAmount, "small_amount", this->textureManager);
+    this->smallAsteroidsAmount->setXY({55,50});
     delete temp;
 }
