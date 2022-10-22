@@ -139,10 +139,11 @@ void SpaceShip::autoShoot(Asteroid* inTarget) {
 
     double toRad = M_PI / 180;
     Vector2D avatarXY = this->xy - this->map->getXY();
-    double angle = this->angleOnTarget(inTarget);;
+    double angle = this->angleOnTarget(inTarget);
+    double rechargeTime = 0.4;
 
     std::chrono::duration<double> rechargeDuration = this->endRechargeTimer - this->startRechargeTimer;
-    if (rechargeDuration.count() < 0.5) return;
+    if (rechargeDuration.count() < rechargeTime) return;
     this->startRechargeTimer = std::chrono::high_resolution_clock::now();
 
     if (this->numBullets < this->ammoLimit) {
